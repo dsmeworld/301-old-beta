@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="../img/logo_back.jpg" type="image/x-icon">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>质押</title>
+			
+		
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+		<script src="../js/jquery.js"></script>
+		<script src="../js/contractport.js"></script>
+		<script src="../js/contractport1.js"></script>
+		<script src="../js/bootbox.min.js"></script>
+		<script src="../js/bootstrap.js"></script>
+
+	</head>
+	<script>
+
+		window.onload = function(){
+			
+			function toDecimal2(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 100000) / 100000;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 5) {
+					s += '0';
+				}
+				return s;
+			}
+
+			
+
+
+			
+			web3js.eth.getAccounts(function(error, result) {
+
+
+				//显示
+				test_dspoolin.methods.pledge_acount(result[0]).call().then(function(res){
+					$("#pool_zhiya").html(toDecimal2(res[0] /10**18));
+					$("#pool_zhiya1").html(toDecimal2(res[0] / 10**18));
+					$("#pool_zhiya2").html(toDecimal2(res[0] / 10**18));
+					if(res[0] > 0){
+						test_dspoolin.methods.calculation().call({from:result[0]}).then(function(re){
+							$("#pool_shouyi").html(toDecimal2(re/10**18));
+						})
+					}else{
+						$("#pool_shouyi").html("0.00");
+					}
+				});
+
+				//质押
+				zhiya.onclick = function(){
+					if(new Date().getTime() / 1000 < 1636117200){
+						bootbox.alert({
+							size: "small",
+							title: "质押提示",
+							message: "质押开始时间为北京时间：2021.11.5 21:00:00",
+						    callback: function(){location.reload();}
+							})
+					}else{
+					bootbox.prompt({ 
+    					size: "small",
+    					title: "您质押的数量",
+   						callback: function(resul){ 
+        					if(resul){
+								//resul1 = resul * 10**18;
+								//resul2 = resul1.toString();
+								var resul1 = resul + "000000000000000000";
+								test_dspoolin.methods.pledge(resul1).send({from:result[0],gas:300000}).then(function(ree){
+										bootbox.alert({
+											size: "small",
+											title: "质押提示",
+											message: "质押成功",
+											callback: function(){location.reload();}
+										})
+								},function(reee){
+									bootbox.alert({
+											size: "small",
+											title: "质押提示",
+											message: "质押失败",
+											callback: function(){location.reload();}
+									})
+								})
+							}	
+   						}
+					});
+					}
+				}
+
+
+
+				//提取
+				tiqu.onclick = function(){
+                
+					test_dspoolin.methods.pledge_acount(result[0]).call().then(function(res){
+					if(res[0] > 0){
+						test_dspoolin.methods.withdraw_award().send({from:result[0],gas:200000}).then(function(){
+							bootbox.alert({
+								size: "small",
+								title: "提取提示",
+								message: "提取成功，请查询区块链钱包",
+								callback: function(){location.reload();}
+							})
+						},function(){
+							bootbox.alert({
+								size: "small",
+								title: "提取提示",
+								message: "提取失败",
+								callback: function(){location.reload();}
+							})
+						})
+					}else{
+						bootbox.alert({
+							size: "small",
+							title: "提取提示",
+							message: "请在质押后再进行提取操作~",
+							callback: function(){location.reload();}
+						})
+					}
+					});
+				}
+
+				//提取本金
+				tiqu_benjin.onclick = function(){
+
+					bootbox.prompt({ 
+    					size: "small",
+    					title: "您提取的数量",
+   						callback: function(resul){ 
+        					if(resul){
+								//resul1 = resul * 10**18;
+								//resul2 = resul1.toString();
+                                var resul1 = resul + "000000000000000000";
+								test_dspoolin.methods.withdraw_pledge(resul1).send({from:result[0],gas:300000}).then(function(ree){
+									bootbox.alert({
+										size: "small",
+										title: "提取提示",
+										message: "提取成功，请检查区块链钱包",
+										callback: function(){location.reload();}
+									})
+								},function(reee){
+									bootbox.alert({
+											size: "small",
+											title: "质押提示",
+											message: "提取失败",
+											callback: function(){location.reload();}
+										})
+								})
+							}	
+   						}
+					});
+
+				}	
+			})
+			
+		}
+
+
+	</script>
+	<body style="background-color: #dff0d86e;">
+		<div style="background-color: white;height: 51px;" id="">
+			<!-- 返回 -->
+			<div id="back">
+					<a href="../financial.html">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					</a>
+				</div>
+				<div id="back_index">
+					质押
+				</div>
+			
+			</div>
+			<div id="hr">
+				<hr />
+			</div>
+		</div>
+		
+		
+		<!-- 背景box -->
+		<div id="backgr">
+			
+		</div>
+		<!-- 收益 -->
+		<div id="ubyi">
+			<div style="color: #00A5CF;" id="ubyi_left">
+				<img style="width: 70px;height: 70px;background-color: black;border:1px solid black; border-radius:150px; padding:5px;" src="../img/logo.png" >
+			</div>
+			<div id="ubyi_right">
+				<div style="font-size: 23px;" id="">
+					DSME收益
+				</div>
+				<div style="font-size: 20px;" id="pool_shouyi">
+					loading
+				</div>
+			</div>
+			
+			<div id="tiqu">
+				<button  id="ubyi_but" type="button" class="btn btn-success">提取</button>
+			</div>
+		</div>
+		
+		<!-- 质押 -->
+		<div id="ubyi2">
+			<div style="color: #00A5CF;" id="ubyi_left">
+				<img style="width: 70px;height: 70px;background-color: black;border:1px solid black; border-radius:150px; padding:5px;" src="../img/insurelogo.jpg" >
+			</div>
+			<div id="ubyi_right2">
+				<div style="font-size: 23px;" id="">
+					INSURE质押数
+				</div>
+				<div style="font-size: 20px;" id="pool_zhiya">
+					loading
+				</div>
+			</div>
+			
+			<div id="zhiya">
+				<button  id="ubyi_but" type="button" class="btn btn-success">质押</button>
+			</div>
+		</div>
+		<!-- 活期锁仓 -->
+		<div class="box_left" >
+			<div style="font-size: 18px;margin-top: 10px;margin-left: 10px;" id="">
+				·活期锁仓
+			</div>
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 24px;height: 24px;margin: 20px;background-color: black;border:1px solid black; border-radius:150px; padding:5px;" src="../img/insurelogo.jpg" >
+				</div>
+				<div id="">
+					<div style="margin-top:14px;" id="">
+						活期INSURE
+					</div>
+					<div id="pool_zhiya1">
+						loading
+					</div>
+				</div>
+			</div>
+			<!-- 中间 -->
+			<div id="zy_cont">
+				<div style="margin-top:14px;"  id="">
+					可提INSURE
+				</div>
+				<div id="pool_zhiya2">
+					loading
+				</div>
+			</div>
+			<!-- 右边 -->
+			<div id="zy_right">
+				<button id="tiqu_benjin" type="button" class="btn btn-success">提取</button>
+			</div>
+		</div>
+		
+		
+		
+		
+		<!-- 简介 -->
+		<div id="hr">
+			
+		</div>
+		<div style="width: 90%;margin-left: 5%;margin-top: 15px;">
+			<h3>项目说明:</h3>
+			<p>1、DSME董事会-单币质押(简称DS-Pool)生态系统为原创代码，因此极端情况下，合约可能会存在漏洞风险，请熟知并承担相应风险。(DSME生态将全力做好合约安全维护，尽最大限度保障player资产安全)</p>
+			<p>2、DS-Pool已支持保险板块，您可购买保险来保障质押本金与收益</p>
+			<p>3、DS-Pool支持全token单质押，如需合作请联系。</p>
+			<p>4、DS-Pool目前为开放式质押，无需注册生态即可体验。</p>
+		</div>
+		
+		<div style="height: 100px;" id="">
+			
+		</div>
+		
+		<!-- 样式 -->
+		<style type="text/css">
+			#hr {
+				clear: both;
+				margin-top: 12px;
+			}
+			p.big {line-height:300%}
+			.box_left {
+				border-radius: 10px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+				background-color: white;
+				width: 90%;
+				margin-left: 5%;
+				float: left;
+				height: 100px;
+				margin-bottom: 3px;
+				margin-top: 5px;
+			}
+			
+			#zy_left {
+				float: left;
+				height: 65px;
+				width: 46%;
+			}
+			#logo {
+				width: 32%;
+				height: 65px;
+				float: left;
+			}
+			#zy_cont {
+				float: left;
+				height: 65px;
+				width: 25%;
+			}
+			#zy_right {
+				float: right;
+				height: 65px;
+				line-height: 32.5px;
+				width: 27%;
+			}
+			.btn-success {
+				width: 95%;
+					height: 40px;
+					margin-top: 12.5px;
+					color: #fff;
+				    background-color: #5cb85c;
+				    border-color: #4cae4c;
+			}
+			#ubyi_but {
+				width: 50%;
+				height: 50px;
+				margin-top: 28px;
+			}
+			#ubyi_right {
+				margin-left: 46%;
+				margin-top: 24px;
+			}
+			#ubyi_right2 {
+				margin-left: 43%;
+				margin-top: 24px;
+			}
+			#ubyi_left {
+				float: left;
+				margin-left: 8%;
+				margin-top: 24px;
+			}
+			#ubyi {
+				border-radius: 10px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+				background-color: white;
+				width: 90%;
+				margin-left: 5%;
+				float: left;
+				height: 200px;
+				margin-bottom: 3px;
+				margin-top: -106px;
+			}
+			#ubyi2 {
+				border-radius: 10px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+				background-color: white;
+				width: 90%;
+				margin-left: 5%;
+				float: left;
+				height: 200px;
+				margin-bottom: 3px;
+				margin-top: 10px;
+			}
+			#backgr {
+				height: 150px;
+				width: 100%;
+				background-color: #D5A021;
+				margin-top: -42px;
+			}
+			#back {
+				margin-top: 10px;
+				margin-bottom: 10px;
+				margin-left: 10px;
+				font-size: 20px;
+				float: left;
+				width: 10%;
+				
+			}
+			
+			#back_index {
+				margin-top: 10px;
+				margin-bottom: 10px;
+				font-size: 20px;
+				float: right;
+				width: 56%;
+			}
+			
+			#hr {
+				clear: both;
+				margin-top: 2px;
+			}
+			
+		</style>
+		
+	</body>
+</html>

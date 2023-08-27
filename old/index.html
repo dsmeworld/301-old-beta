@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon"> 
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>D-ecology</title>
+
+
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/contractport.js"></script>
+		<script src="js/contractport1.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<!-- <script src="js/bootbox.locales.min.js"></script> -->
+		<script src="js/bootbox.min.js"></script>
+	</head>
+	<script>
+		window.onload = function() {
+
+			//test_system2为新系统对象，test为老系统对象。
+			test_system1 = test_system2;
+			test = test_system4;
+
+			function toDecimal2(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 100) / 100;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 2) {
+					s += '0';
+				}
+				return s;
+			}
+
+
+
+			chainId = ethereum.request({
+				method: 'eth_chainId'
+			});
+			//！链id不是马上拿到的，如果通过链id来判断是不是主网的方式，请注意异步
+			chainId.then(res => {
+				if (res == '0x80') {
+					$("#node_www").html("<span style='margin-top:14px'>HECO</span>");
+					node_www.style.color = "white";
+				} else if (res == '0x38') {
+					$("#node_www").html("<span style='margin-top:14px'>BSC</span>");
+					window.node_www.style.color = "white";
+				} else {
+					console.log("Not connect");
+				}
+			})
+/*注册以及升级提示
+			web3js.eth.getAccounts(function(error, result) {
+				test.methods.playerMap(result[0]).call().then(function(resul) {
+					if (resul == 0) {
+						test_system1.methods.playerMap(result[0]).call().then(function(resul) {
+							if(resul == 0){	
+								bootbox.confirm({
+									size: "small",
+									title: "注册提示",
+									message: "您还未注册，请先注册哦~",
+									callback: function(result) {
+										if (result) {
+											window.location = "regis.html";
+										}
+									}
+								})
+							}else{
+								bootbox.confirm({
+									size: "small",
+									title: "版本升级提示",
+									message: "当前账号系统版本V0.3.0，最新版本V0.4.0,点击确定，立即升级。",
+									callback: function(resultt) {
+										if (resultt) {
+											test.methods.translation().send({from: result[0],gas: 300000}).then(function(){
+												bootbox.alert({
+													size: "small",
+													title: "签到提示",
+													message:"系统更新完成",
+													callback:function(){location.reload();}
+												})
+											})
+										}
+									}
+								})
+							}
+						});
+					}
+				});
+			});
+*/
+
+		button_sign.onclick = function() {
+			bootbox.alert({
+				size: "small",
+				title: "盲盒提示",
+				message: "盲盒功能已转移至V2页面，点击确定，跳转页面",
+				callback: function() {
+					window.location = "heco.html";
+				}
+			})
+		}
+
+			web3js.eth.getAccounts(function(error, result) {
+				/*button_sign.onclick = function() {
+					test.methods.playerMap(result[0]).call().then(function(resul) {
+						console.log(resul);
+						if (resul != 0) {
+							test_kongtou.methods.playmap(result[0]).call().then(function(resu) {
+								if (new Date().getTime() / 1000 - resu[0] >= 86400) {
+									bootbox.prompt({ 
+    									size: "small",
+    									title: "请填写随机数（1~20），猜中空投翻倍~",
+										callback: function(re){
+											if(re){
+												re1 = re.toString();
+												test_kongtou.methods.sign(re1).send({from: result[0],gas: 400000}).then(function(rr){
+													test_kongtou.methods.playmapping(result[0]).call().then(function(response){
+														if(response[1] == re1){
+															bootbox.alert({
+																size: "small",
+																title: "签到提示",
+																message:"恭喜您签到成功，本次签到公共基础系数Abs：" + response[0]/10 + ",签到随机系数N：" + response[3]/10 +  
+																",竞猜随机数M：" + response[1] + ",等级加成Ls：" + response[4] + "%,本次签到您已中奖，空投翻倍，共获得奖励 = Abs * N * 2 *(1+Ls) = " + response[2]/10**18 + " DSME" ,
+																callback:function(){location.reload();}
+															})
+														}else{
+															bootbox.alert({
+																size: "small",
+																title: "签到提示",
+																message:"恭喜您签到成功，本次签到公共基础系数Abs：" + response[0]/10 + ",签到随机系数N：" + response[3]/10 +
+																",竞猜随机数M：" + response[1] + ",等级加成Ls：" + response[4] + "%,本次签到您未中奖，共获得奖励 = Abs * N *(1+Ls) = " + response[2]/10**18 + " DSME" ,
+																callback:function(){location.reload();}
+															})
+														}
+													})
+												})
+											}
+										}
+									})
+								} else {
+									bootbox.alert({
+										size: "small",
+										title: "签到提示",
+										message: "<p>上次签到时间：" + getLocalTime(resu[
+												0]) +
+											",</p><p> 还未到签到时间哦（本次不扣GAS）</p>",
+									})
+								}
+							})
+						} else {
+							bootbox.alert("请先注册或完成升级哦", function() {
+								window.location = "regis.html";
+							});
+						}
+					})
+				};*/
+
+				
+				//白名单查验
+				button_check.onclick = function() {
+					test.methods.grant(result[0]).call().then(function(result) {
+						if (result == 1) {
+							bootbox.alert({
+								size: "small",
+								title: "白名单提示",
+								message: "您已通过白名单，欢迎加入星梦生态体系，让我们携手创造美好未来！",
+								callback: function() {
+									window.location = "regis.html";
+								}
+							})
+						} else {
+							bootbox.alert({
+								size: "small",
+								title: "白名单提示",
+								message: "您还未在白名单内哦，请提交申请或耐心等待！",
+							})
+						}
+					})
+				}
+
+				test_kongtou.methods.playmap(result[0]).call().then(function(result) {
+						$("#sign_acount").html("已签到" + result[1] + "天");
+				});
+
+				
+				test.methods.amount_for_player().call().then(function(result) {
+					$("#test_acount").html("Account ：" + (result - 999));
+				})
+
+				test_kongtou.methods.total_awards().call().then(function(result) {
+					test_dspool.methods.reward_day_have().call().then(function(res){
+						$("#test_award").html("Award ：" + toDecimal2((res/10 ** 18)+result/10**18));
+						$("#test_all").html("DSME Circulation ：" + (toDecimal2((res/10 ** 18)+result/10**18 + 34430.9)));
+					});	
+				})
+
+			});
+
+			//heco_main
+			button_heco1.onclick = function() {
+				params = [{
+					"chainId": "0x80", // 56 in decimal
+					"chainName": "HECO-1",
+					"rpcUrls": [
+						"https://http-mainnet.hecochain.com"
+					],
+					"nativeCurrency": {
+						"name": "Huobi Token",
+						"symbol": "HT",
+						"decimals": 18
+					},
+					"blockExplorerUrls": [
+						"https://hecoinfo.com/"
+					]
+				}]
+
+
+				ethereum.request({
+					method: 'wallet_addEthereumChain',
+					params,
+				}).then(res => {
+					$("#node_www").html("<span style='margin-top:14px'>HECO</span>");
+					bootbox.alert({
+						size: "small",
+						title: "网络提示",
+						message: "已连接<span style='color:#0007af;font-weight: bold;'>HECO(fast)</span>网络",
+					})
+				});
+			}
+
+			button_hecomain.onclick = function() {
+				params = [{
+					"chainId": "0x80", // 56 in decimal
+					"chainName": "HECO-main",
+					"rpcUrls": [
+						"https://http-mainnet-node.huobichain.com"
+					],
+					"nativeCurrency": {
+						"name": "Huobi Token",
+						"symbol": "HT",
+						"decimals": 18
+					},
+					"blockExplorerUrls": [
+						"https://hecoinfo.com/"
+					]
+				}]
+
+				ethereum.request({
+					method: 'wallet_addEthereumChain',
+					params
+				}).then(res => {
+					$("#node_www").html("<span style='margin-top:14px'>HECO</span>");
+					bootbox.alert({
+						size: "small",
+						title: "网络提示",
+						message: "已连接<span style='color:#0007af;font-weight: bold;'>HECO(main)</span>网络",
+					})
+				});
+			}
+
+			button_bscmain.onclick = function() {
+				params = [{
+					"chainId": "0x38", // 56 in decimal
+					"chainName": "Smart Chain",
+					"rpcUrls": [
+						"https://bsc-dataseed.binance.org"
+					],
+					"nativeCurrency": {
+						"name": "Binance Coin",
+						"symbol": "BNB",
+						"decimals": 18
+					},
+					"blockExplorerUrls": [
+						"https://bscscan.com"
+					]
+				}]
+
+
+				ethereum.request({
+					method: 'wallet_addEthereumChain',
+					params,
+				}).then(res => {
+					$("#node_www").html("<span style='margin-top:14px'>BSC</span>");
+					bootbox.alert({
+						size: "small",
+						title: "网络提示",
+						message: "已连接<span style='color:#0007af;font-weight: bold;'>BSC(main)</span>网络",
+					})
+				});
+			}
+
+
+			button_apply.onclick = function() {
+				bootbox.confirm({
+					size: "small",
+					title: "白名单申请",
+					message: "即将前往白名单申请页面，请如实填写哦~",
+					callback: function(result) {
+						if (result) {
+							window.location = "https://shimo.im/forms/xwTKKdwdvwTgDqHj/fill";
+						}
+					}
+				})
+			}
+
+		var notice1 = document.getElementById("notice1");
+			notice1.onclick  = function(){	
+			window.location = "notice.html";
+		}
+
+		$('.swap').html($('.news_li').html());
+		x = $('.news_li');
+		y = $('.swap');
+		h = $('.news_li li').length * 38; //20为每个li的高度
+		var hh = $('.news_li li').length;
+		if (hh > 1)
+			//setTimeout(b,3000);//滚动间隔时间 现在是3秒
+			b();
+		b();
+
+		function b() {
+			t = parseInt(x.css('top'));
+			//alert(t)
+			y.css('top', '38px');
+			x.animate({
+				top: t - 38 + 'px'
+			}, 'slow'); //20为每个li的高度
+			if (Math.abs(t) == h - 38) { //20为每个li的高度
+				y.animate({
+					top: '0px'
+				}, 'slow');
+				z = x;
+				x = y;
+				y = z;
+			}
+			setTimeout(b, 6000); //滚动间隔时间 现在是3秒
+		}
+
+
+			var notice = document.getElementById("notice");
+			var noticeList = document.getElementById("noticeList");
+
+			// 获取ul下第一个li元素，好计算li的高度，因为后面滚动的时候每次要滚动一个高度，这里li都是一样高的，
+			// 所以获取第一个的高度就行了，不然要遍历获取每一个li的高度。
+			var noticeFirstItem = noticeList.querySelector("li");
+
+			// 获取li的高度，这里获取的是offsetHeight，关于js各种高度的定义可以注意以下
+			var scrollHeight = noticeFirstItem.offsetHeight;
+			// 是否可以进行动画
+			var opt = {
+				animated: true,
+				interval: 2000
+			};
+
+			noticeFirstItem.style.marginTop = 0;
+				if (opt.animated) {
+					opt.animated = true;
+					animate(noticeList, scrollHeight, opt);
+				}
+			//notice.onclick = function() {
+				// 动画之前首先重置
+				// noticeFirstItem.style.transition = "";
+				setInterval(function(){
+				noticeFirstItem.style.marginTop = 0;
+				if (opt.animated) {
+					opt.animated = true;
+					animate(noticeList, scrollHeight, opt);
+				}},6200);
+			//};
+		};
+
+		// 动画函数，obj——要产生动画的对象，sHeight——每次要滚动的距离，interval——多久滚动一次
+		function animate(obj, sHeight, option) {
+			// 当滚到最后一条公告的时候就不用动画了。
+			var stopHeight = sHeight - obj.scrollHeight;
+			var marginTopNum = 0;
+			var timer = setInterval(function() {
+				marginTopNum -= sHeight;
+				obj.style.marginTop = marginTopNum + "px";
+				obj.style.transition = "margin-top 1.5s ease";
+				//注意这里的比较符号，前面得到的高度都进行四舍五入了
+				if (marginTopNum <= stopHeight) {
+					clearInterval(timer);
+					option.animated = true;
+				}
+			}, option.interval);
+
+
+
+		};
+
+		
+
+		
+	</script>
+	
+	<!-- 头部导航 -->
+	<nav class="navbar-fixed-top">
+		<div style="margin-left: 2px;padding-right: 6%;width: 100%;float: right;height: 50px;line-height: 50px;background-color: #eca400;"
+			class="dropdown">
+			<!-- 设置 -->
+			<!-- <button style="height: 40px;line-height: 50px;float: right;background-color: red;text-align: center;border: 1px solid #eca400;color: #ffffff;" type="button" class="glyphicon glyphicon-cog"></button> -->
+			<!-- 网络选择 -->
+			<div style="width: 30%;float: left;padding-left: 4%;font-size: 20px;color: white;font-weight: bolder;letter-spacing: 1px;font-family: rockwell extra bold;">
+				DSME
+			</div>
+			<button id="node_www" style="margin-top: 3px;
+						font-size: 14px;
+						width: 88px;
+						height: 43px;
+						float: right;
+						background-color: #fde74ca1;
+						text-align: center;
+						border: 1px solid #fde74ca1;
+						color: white;
+						font-weight: bold;" class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Not
+				connect
+			</button>
+			<ul style="background-color: white;" class="dropdown-menu dropdown-menu-right" role="menu"
+				aria-labelledby="menu1">
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="button_hecomain">HECO（main）</a>
+				</li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="button_heco1">HECO（fast）</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="button_bscmain">BSC（main）</a></li>
+			</ul>
+		</div>
+	</nav>
+
+<div  id="notice1" class="notice">		
+		<ul id="noticeList">
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				DSME保委会成立
+			</li>
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				D生态升级至0.4.0
+			</li>
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				保险二号及质押上线
+			</li>
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				保险一号项目上线
+			</li>
+		</ul>
+	</div>
+	<div style="clear: both;margin-top: -10px;" class="card">
+
+
+		<!-- 内容 -->
+		<div class="container">
+			<br />
+
+
+
+			<!-- 签到模块 -->
+			<div class="thumbnail" style="height:354px;width:100%; border: 1px solid #red;background-color: #eca400ba;">
+				<div>
+					<div style="float: left; 
+								font-size: 24px;
+								height: 50px; 
+								line-height: 50px;
+								font-weight: bold;
+								padding-left: 10px;
+								font-family: '微软雅黑';
+								font-weight: bold; 
+								color: #FFF8F0;">
+						每日盲盒
+					</div>
+					<div id="sign_acount" style= "
+								float: left;
+								font-size: 12px;
+								color: #2b2d42;
+								height: 50px;
+								line-height: 50px;
+								margin-left: 13%;">
+						已签到loading天
+					</div>
+					<div  style="float: right;
+								font-size: 12px;
+								color: #FFF8F0;
+								height: 50px;
+								line-height: 50px;
+								padding-right: 0.625rem;
+								letter-spacing: 3px;" id="">
+						<a href="check_log.html">签到记录</a>
+					</div>
+					<hr style="clear: both;" />
+
+					<button id="button_sign"> 立即签到 </button>
+
+					<div class="accordion-group">
+						<div>
+							<a style="color: #2b2d42;letter-spacing: 3px;padding-left: 5px;">
+								签到规则:
+							</a>
+						</div>
+						<div style="color: #2b2d42;
+									line-height: 200%;
+									letter-spacing: 2px;
+									padding-left: 11px;
+									font-family: '黑体';">
+							<div class="accordion-inner">
+								<div id="">
+									①. 已注册用户可以参与签到活动
+								</div>
+								<div id="">
+									②. 签到间隔24小时,随机领取0-2DSME
+								</div>
+								<div id="">
+									③. 不可作弊,若发现,立即拉进小黑屋!
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- 内测申请 -->
+			<div class="thumbnail2"
+				style="border-radius: 16px;height:386px;width:100%; border: 1px solid #eca400ba;background-color: #eca400ba;">
+				<div>
+					<div style="float: left; 
+								font-size: 24px; 
+								color: #2b2d42;
+								height: 50px; 
+								line-height: 50px;
+								font-weight: bold;
+								padding-left: 10px;
+								font-weight: bold;
+								color: #FFF8F0;">
+						DATE
+					</div>
+
+					<hr style="margin-top: 20px;
+								margin-bottom: 10px;
+								border: 0;
+								border-top: 1px solid #eee;
+								clear: both;" />
+
+					<div style="height: 255px;">
+						<div id="test_all"
+							style="border-radius: 16px;width: 98%;height: 75px;line-height: 75px;border: 1px solid #eca400;background-color: #eca400;margin-left: 1%;color: white;font-size: 16px;padding-left: 10px;">
+							DSME Circulation ：loading
+						</div>
+						<div id="test_acount"
+							style="border-radius: 16px;width: 98%;height: 75px;line-height: 75px;border: 1px solid #eca400;background-color: #eca400;margin-left: 1%;color: white;font-size: 16px;padding-left: 10px;margin-top: 10px">
+							Account ：loading
+						</div>
+						<div id="test_award"
+							style="border-radius: 16px;width: 98%;height: 75px;line-height: 75px;border: 1px solid #eca400;background-color: #eca400;margin-left: 1%;color: white;font-size: 16px;padding-left: 10px;margin-top: 10px;">
+							Reward ：loading
+						</div>
+					</div>
+					<button type="button" class="shenqing btn btn-primary" id="button_apply">资格申请</button>
+					<button type="button" class="shenqing2 btn btn-primary" id="button_check">资格查验</button>
+
+				</div>
+
+			</div>
+		</div>
+
+		<!-- 招募令 -->
+
+		<!-- 底部留白 -->
+		<div style="height: 100px;" id="">
+
+		</div>
+
+
+		<a href="regis.html"></a>
+
+
+
+		<!-- 底部 -->
+		<nav class="navbar-fixed-bottom">
+			<div class="container-fluid">
+				<div class="row">
+					<a href="index.html">
+						<div class="navbottom navbottom2" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+							<div style="height: 20px;margin-top: 13px;" class=" glyphicon glyphicon-home ">
+							</div>
+							<div style="height: 20px;font-size: 12px;">
+								HOME
+							</div>
+						</div>
+					</a>
+					<a href="financial.html">
+						<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+							<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-piggy-bank">
+							</div>
+							<div style="height: 20px;font-size: 12px;">
+								DEFI
+							</div>
+						</div>
+					</a>
+					<a href="me.html">
+						<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+							<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-user">
+							</div>
+							<div style="height: 20px;font-size: 12px;">
+								ME
+							</div>
+						</div>
+					</a>
+
+				</div>
+			</div>
+		</nav>
+	</div>
+	<style type="text/css">
+		.thumbnail {
+			display: block;
+			padding: 4px;
+			margin-bottom: 10px;
+			line-height: 1.42857143;
+			border-radius: 16px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		.navbottom {
+			background-color: #eca400;
+			color: white;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+
+		}
+
+		.navbottom2 {
+			background-color: #eca400;
+			color: #D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+
+		}
+
+
+
+		.carousel-inner {
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+			height: 300px;
+		}
+
+		.btn-lg {
+
+			font-size: 23px;
+			height: 80px;
+			border-radius: 6px;
+			letter-spacing: 7px;
+			width: 70%;
+			margin-left: 15%;
+		}
+
+		.accordion-group {
+			margin-top: 20px;
+		}
+
+		.alert {
+			padding: 4px;
+		}
+
+		a,
+		a:visited,
+		a:hover,
+		a:active {
+			/*全部状态都一样的效果*/
+			text-decoration: none;
+			/*没有下划线*/
+			color: white;
+			/*一直都蓝色*/
+		}
+
+		#button_sign {
+			font-family: "黑体";
+			font-weight: bold;
+			display: block;
+			margin: 0 auto;
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
+			background-color: red;
+			border: 1px solid #eca400;
+			background: #eca400;
+			letter-spacing: 7px;
+			text-align: center;
+			color: white;
+			font-size: 18px;
+			box-shadow: 1px 1px 10px #fcfc624d;
+		}
+
+		.dropdown-menu {
+			min-width: 23%;
+			margin-right: 1%;
+			color: white;
+		}
+
+		.dropdown-menu>li>a {
+			color: #eca400;
+		}
+
+		.btn {
+			padding: 6px 0px;
+		}
+
+		.modal-header {
+			background-color: #eca400;
+			color: white;
+			letter-spacing: 10px;
+		}
+
+		.modal-body {
+			letter-spacing: 3px;
+			font-family: fantasy;
+		}
+
+		.btn-primary {
+			width: 52px;
+			letter-spacing: 6px;
+		}
+
+		.shenqing {
+			border-radius: 50px;
+			float: left;
+			margin-left: 3%;
+			margin-right: 2%;
+			width: 45%;
+			height: 59px;
+			font-size: 20px;
+			background-color: #D72638;
+			border: 1px solid #D72638;
+			box-shadow: 1px 1px 10px #fcfc624d;
+			font-family: "黑体";
+		}
+
+		.shenqing2 {
+			border-radius: 50px;
+			margin-right: 3%;
+			margin-left: 2%;
+			width: 45%;
+			height: 59px;
+			font-size: 20px;
+			font-family: "黑体";
+			background-color: #D72638;
+			border: 1px solid #D72638;
+			box-shadow: 1px 1px 10px #fcfc624d;
+		}
+
+		#ziti {
+			float: left;
+			width: 33%;
+			text-align: center;
+			line-height: 96px;
+			font-size: 16px;
+			color: ghostwhite;
+		}
+
+		.ziti1 {
+			background-color: #5b99c678;
+			border-radius: 50px 50px 50px 50px;
+		}
+
+		.ziti2 {
+			background-color: #3f80b0b3;
+			border-radius: 50px 50px 50px 50px;
+		}
+
+		.ziti3 {
+			background-color: #80b1d4b8;
+			border-radius: 50px 50px 50px 50px;
+		}
+
+		ul,
+		li {
+			list-style: none;
+			color: white;
+		}
+
+		.notice {
+			margin-left: 4%;
+			width: 92%;
+			height: 38px;
+			background-color: #eca400;
+			border: 1px solid #eca400;
+			text-align: left;
+			overflow: hidden;
+			margin-top: 61px;
+			padding-top: 7px;
+		}
+
+		li {
+			padding: 3px;
+		}
+	</style>
+</html>

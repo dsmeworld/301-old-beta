@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>星梦生态</title>
+	
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="js/web3.min5.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/contractport.js"></script>
+        <script src="js/contractport3.js"></script>
+		<script src="js/bootbox.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+	</head>
+<script>
+	window.onload = function(){
+
+		function toDecimal2(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 100) / 100;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 2) {
+					s += '0';
+				}
+				return s;
+			}
+
+            function toDecimal6(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 1000000) / 1000000;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 6) {
+					s += '0';
+				}
+				return s;
+			}
+
+	web3js.eth.getAccounts(function (error,result){
+
+		button_shandui_ht.onclick = function(){
+				var value_dsme = $("#value_ht").val();
+				value_dsme1 = value_dsme * 10**18;
+				value_dsme2 = value_dsme1.toString();
+            	shandui_dbtc.methods.dsme_to_dbtc(value_dsme2).send({from:result[0],gas:200000}).then(function(result){
+                	if(result){
+                    	bootbox.alert({
+                    	size: "small",
+                    	title: "闪兑提示",
+                    	message: "闪兑成功",
+                    	})
+                	}
+            	},function(){
+					bootbox.alert({
+                    		size: "small",
+                    		title: "闪兑提示",
+                    		message: "闪兑失败",
+                    		})
+				});
+		}
+
+
+        button_shandui_dsme.onclick = function(){
+				var value_ht = $("#value_dsme").val();
+				value_ht1 = value_ht * 10**18;
+				value_ht2 = value_ht1.toString();
+				
+                shandui_dbtc.methods.dbtc_to_dsme(value_ht2).send({from:result[0],gas:200000}).then(function(result){
+                	if(result){
+                    	bootbox.alert({
+                    	size: "small",
+                    	title: "闪兑提示",
+                    	message: "闪兑成功",
+                        callback: function(){}
+                    	})
+                	}
+            	},function(){
+					bootbox.alert({
+                    		size: "small",
+                    		title: "闪兑提示",
+                    		message: "闪兑失败",
+                            callback: function(){}
+                    		})
+				});
+			}
+			
+
+			shandui_dbtc.methods.get_dbtc().call().then(function(result){
+				if(result){
+					$("#ht_acount").html("DBTC:" + toDecimal6(result / 10**18));
+				}
+			}
+			);
+
+			shandui_dbtc.methods.get_dsme().call().then(function(result){
+				if(result){
+					$("#dsme_acount").html("DSME:" + toDecimal2(result / 10**18));
+				}
+			}
+			);
+	})
+}
+</script>
+	<body>
+		<div>
+			<div id="back">
+				<a href="me.html">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				</a>
+			</div>
+			<div id="back_text">
+				闪兑
+			</div>
+
+		</div>
+		<div id="hr">
+			<hr />
+		</div>
+		<div id="">
+				<div style="background-color: #00A5CF;width: 92%;margin-left: 4%;height: 30px;line-height: 30px;color: #D9EDF7;margin-top: -11px;margin-bottom: 20px;" id="">
+						<div style="float: left;margin-left: 4%;" id="dsme_acount">
+							DSME:loading
+						</div>
+						<div style="float: right;margin-right: 4%;" id="ht_acount">
+							DBTC:loading
+						</div>
+						
+				</div>
+				
+				<!-- DSME : HT -->
+				<div class="form-group">
+					<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+					<div class="input-group">
+						<input type="text" class="form-control" id="value_dsme" placeholder="兑入DSME数量">
+
+					</div>
+					<div id="isvi">
+						<button type="submit" class="btn btn-primary" id="button_shandui_dsme">兑入</button>
+					</div>
+				</div>
+				
+				<!-- HT : DSME -->
+				<div class="form-group">
+					<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+					<div class="input-group">
+						<input type="text" class="form-control" id="value_ht" placeholder="兑出DSME数量">
+				
+					</div>
+					<div id="isvi">
+						<button type="submit" class="btn btn-primary" id="button_shandui_ht">兑出</button>
+					</div>
+				</div>
+			<hr />
+			<div style="width: 92%;margin-left: 4%;" id="">
+				
+					<div style="margin-top: 3.125rem;margin-left: 3%;" id="">
+						提&nbsp;&nbsp;示：
+						<p></p>
+					</div>
+					<div style="letter-spacing: 2px;line-height: 200%;">1、当前闪兑比例DSME:DBTC = 1:0.00000167</div>
+					<div style="letter-spacing: 2px;line-height: 200%;">2、当前DSME未上线，本价格不具参考性</div>
+                    <div style="letter-spacing: 2px;line-height: 200%;">3、由于DSME较稀有，当前兑入有如下限制（兑出不限）：①每笔兑入间隔30s以上②每笔上限2DSME</div>
+					<!-- <p style="margin-left: 5%;letter-spacing: 2px;">5、HT闪兑DSME未开放</p> -->
+				</div>
+	</body>
+
+	<style type="text/css">
+		#back {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			margin-left: 10px;
+			font-size: 20px;
+			float: left;
+			width: 10%;
+		}
+
+		#back_text {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			font-size: 20px;
+			float: right;
+			width: 56%;
+		}
+
+		#hr {
+			clear: both;
+			margin-top: 2px;
+		}
+
+		.form-control {
+			margin-left: 30px;
+			height: 45px;
+		}
+
+		.input-group {
+			float: left;
+		}
+
+		.btn {
+			margin-left: 30px;
+			height: 45px;
+			width: 100px;
+			letter-spacing: 10px;
+			text-align: center;
+			padding-left: 10px;
+			font-size: 18px;
+			padding: 0px;
+		}
+		.modal-header {
+			background-color: #eca400;
+			color: white;
+			letter-spacing: 10px;
+		}
+		
+		.modal-body {
+			letter-spacing: 3px;
+			font-family: fantasy;
+		}
+		
+		.btn-primary {
+			width: 92px;
+			letter-spacing: 11px;
+		}
+	</style>
+</html>

@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>金融</title>
+
+
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="js/web3.min3.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/contractport.js"></script>
+		<script src="js/bootbox.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+
+
+	</head>
+
+	<!-- <script>
+
+		window.onload = function(){
+			bootbox.alert({
+				size: "small",
+				title: "温馨提示",
+				message: "您的账号还未授权开通金融板块哦~",
+				callback:function(){window.location = "index.html";}
+			})
+	}
+
+	</script> -->
+	<script>
+		function modaldemo() {
+			$("#modal-demo").modal("show")
+		}
+
+		function modaldemo2() {
+			$("#modal-demo2").modal("show")
+		}
+
+		function modalalertdemo() {
+			$("body").Huimodalalert({
+				content: '我是消息框，2秒后我自动滚蛋！',
+				speed: 2000
+			})
+		}
+
+		window.onload = function() {
+
+			var count = 2;
+
+			function toDecimal2(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 1000000) / 1000000;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 6) {
+					s += '0';
+				}
+				return s;
+			}
+
+
+			function toDecimal3(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 10) / 10;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 1) {
+					s += '0';
+				}
+				return s;
+			}
+
+			web3js.eth.getAccounts(function(error, result) {
+                
+
+				baoxian_tiqu.onclick = function(){
+					bootbox.prompt({ 
+    					size: "small",
+    					title: "请输入您要提取的保险数量",
+   						callback: function(resul){ 
+        					if(resul){
+								//resul1 = resul * 10**18;
+								//resul1 = web3js.toBigNumber('resul');
+								var result1 = resul + "000000000000000000";
+								test_sure.methods.get_dsure(3,result1).send({from:result[0],gas:300000}).then(function(ree){
+										bootbox.alert({
+											size: "small",
+											title: "提取提示",
+											message: "提取成功！",
+											callback: function(){location.reload();}
+										})
+								},function(reee){
+									bootbox.alert({
+											size: "small",
+											title: "提取提示",
+											message: "提取失败！",
+											callback: function(){location.reload();}
+									})
+								})
+							}	
+   						}
+					});
+				}
+
+				//保险生效显示
+				//dspool保险显示
+				test_sure.methods.wait_map(3,result[0]).call().then(function(re){
+						$("#baoxian_wei").html(toDecimal2(re[0] /10**18));
+						$("#baoxian_shengxiao").html(getLocalTime3(re[1]));
+				})
+
+
+				//理赔
+				lipei.onclick = function(){
+					test_sure.methods.project_map(3).call().then(function(res){
+						if(res[8] == 1){
+							if(res[9] == 1){
+								test_sure.methods.Compensate(3).send({from:result[0],gas:200000}).then(function(){
+									bootbox.alert({
+										size: "small",
+										title: "理赔提示",
+										message: "理赔发放成功，请查询区块链钱吧！",
+										callback: function() {
+											location.reload();
+										}
+									})
+								},function(){
+									bootbox.alert({
+									size: "small",
+									title: "理赔提示",
+									message: "理赔失败！",
+									callback: function() {
+										location.reload();
+									}
+								})
+								})
+							}else{
+								bootbox.alert({
+									size: "small",
+									title: "理赔提示",
+									message: "等待社区自治委员会投票！",
+									callback: function() {
+										location.reload();
+									}
+								})
+							}
+						}else{
+							bootbox.alert({
+									size: "small",
+									title: "理赔提示",
+									message: "等待社区投票达到25%！",
+									callback: function() {
+										location.reload();
+									}
+							})
+						}
+					})
+				}
+
+				//单价查询
+				test_sure.methods.cul_htgas(3, 1).call().then(function(resul){
+
+					$("#jiage").html(toDecimal2(resul/10**15) + "HT/千份");
+				})
+                //个人投票数
+				test_sure.methods.vote_map(3,result[0]).call().then(function(resu){
+					$("#toupiao_geren").html(parseInt(resu / 10 ** 18));
+				})
+
+				//显示HT余额
+				web3js.eth.getBalance(result[0], function(error, resul) {
+					$("#ht_balance").html(toDecimal2(resul / 10 ** 18) + "HT");
+				})
+
+				//购买保险
+				zy_gm_but.onclick = function() {	
+					if(new Date().getTime() / 1000 < 1644494400){
+						bootbox.alert({
+							size: "small",
+							title: "保险提示",
+							message: "保险项目开始时间为北京时间：2022.2.10 20:00:00",
+						    callback: function(){location.reload();}
+							})
+					}else{	
+					var fenshu = $("#_fenshu").val();
+					test_sure.methods.cul_htgas(3, fenshu).call().then(function(resu) {
+						test_sure.methods.project_investment(3).send({from: result[0],gas: 200000,value: resu}).then(function(){
+								bootbox.alert({
+									size: "small",
+									title: "投保提示",
+									message: "您已投保成功，感谢使用~",
+									callback: function() {
+										location.reload();
+									}
+								})
+							},function(){
+								bootbox.alert({
+									size: "small",
+									title: "投保提示",
+									message: "投保失败，请确保HT数量充足~",
+									callback: function() {
+										location.reload();
+									}
+								})
+							}
+						)
+					})
+					}
+				}
+
+				//已售份数显示
+				test_sure.methods.project_map(3).call(function(error, result) {
+					$("#yishou").html(parseInt(result[6] / 10 ** 18) + "份");
+					$("#fenshu_all").html(parseInt(result[6] / 10 ** 18));
+					var lv = toDecimal3(result[7] / result[6] * 100);
+					$("#jindu1").html(lv + "%");
+					jindu.style.cssText  = "width:" + lv + "%";
+
+				})
+
+				//投票数
+				test_sure.methods.project_map(3).call(function(error,result){
+					$("#toupiao_all").html(parseInt(result[7] /10**18));
+				})
+
+
+				//投票
+				toupiao.onclick = function(){
+					var tou_value = $("#toupiao_value").val() * 10**18;
+					var tou_value2 = tou_value.toString();
+					test_sure.methods.vote_in(3,tou_value2).send({from: result[0],gas: 200000}).then(function(){
+						bootbox.alert({
+							size: "small",
+							title: "投票提示",
+							message: "您已投票成功，耐心等待理赔开始！",
+							callback: function() {
+								location.reload();
+							}
+						})
+					},function(){
+						bootbox.alert({
+							size: "small",
+							title: "投票提示",
+							message: "投票失败，请确保持有相应票数！",
+							callback: function() {
+								location.reload();
+							}
+						})
+					})	
+				}
+
+
+				//撤票
+				chepiao.onclick = function(){
+					var che_value = $("#chepiao_value").val() *10**18;
+					var che_value2 = che_value.toString();
+					test_sure.methods.vote_out(3,che_value2).send({from: result[0],gas: 200000}).then(function(e){
+						bootbox.alert({
+							size: "small",
+							title: "撤票提示",
+							message: "您已撤票成功！",
+							callback: function() {
+								location.reload();
+							}
+						})
+					},function(){
+						bootbox.alert({
+							size: "small",
+							title: "撤票提示",
+							message: "投票失败！",
+							callback: function() {
+								location.reload();
+							}
+						})
+					})	
+				}
+
+
+			});
+
+			$(function() {
+				$("[data-toggle='popover']").popover();
+			});
+
+			//显示支付金额
+			_fenshu.onblur = function() {
+				var fenshu = $("#_fenshu").val();
+				test_sure.methods.cul_htgas(3, fenshu).call().then(function(result) {
+					$("#ht_apy").html(toDecimal2(result / 10 ** 18) + "HT");
+				})
+			}
+		}
+
+
+	</script>
+	<body style="background-color: white;">
+		<div class="container-fluid">
+			<div class="row">
+				<ul class="nav nav-pills">
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3">
+						<li role="presentation" class="active"><a href="financial.html">董事会</a></li>
+					</div>
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3"
+						onclick='bootbox.alert({size: "small",title: "温馨提示",message: "暂未开放~"})'>
+						<li role="presentation"><a href="#">借贷</a></li>
+					</div>
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3"
+						onclick='bootbox.alert({size: "small",title: "温馨提示",message: "暂未开放~"})'>
+						<li role="presentation"><a href="#">双币质押</a></li>
+					</div>
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3"
+						onclick='bootbox.alert({size: "small",title: "温馨提示",message: "暂未开放~"})'>
+						<li role="presentation">
+						<li role="presentation"><a href="#">保险</a></li>
+						</li>
+					</div>
+				</ul>
+			</div>
+		</div>
+
+				<!-- 保险模型 -->
+				<div class="box_left" id="button_dd">
+					<!-- 左边 -->
+					<div id="zy_left">
+						<div id="logo">
+							<img style="width: 40px;height: 40px;margin: 13px;" src="img/logo.png">
+						</div>
+		
+					</div>
+					<div style="margin-top:20px;float: left;margin-left: -53px;font-weight: bold;color: white;font-size: 18px;" id="">
+						DSPOOL20220410
+					</div>
+					<div style="margin-top:24px;float: right;margin-right: 10px;color: #449D44;font-weight: bold;">
+						DSME
+					</div>
+					<hr style="clear: both;" />
+					<div id="" style="color: #FFE0B5">
+						<ul>
+							<li style="float: left;list-style:none;">
+								结算日
+							</li>
+							<li style="float: right;list-style:none;margin-right: 10px;">
+								2022-4-10
+							</li>
+						</ul>
+						<ul style="clear: both;">
+							<li style="float: left;list-style:none;">
+								已售份额
+							</li>
+							<li id="yishou" style="float: right;list-style:none;margin-right: 10px">
+								loading
+							</li>
+						</ul>
+						<ul style="clear: both;">
+							<li style="float: left;list-style:none;">
+								当前售价
+							</li>
+							<li id="jiage" style="float: right;list-style:none;margin-right: 10px">
+								loading
+							</li>
+						</ul>
+						<ul style="clear: both;">
+							<li style="float: left;list-style:none;">
+								保单地址
+							</li>
+							<li style="float: right;list-style:none;margin-right: 10px">
+								0xEe556F*98525F
+							</li>
+						</ul>
+						<!-- 购买保险 -->
+						<button id="zy_right" class="btn radius btn-primary size-L" onClick="modaldemo()">购买保险</button>
+						<button id="zy_right2" class="btn radius btn-primary size-L" onClick="modaldemo2()">理赔</button>
+		
+						<div id="modal-demo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+							aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content radius">
+									<div class="modal-header">
+										<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+									</div>
+									<!-- 购买保险弹出框的内容 -->
+									<div class="modal-body">
+										<div class="thumbnail"
+											style="height:125px;width:100%; border: 1px solid red;background-color: #eca400ba;">
+											<!-- 图标 -->
+											<img id="bx_img" src="img/logo.png" />
+											<!-- 序号 -->
+											<div id="" style="text-align: center;margin-top: 8px;font-weight:bold">
+												DSME220410
+											</div>
+											<!-- 支付币种 -->
+											<div class="thumbnail_bz" style="">
+												<div id="bx_1" style="">
+													支付币种
+												</div>
+												<div id="bx_2" style="">
+													HT
+												</div>
+											</div>
+										</div>
+										<!-- COVER -->
+										<div class="thumbnail_cover" style="">
+											COVER
+										</div>
+										<!-- 输入框 -->
+										<div class="input-group">
+											<input type="text" id="_fenshu" class="form-control" placeholder="输入购买数量"
+												aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2">MAX</span>
+										</div>
+										<!-- 信息 -->
+										<div class="alert alert-success" role="alert"
+											style="width: 40%;float: left;margin-top: 10px;">支付金额</div>
+										<div class="alert alert-success" role="alert"
+											style="width: 60%;float: right;margin-top: 10px;" id="ht_apy">0.000000HT</div>
+		
+										<div class="alert alert-success" role="alert"
+											style="width: 40%;float: left;margin-top: -12px;">账户余额</div>
+										<div class="alert alert-success" role="alert"
+											style="width: 60%;float: right;margin-top: -12px;" id="ht_balance">0.000000HT</div>
+		
+		
+									</div>
+		
+									<!-- 产品介绍 -->
+									<div style="clear: both;width: 90%;margin-left: 5%;" class="alert alert-danger"
+										role="alert">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Info:</span>
+										每份保额为1DSME。保险售价 = 初始售价 * （剩余保期/总保期）。例：9月1日发布保险，结算日为9月30日，9月15日购买价格为初始价格的1/2
+									</div>
+									<div style="clear: both;width: 90%;margin-left: 5%;margin-top: -20px;"
+										class="alert alert-danger" role="alert">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Info:</span>
+										购买保险后将有3天等待期，若在等待期内出现事故，保委会将不进行赔付。多次购买保险前请保证上次保险已手动解冻。等待期到后请尽快提取（提取操作在项目下拉框中）。
+									</div>
+									<div style="clear: both;width: 90%;margin-left: 5%;margin-top: -20px;"
+										class="alert alert-danger" role="alert">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Info:</span>
+										保险将于2022.4.10到期，届时保险失去所有作用。
+									</div>
+									<button id="zy_gm_but" type="button" class="btn btn-primary">购买保险</button>
+		
+		
+									<div class="modal-footer" style="clear: both;">
+										<!-- <button class="btn btn-primary">确定</button>
+										<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button> -->
+									</div>
+								</div>
+							</div>
+						</div>
+		
+						<!-- 理赔弹出框的内容 -->
+						<div id="modal-demo2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+							aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content radius">
+									<div class="modal-header">
+										<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+									</div>
+									<!-- 理赔弹出框的内容 -->
+									<div class="modal-body">
+										<div class="thumbnail"
+											style="height:125px;width:100%; border: 1px solid red;background-color: #eca400ba;">
+											<!-- 图标 -->
+											<img id="bx_img" src="img/logo.png" />
+											<!-- 序号 -->
+											<div id="" style="text-align: center;margin-top: 8px;font-weight:bold">
+												DSME220410
+											</div>
+											<!-- 支付币种 -->
+											<!-- <div class="thumbnail_bz" style="">
+												<div id="bx_1" style="">
+														支付币种
+												</div>
+												<div id="bx_2" style="">
+													HT
+												</div>
+											</div> -->
+											<!-- 进度条 -->
+											<div class="progress"  style="margin-top: 10px; height: 20px;color: #204D74;text-align: center;"><hd id= "jindu1"> 0%</hd>
+												<div id="jindu" class="progress-bar" role="progressbar" aria-valuenow="60"
+													aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+													
+												</div>
+											</div>
+										</div>
+										<!-- COVER -->
+										<!-- <div class="thumbnail_cover" style="">
+											COVER
+										</div> -->
+										<!-- 输入框 -->
+										<!-- <div class="input-group">
+											<input type="text" id="_fenshu" class="form-control" placeholder="输入购买数量"
+												aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2">MAX</span>
+										</div> -->
+		
+		
+		
+										<!-- 信息 -->
+										<div class="alert alert-success" role="alert"
+											style="width: 50%;float: left;margin-top: 10px;font-size: 12px;">保险总销售份数</div>
+										<div class="alert alert-success" role="alert"
+											style="width: 50%;float: right;margin-top: 10px;font-size: 12px;" id="fenshu_all">loading</div>
+		
+										<div class="alert alert-success" role="alert"
+											style="width: 50%;float: left;margin-top: -12px;font-size: 12px;">当前投票额度</div>
+										<div class="alert alert-success" role="alert"
+											style="width: 50%;float: right;margin-top: -12px;font-size: 12px;" id="toupiao_all">loading</div>
+											
+										<div class="alert alert-success" role="alert"
+											style="width: 50%;float: left;margin-top: -12px;font-size: 12px;">个人投票份数</div>
+										<div class="alert alert-success" role="alert"
+											style="width: 50%;float: right;margin-top: -12px;font-size: 12px;" id="toupiao_geren">loading</div>	
+		
+		
+		
+		
+										<!-- 申请理赔的数量 -->
+										
+											<div class="form-group" style="width: 70%;float: left;">
+												<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+												<div class="input-group" style="">
+													<input type="string" class="form-control" id="toupiao_value"
+														placeholder="请输入申请理赔份额">
+													<div class="input-group-addon">DSME</div>
+												</div>
+											</div>
+											<button type="submit" class="btn btn-primary"
+												style="margin-left: 10px;width: 19%;" id="toupiao">投票</button>
+										
+		
+										<!-- 撤销理赔的数量 -->
+										<div id="" style="clear: both;">
+		
+										</div>
+											<div class="form-group" style="width: 70%;float: left;">
+												<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+												<div class="input-group" style="">
+													<input type="text" class="form-control" id="chepiao_value"
+														placeholder="请输入撤销理赔份额">
+													<div class="input-group-addon">DSME</div>
+												</div>
+											</div>
+											<button type="submit" class="btn btn-primary"
+												style="margin-left: 10px;width: 19%;" id="chepiao">撤票</button>
+		
+		
+									</div>
+		
+									<!-- 产品介绍 -->
+									<div style="clear: both;width: 90%;margin-left: 5%;" class="alert alert-danger"
+										role="alert">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Info:</span>
+										理赔前提：当前投票权益总数大于等于总保险售出的25%时，且经过社区自治委员会确定后，即可开启理赔进程。
+									</div>
+									<div style="clear: both;width: 90%;margin-left: 5%;margin-top: -20px;"
+										class="alert alert-danger" role="alert">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Info:</span>
+										理赔流程：player需在投票后再进行申请理赔
+									</div>
+									<div style="clear: both;width: 90%;margin-left: 5%;margin-top: -20px;"
+										class="alert alert-danger" role="alert">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Info:</span>
+										赔款标准：根据购买保险份数以及其对应的保额进行赔付
+									</div>
+									
+									<button id="lipei" type="button" class="btn btn-primary zy_gm_but2">申请理赔</button>
+		
+									<div class="modal-footer" style="clear: both;">
+										<!-- <button class="btn btn-primary">确定</button> -->
+										<!-- <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		
+		
+		
+		
+				<div class="container-fluid">
+						<div class="accordion" id="accordion2">
+							<div class="accordion-group">
+								<div class="accordion-heading" style="width: 100%;
+																		height: 41px;
+																		line-height: 26px;
+																		background-color: #4CAE4C;
+																		margin-top: 64%;
+																		text-align: center;">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="red" href="#collapseOne" style="color: white;width: 100%;">
+										查看冻结解冻数据
+									</a>
+								</div>
+								<div id="collapseOne" class="accordion-body collapse" style="height: 0px; width: 100%;">
+									<div class="accordion-inner">
+		
+										<!-- 产品总览 -->
+										<div class="box_z" style="height: 76px;background-color: #DFF0D8;" >
+											
+											<div id="" style="height: 50px;float: left;width: 30%;">
+												<div id="" style="margin-left: 15%;color: #D58512;margin-top: 10px;font-weight: bold;font-size: 16px;">
+													保险池余额
+												</div>
+												<div id="baoxian_wei"style="color: #D5A021;margin-left: 15%;">
+													loading
+												</div>
+											</div>
+											<div id="" style="height: 50px;float: left;width: 30%;">
+												<div id="jiangli_all" style="color: #D58512;font-size: 16px;font-weight: bold;margin-top: 10px;margin-left: 5%;">
+													可提取时间
+												</div>
+												<div id="baoxian_shengxiao"style="color: #D5A021;margin-left: 5%;">
+													loading
+												</div>
+											</div>
+											<div id=""style="width: 30%;float: right;margin-top: 10px;">
+												<button id="baoxian_tiqu" class="btn radius btn-primary size-L" >提取</button>
+											</div>
+											
+											
+										</div>
+										
+		
+		
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		
+					<div id="" style="height: 20px;">
+						
+					</div>
+		
+
+
+		
+		<!-- 保险模型 -->
+		<div class="box_left" id="button_dd">
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 40px;height: 40px;margin: 13px;" src="img/logo.png">
+				</div>
+
+			</div>
+			<div style="margin-top:20px;float: left;margin-left: -53px;font-weight: bold;color: white;font-size: 18px;" id="">
+				DSPOOL20220202
+			</div>
+			<div style="margin-top:24px;float: right;margin-right: 10px;color: #449D44;font-weight: bold;">
+				DSME
+			</div>
+			<hr style="clear: both;" />
+			<div id="" style="color: #FFE0B5">
+				<ul>
+					<li style="float: left;list-style:none;">
+						结算日
+					</li>
+					<li style="float: right;list-style:none;margin-right: 10px;">
+						2022-2-02
+					</li>
+				</ul>
+				<ul style="clear: both;">
+					<li style="float: left;list-style:none;">
+						已售份额
+					</li>
+					<li id="yishou" style="float: right;list-style:none;margin-right: 10px">
+						226056份
+					</li>
+				</ul>
+				<ul style="clear: both;">
+					<li style="float: left;list-style:none;">
+						当前售价
+					</li>
+					<li id="jiage" style="float: right;list-style:none;margin-right: 10px">
+						暂停销售
+					</li>
+				</ul>
+				<ul style="clear: both;">
+					<li style="float: left;list-style:none;">
+						保单地址
+					</li>
+					<li style="float: right;list-style:none;margin-right: 10px">
+						0xC69d24*9eC1cF
+					</li>
+				</ul>
+				<!-- 购买保险 -->
+				<button id="zy_right" class="btn radius btn-primary size-L" onClick="alert('本保险已于2022.2.4起暂停销售。')">购买保险</button>
+				<button id="zy_right2" class="btn radius btn-primary size-L" onClick="alert('本保险已于2022.2.7截止，期间未发生安全事件，结束理赔期。')">理赔</button>
+			</div>
+			<div id="" style="height: 140px;"></div>
+		</div>
+
+
+
+
+		<!-- 保险模型 -->
+		<div class="box_left" id="button_dd">
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 40px;height: 40px;margin: 13px;" src="img/logo.png">
+				</div>
+
+			</div>
+			<div style="margin-top:20px;float: left;margin-left: -53px;font-weight: bold;color: white;font-size: 18px;" id="">
+				DSPOOL20211130
+			</div>
+			<div style="margin-top:24px;float: right;margin-right: 10px;color: #449D44;font-weight: bold;">
+				DSME
+			</div>
+			<hr style="clear: both;" />
+			<div id="" style="color: #FFE0B5">
+				<ul>
+					<li style="float: left;list-style:none;">
+						结算日
+					</li>
+					<li style="float: right;list-style:none;margin-right: 10px;">
+						2021-11-30
+					</li>
+				</ul>
+				<ul style="clear: both;">
+					<li style="float: left;list-style:none;">
+						已售份额
+					</li>
+					<li id="yishou" style="float: right;list-style:none;margin-right: 10px">
+						148036份
+					</li>
+				</ul>
+				<ul style="clear: both;">
+					<li style="float: left;list-style:none;">
+						当前售价
+					</li>
+					<li id="jiage" style="float: right;list-style:none;margin-right: 10px">
+						停止销售
+					</li>
+				</ul>
+				<ul style="clear: both;">
+					<li style="float: left;list-style:none;">
+						保单地址
+					</li>
+					<li style="float: right;list-style:none;margin-right: 10px">
+						0x059A97*59C10b
+					</li>
+				</ul>
+				<!-- 购买保险 -->
+				<button id="zy_right" class="btn radius btn-primary size-L" onClick="alert('本保险已于2021.11.30起暂停销售。')">购买保险</button>
+				<button id="zy_right2" class="btn radius btn-primary size-L" onClick="alert('本保险已于2021.11.30截止，期间未发生安全事件，结束理赔期。')">理赔</button>
+			</div>
+			<div id="" style="height: 140px;"></div>
+		</div>
+		
+
+
+		<!-- 底部 -->
+		<nav class="navbar-fixed-bottom">
+			<div class="container-fluid">
+				<div class="row">
+
+					<a href="index.html">
+						<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+							<div style="height: 20px;margin-top: 13px;" class=" glyphicon glyphicon-home ">
+							</div>
+							<div style="height: 20px;font-size: 12px;color: white;">
+								主页
+							</div>
+						</div>
+					</a>
+					<a href="financial.html">
+						<div class="navbottom navbottom2" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+							<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-piggy-bank">
+							</div>
+							<div style="height: 20px;font-size: 12px;">
+								金融
+							</div>
+						</div>
+					</a>
+					<a href="me.html">
+						<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+							<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-user">
+							</div>
+							<div style="height: 20px;font-size: 12px;">
+								我的
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</nav>
+
+	</body>
+
+	<style type="text/css">
+		
+		#jindu {
+		    color: black;
+		}	
+		#tbpc {
+			width: 70%;
+			margin-left: 15%;
+		}
+
+		.alert {
+			padding: 15px;
+			margin-bottom: 20px;
+			border: 1px solid transparent;
+			border-radius: 0px;
+		}
+
+		.thumbnail_cover {
+			margin-top: 8px;
+			height: 34px;
+			text-align: center;
+			width: 100%;
+			border: 1px solid red;
+			background-color: #28499c;
+			color: aliceblue;
+			display: block;
+			margin-bottom: 10px;
+			line-height: 34px;
+			border-radius: 10px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		#bx_2 {
+			width: 70%;
+			background-color: wheat;
+			color: brown;
+			height: 24px;
+			margin-top: -4px;
+			margin-right: -4px;
+			text-align: center;
+			line-height: 26px;
+			float: right;
+			border-top-right-radius: 16px;
+			border-bottom-right-radius: 16px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		#bx_1 {
+			width: 30%;
+			background-color: brown;
+			color: azure;
+			height: 24px;
+			margin-top: -4px;
+			margin-left: -4px;
+			text-align: center;
+			line-height: 26px;
+			float: left;
+			border-top-left-radius: 16px;
+			border-bottom-left-radius: 16px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		.thumbnail_bz {
+			margin-top: 8px;
+			height: 26px;
+			width: 94%;
+			margin-left: 3%;
+			border: 1px solid red;
+			background-color: brown;
+			display: block;
+			padding: 4px;
+			margin-bottom: 10px;
+			line-height: 1.42857143;
+			border-radius: 16px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		#bx_img {
+			width: 40px;
+			height: 40px;
+			margin-top: 5px;
+			margin-left: 43%;
+			background-color: #122B40;
+			border-radius: 22px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		.modal-content {
+			width: 90%;
+			margin-left: 5%;
+			margin-top: 15%;
+		}
+
+		.thumbnail {
+			display: block;
+			padding: 4px;
+			margin-bottom: 10px;
+			line-height: 1.42857143;
+			border-radius: 10px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		.fade {
+			opacity: 0;
+			-webkit-transition: opacity .15s linear;
+			-o-transition: opacity .15s linear;
+			transition: opacity .15s linear
+		}
+
+		.fade.in {
+			opacity: 1
+		}
+
+		.modal-open {
+			overflow: hidden
+		}
+
+		.modal.fade .modal-dialog {
+			-webkit-transition: -webkit-transform .3s ease-out;
+			-o-transition: -o-transform .3s ease-out;
+			transition: transform .3s ease-out;
+			-webkit-transform: translate(0, -50%);
+			-ms-transform: translate(0, -50%);
+			-o-transform: translate(0, -50%);
+			transform: translate(0, -50%)
+		}
+
+		.modal.in .modal-dialog {
+			-webkit-transform: translate(0, 0);
+			-ms-transform: translate(0, 0);
+			-o-transform: translate(0, 0);
+			transform: translate(0, 0)
+		}
+
+		.modal-open .modal {
+			overflow-x: hidden;
+			overflow-y: auto
+		}
+
+		.modal-backdrop {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: #000
+		}
+
+		.modal-backdrop.fade {
+			filter: alpha(opacity=0);
+			opacity: 0
+		}
+
+		.modal-backdrop.in {
+			filter: alpha(opacity=50);
+			opacity: .5
+		}
+
+		.modal-dialog {
+			position: relative;
+			width: auto;
+			margin: 10px
+		}
+
+		.modal-content {
+			position: relative;
+			background-color: #fff;
+			border: 1px solid #999;
+			border: 1px solid rgba(0, 0, 0, .2);
+			outline: 0;
+			-webkit-background-clip: padding-box;
+			background-clip: padding-box;
+			-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+			box-shadow: 0 3px 9px rgba(0, 0, 0, .5)
+		}
+
+		.modal-header {
+			min-height: 16.42857143px;
+			padding: 15px;
+			border-bottom: 1px solid #eee;
+			position: relative
+		}
+
+		.modal-header .close {
+			position: absolute;
+			right: 10px;
+			top: 10px
+		}
+
+		.modal-header h3,
+		.modal-header .modal-title {
+			margin: 0;
+			padding: 10px 0;
+			font-size: 16px
+		}
+
+		.modal-body {
+			position: relative;
+			padding: 15px;
+			overflow-y: visible;
+			word-break: break-all
+		}
+
+		.modal-form {
+			margin-bottom: 0
+		}
+
+		.modal-footer {
+			padding: 15px;
+			margin-bottom: 0;
+			text-align: right;
+			background-color: #f5f5f5;
+			border-top: 1px solid #eee;
+			*zoom: 1
+		}
+
+		.modal-footer:before,
+		.modal-footer:after {
+			display: table;
+			content: ""
+		}
+
+		.modal-footer:after {
+			clear: both
+		}
+
+		.modal-footer .btn+.btn {
+			margin-left: 5px;
+			margin-bottom: 0
+		}
+
+		.modal-footer .btn-group .btn+.btn {
+			margin-left: -1px
+		}
+
+		.modal-footer .btn-block+.btn-block {
+			margin-left: 0
+		}
+
+		.modal-scrollbar-measure {
+			position: absolute;
+			top: -9999px;
+			width: 50px;
+			height: 50px;
+			overflow: scroll
+		}
+
+		.radius .modal-content {
+			border-radius: 6px
+		}
+
+		.radius .modal-footer {
+			border-bottom-left-radius: 6px;
+			border-bottom-right-radius: 6px
+		}
+
+		@media (min-width: 768px) {
+			.modal-dialog {
+				width: 600px;
+				margin: 30px auto
+			}
+
+			.modal-content {
+				-webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+				box-shadow: 0 5px 15px rgba(0, 0, 0, .5)
+			}
+
+			.modal-sm {
+				width: 300px
+			}
+		}
+
+		@media (min-width: 992px) {
+			.modal-lg {
+				width: 900px
+			}
+		}
+
+		.modal-alert {
+			position: fixed;
+			right: auto;
+			bottom: auto;
+			width: 300px;
+			left: 50%;
+			margin-left: -150px;
+			top: 50%;
+			margin-top: -30px;
+			z-index: 9999;
+			background-color: #fff;
+			border: 1px solid #999;
+			border: 1px solid rgba(0, 0, 0, .2);
+			outline: 0;
+			-webkit-background-clip: padding-box;
+			background-clip: padding-box;
+			-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+			box-shadow: 0 3px 9px rgba(0, 0, 0, .5)
+		}
+
+		.modal-alert-info {
+			padding: 30px;
+			text-align: center;
+			font-size: 14px;
+			background-color: #fff
+		}
+
+
+		.navbottom {
+			background-color: #eca400;
+			color: white;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+
+		}
+
+		.navbottom2 {
+			background-color: #eca400;
+			color: #D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+
+		}
+
+
+		.navbottom1 {
+			background-color: #eca400;
+			color: black;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			width: 25%;
+			float: left;
+			font-size: 16px;
+		}
+
+		.box_left {
+			border-radius: 10px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+			background-color: #D5A021;
+			width: 98%;
+			margin-left: 1%;
+			float: left;
+			height: 229px;
+			margin-bottom: 3px;
+			margin-top: 5px;
+		}
+
+		#zy_left {
+			float: left;
+			height: 65px;
+			width: 46%;
+		}
+
+		#logo {
+			width: 32%;
+			height: 65px;
+			float: left;
+		}
+
+		#zy_cont {
+			float: left;
+			height: 65px;
+			width: 25%;
+		}
+
+		.zy_gm_but2 {
+			margin-left: 20%;
+			width: 60%;
+			margin-top: 5px;
+			margin-bottom: 30px;
+			float: left;
+		}
+
+		#zy_gm_but {
+			margin-left: 20%;
+			width: 60%;
+			margin-top: 5px;
+			margin-bottom: 30px;
+			float: left;
+		}
+
+		#zy_right2 {
+			margin-top: 20px;
+			width: 30%;
+			margin-left: 2.5%;
+		}
+
+		#zy_right {
+			margin-left: 20%;
+			margin-right: 5%;
+			width: 30%;
+			margin-top: 20px;
+			clear: both;
+			float: left;
+		}
+
+		.btn-success {
+			height: 40px;
+			margin-top: 12.5px;
+			color: #fff;
+			background-color: #5cb85c;
+			border-color: #4cae4c;
+		}
+
+		.pro_sty {
+			margin-top: 10px;
+			font-size: 16px;
+			color: rgb(251, 255, 16);
+			text-align: center;
+			clear: both;
+			margin-bottom: 5px;
+		}
+
+		.jdt {
+			margin-top: 46px;
+			color: #ffffff;
+		}
+
+		.xm {
+			width: 30%;
+			float: left;
+			margin-left: -22px;
+			color: white;
+		}
+
+		.xs {
+			border: 1px solid;
+			width: 20%;
+			margin-left: 99px;
+			color: #470303;
+			font-size: 12px;
+		}
+
+		.sy {
+			font-size: 24px;
+			float: left;
+			margin-left: -10px;
+			margin-top: 3px;
+			width: 40%;
+		}
+
+		.syxs {
+			font-size: 16px;
+			color: whitesmoke;
+			margin-top: -25px;
+			width: 67%;
+			float: right;
+		}
+
+		.progress {
+			clear: both;
+			height: 13px;
+			line-height: 13px;
+			width: 90%;
+			margin-left: 5%;
+		}
+
+		.progress-bar {
+			font-size: 12px;
+		}
+
+		a,
+		a:visited,
+		a:hover,
+		a:active {
+			/*全部状态都一样的效果*/
+			text-decoration: none;
+			/*没有下划线*/
+			color: white;
+			/*一直都蓝色*/
+		}
+
+		.progress-bar-info {
+			background-color: #eca400;
+		}
+	</style>
+</html>

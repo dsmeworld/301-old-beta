@@ -1,0 +1,114 @@
+.full-1{
+	    padding-right: 30px;
+	    padding-left: 30px;
+		margin-left: auto;
+		margin-right: auto;
+		background-color:green;line-height:35px;border-radius:30px;
+}
+@media screen and (min-width:768px) and (max-width:2000px) {
+	#top1{
+		width: 400px;
+	}
+	.container{
+		width:390.4px;/* 365 */
+	}
+}
+body{
+	background-color:black;
+}
+.divcss5-left{float:left;width:250px;height:50px;border:1px solid #F00} 
+.modal-content{
+	text-align:center;
+	color: gray;
+	background-color:#cecece;
+}
+/*新闻动态样式begin*/
+.notice_active{
+	width: 100%;
+	height: 42px;
+	left: 15px;
+	overflow: hidden;
+	position: relative;
+	box-sizing: border-box;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	background-color:black;
+	margin-top: 20px;
+}
+.notice_active>ul>li{
+	line-height: 42px;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+}
+.notice_active>ul>li>img{
+	width: 0.4rem;
+	margin-right: 0.2rem;
+}
+.tooLength{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+}
+/*新闻动态样式begin*/
+	/* 授权+购买按钮 */
+.fontcolor1{
+	color:white;
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background: linear-gradient(to right, rgb(198, 255, 221), rgb(251, 215, 134), rgb(247, 121, 125));
+}
+
+/* 提取按钮 */
+.fontcolor1_1{
+	color:white;
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background:linear-gradient(to right, rgb(252, 92, 125), rgb(106, 130, 251));
+}
+/*撤回按钮*/
+.fontcolor2{
+	color:white;
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background: linear-gradient(to right, rgb(0, 0, 0), rgb(67, 67, 67));
+}
+/*确定按钮*/
+.fontcolor3{
+	color:white;
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background: linear-gradient(to right, rgb(19, 78, 94), rgb(113, 178, 128));
+}
+/*盲盒空投*/
+.fontcolor4{
+	background:#101f30;
+}
+/*生态简介*/
+.fontcolor5{
+    color:gray;
+	background:#101f30;
+}
+/*盲盒空投*/
+.fontcolor6{
+    color:gray;
+	background:#101f30;
+}
+/*持币地址*/
+.fontcolor7{
+	background:#101f30;
+}
+/*头部导航栏DSME+菜单栏*/
+.fontcolor8{
+	background: linear-gradient(to top,rgb(52, 148, 230), rgb(236, 110, 173));
+  	-webkit-background-clip: text;
+  	color: transparent;
+}
+/*HECO*/
+.fontcolor9{
+    color:#360033;
+	border-width:0px;	/*边框透明*/
+	outline:none;
+    background: linear-gradient(to right, rgb(95, 44, 130), rgb(73, 160, 157));
+}

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>我的</title>
+	
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="js/web3.min.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/contractport.js"></script>
+		<script src="js/contractport1.js"></script>
+		
+	</head>
+	
+	<script>
+//		window.onload = function() {
+			//精确补零
+			function toDecimal2(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 100) / 100;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 2) {
+					s += '0';
+				}
+				return s;
+			}
+
+			web3js.eth.getAccounts(function(error, result) {
+
+				test_system2.methods.playerMap(result[0]).call().then(function(resul) {
+					test_system2.methods.playersMap(resul).call().then(function(resu) {
+						$("#node_id").html("ID:" + resu[2]);
+					});
+				});
+
+
+				if (!error) {
+					test.methods.playerMap(result[0]).call().then(function(result) {
+						test.methods.playersMap(result).call().then(function(result) {
+							
+							var dsme = document.getElementById("dsme");
+							var dsme_ice = document.getElementById("dsme_ice");
+							var usdt = document.getElementById("usdt");
+							var usdt_ice = document.getElementById("usdt_ice");
+							var dsme_price = document.getElementById("dsme_price");
+							var usdt_price = document.getElementById("usdt_price");
+							var price = document.getElementById("price");
+
+							$("#dsme").html(toDecimal2(result[4] / 10 ** 18));
+							$("#dsme_ice").html(toDecimal2(0));
+							$("#usdt").html(toDecimal2(0));
+							$("#usdt_ice").html(toDecimal2(0));
+							$("#dsme_price").html(toDecimal2(0));
+							$("#usdt_price").html(toDecimal2(0));
+							$("#price").html(toDecimal2(0));
+						});
+					});
+				}
+			});
+//		}
+	</script>
+	<body style="background-color: white;">
+
+		<button id="node_id" style="margin-top: 8px;
+						font-size: 14px;
+						margin-right: 10px;
+						width: 88px;
+						height: 43px;
+						float: right;
+						background-color: #fde74ca1;
+						text-align: center;
+						border: 1px solid #fde74ca1;
+						color: white;
+						font-weight: bold;" class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">ID:loading
+			</button>
+			
+
+		<div class="zczl">
+			<div class="wdzc">我的资产 ($)</div>
+			<div class="money" id="price">loading</div>
+		</div>
+		<!-- 充值 -->
+		<div class="transBox">
+			<div class="a1"><a href="deposit.html">充币</a></div>
+			<div class="a2"><a href="withdraw.html">提币</a></div>
+			<div class="a3"><a href="shandui.html">闪兑</a></div>
+		</div>
+		<!-- 我所持有的币 -->
+		<div class="bz1">
+			<div class="b1">
+				<div class="b1a1">DSME</div>
+				<div class="b1a2">可用</div>
+				<div class="b1a5" id="dsme">loading</div>
+			</div>
+			<div class="b2">
+				<div class="b1a1"></div>
+				<div class="b1a2">冻结</div>
+				<div class="b1a5" id="dsme_ice">loading</div>
+			</div>
+			<div class="b3">
+				<div class="b1a4">></div>
+				<div class="b1a3">折合(CNY)</div>
+				<div class="b1a3" id="dsme_price">loading</div>
+			</div>
+		</div>
+		<!-- 我所持有的币1 -->
+		<div class="bz1">
+			<div class="b1">
+				<div class="b1a1">USDT</div>
+				<div class="b1a2">可用</div>
+				<div class="b1a5" id="usdt">loading</div>
+			</div>
+			<div class="b2">
+				<div class="b1a1"></div>
+				<div class="b1a2">冻结</div>
+				<div class="b1a5" id="usdt_ice">loading</div>
+			</div>
+			<div class="b3">
+				<div class="b1a4">></div>
+				<div class="b1a3">折合(CNY)</div>
+				<div class="b1a3" id="usdt_price">loading</div>
+			</div>
+		</div>
+
+		<script>
+
+		</script>
+
+		<!-- 底部 -->
+		<nav class="navbar-fixed-bottom">
+			<div class="container-fluid">
+				<div class="row">
+				<a href="index.html">
+					<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class=" glyphicon glyphicon-home ">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							主页
+						</div>
+					</div>
+				</a>
+				<a href="financial.html">
+					<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-piggy-bank">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							金融
+						</div>
+					</div>
+				</a>
+				<a href="me.html">
+					<div class="navbottom navbottom2" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-user">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							我的
+						</div>
+					</div>
+				</a>
+					
+				</div>
+			</div>
+		</nav>
+		
+	</body>
+
+	<style>
+		
+
+		.navbottom {
+			background-color: #eca400;
+			color:D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+		
+		}
+		.navbottom2 {
+			background-color: #eca400;
+			color:#D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+		
+		}
+
+		
+
+		.zczl {
+			color: white;
+			height: 147px;
+			background: #eca400c4;
+			width: 100%;
+		}
+
+		.wdzc {
+			font-size: 12px;
+			text-align: left;
+			padding-left: 17px;
+			padding-top: 17px;
+			letter-spacing: 2px;
+		}
+
+		.money {
+			font-size: 30px;
+			text-align: left;
+			padding-left: 17px;
+			padding-top: 17px;
+			letter-spacing: 2px;
+		}
+
+		.transBox {
+			height: 48px;
+			width: 100%;
+			margin-top: -35px;
+			background-color: #eca400;
+			text-align: center;
+			line-height: 48px;
+			color: white;
+		}
+
+		.a1 {
+			float: left;
+			width: 33%;
+			border-right: 1px solid;
+			height: 48px;
+			line-height: 48px;
+			font-size: 12px;
+		}
+		
+		.a2 {
+			float: left;
+			width: 33%;
+			border-right: 1px solid;
+			height: 48px;
+			line-height: 48px;
+			font-size: 12px;
+		}
+		
+		.a3 {
+			float: left;
+			width: 33%;
+			height: 48px;
+			line-height: 48px;
+			font-size: 12px;
+		}
+		
+		.bz {
+			width: 98%;
+			height: 236px;
+			line-height: 236px;
+			background-color: #21897e;
+			margin-left: 4px;
+			margin-top: 3px;
+		}
+		
+		.bz1 {
+			margin-top: 3px;
+			width: 98%;
+			margin-left: 4px;
+			height: 79px;
+			border-bottom: 1px solid #eed9d9;
+		}
+		
+		.b1 {
+			float: left;
+			width: 35%;
+			height: 79px;
+		}
+		
+		.b2 {
+			float: left;
+			width: 31%;
+			height: 79px;
+		}
+		
+		.b3 {
+			float: left;
+			width: 33%;
+			height: 79px;
+		}
+		
+		.b1a1 {
+			margin-left: 8px;
+			margin-top: 4px;
+			margin-bottom: 5px;
+			height: 26px;
+			color: #eca400;
+			text-align: left;
+			font-weight: bold;
+		}
+		
+		.b1a2 {
+			margin-left: 8px;
+			margin-bottom: -4px;
+			height: 26px;
+			color: #21897e;
+			text-align: left;
+		}
+		
+		.b1a3 {
+			margin-left: 8px;
+			margin-bottom: -4px;
+			height: 26px;
+			color: #21897e;
+			text-align: right;
+		}
+		
+		.b1a4 {
+			margin-left: 8px;
+			margin-top: 4px;
+			margin-bottom: 5px;
+			height: 26px;
+			color: #21897e;
+			text-align: right;
+		}
+		
+		.b1a5 {
+			margin-bottom: -4px;
+			margin-left: 8px;
+			height: 26px;
+			color: #21897e;
+			text-align: left;
+		}
+		
+		a,
+		a:visited,
+		a:hover,
+		a:active {
+			/*全部状态都一样的效果*/
+			text-decoration: none;
+			/*没有下划线*/
+			color: white;
+			/*一直都蓝色*/
+		}
+	</style>
+</html>

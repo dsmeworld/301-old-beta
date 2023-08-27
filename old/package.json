@@ -1,0 +1,36 @@
+{
+	"requires": true,
+	"lockfileVersion": 1,
+	"dependencies": {
+		"bootbox": "^5.5.2",
+		"bootstrap-loader": "^3.0.4",
+		"bootstrap-sass": "^3.4.1",
+		"css-loader": "^6.2.0",
+		"node-sass": "^6.0.1",
+		"resolve-url-loader": "^4.0.0",
+		"sass-loader": "^12.1.0",
+		"style-loader": "^3.2.1",
+		"swiper": "^6.8.1",
+		"url-loader": "^4.1.1"
+	},
+	"devDependencies": {
+		"webpack": "^3.5.6",
+		"webpack-cli": "^4.7.2"
+	},
+	"scripts": {
+		"build": "webpack --config webpack.config.js"
+	},
+	"name": "bootstrap1",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "周志恒",
+	"license": "UNLICENSED",
+	"description": "1",
+	"repository": {
+		"type": "git",
+		"url": "1"
+	},
+	"keywords": [
+		"1"
+	]
+}

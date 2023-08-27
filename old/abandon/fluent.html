@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-conflux-sdk/dist/js-conflux-sdk.umd.min.js"></script>
+		<script src="V2/js/hecorpc.js"></script>
+		<script src="V2/js/confluxrpc.js"></script>
+		<script src="V2/js/contract_cfx1.js"></script>
+		<script src="V2/js/bootbox.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="V2/css/index.css"/>
+		<script src="V2/js/index.js" type="text/javascript" charset="utf-8"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+		<!-- 滑动按钮css -->
+		<link rel="stylesheet" type="text/css" href="./V2/css/index2.css"/>
+	</head>
+	<body>
+	<!-- 头部 -->
+	<!-- top1 为网页端时启用的css -->
+	<div class="container-fluid"  >
+			<div class="row" style="background:#363433;height:40px;">
+				<div class="col-xs-6 col-lg-5 col-lg-offset-1" style="padding-left:40px;margin-top:10px;">
+						<ul class="list-inline">
+							<li><img src="V2/images/TopTB.png" style="width:30px;height:30px;margin-top:-5px;"></li>
+							<li><strong class="fontcolor8">DSME</strong></li>
+						</ul>
+				</div>
+				<!-- 头部右侧HECO+菜单栏 -->
+				<div class="col-xs-4 col-xs-offset-1 col-lg-3 col-lg-offset-3">
+					    <div class="row">
+					    	<div class="col-xs-4" style="margin-top:8px;">
+					    		<button type="button" id="node_www" class="fontcolor9" style="width:75px;height:25px;border-radius:90.3px;border:none;">NOT</button>
+					    	</div>
+					    	<div class="col-xs-7" style="margin-top:8px;padding-left:60px;">
+					    		<div class="dropdown">
+									<!-- 菜单栏 -->
+					    		    <span class="glyphicon glyphicon-align-justify dropdown-toggle fontcolor8" style="font-size:18px" id="dropdownMenu1" data-toggle="dropdown"></span>
+					    		    <!-- 菜单栏下拉内容 -->
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="min-width:95px;border-radius:12px; font-size:16px;margin-left:-47px;margin-top:9px;background:#000000CC;text-align:center">
+					    		        <li role="presentation">
+					    		            <a role="menuitem" style="color:#f5f5f7;" tabindex="-1" href="#">首页</a>
+					    		        </li>
+					    		        <li role="presentation">
+					    		            <a role="menuitem" style="color:#f5f5f7;" tabindex="-1" href="#">Dao</a>
+					    		        </li>
+					    		        <li role="presentation">
+					    		            <a role="menuitem" style="color:#f5f5f7;" tabindex="-1" href="#">Defi</a>
+					    		        </li>
+					    		    </ul>
+					    		</div>
+					        </div>
+					    </div>
+				</div>
+			</div>
+	</div>
+	<!-- 轮播图 -->
+	<!-- 轮播图模块 -->
+	<div class="container-fluid" style="margin-top:3px">
+		<div class="container">
+			<div id="myCarousel" class="row carousel slide" data-ride="carousel">
+			    <!-- 轮播（Carousel）指标 -->
+			    <ol class="carousel-indicators">
+			        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			        <li data-target="#myCarousel" data-slide-to="1"></li>
+			        <li data-target="#myCarousel" data-slide-to="2"></li>
+			    </ol>   
+			    <!-- 轮播（Carousel）项目 -->
+			    <div class="carousel-inner">
+			        <div class="item active">
+			            <img src="V2/images/loge1.png" alt="First slide">
+			            <div class="carousel-caption"></div>
+			        </div>
+			        <div class="item">
+			            <img src="V2/images/loge2.png" alt="Second slide">
+			            <div class="carousel-caption"></div>
+			        </div>
+			        <div class="item">
+			            <img src="V2/images/loge3.png" alt="Third slide">
+			            <div class="carousel-caption"></div>
+			        </div>
+			    </div>
+			    <!-- 轮播（Carousel）导航 -->
+			    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+			        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			        <span class="sr-only">Previous</span>
+			    </a>
+			    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+			        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			        <span class="sr-only">Next</span>
+			    </a>
+			</div>
+		</div>
+	</div>
+	<!-- DAO生态数据展示 -->
+	<div class="container-fluid" style="margin-top:8px;">
+		<div class="container fontcolor7" style="color:#f4f4f6;border-radius:12px;">
+			<div class="row" style="text-align:center;margin-top: 18px;">
+						<h4 style="color:#f4f4f6c2">持币地址(HECO&CONFLUX)</h4>
+					</div>
+					<div class="row" style="text-align:center;color:#a80077">
+						<span>374</span>&nbsp;个
+					</div>
+					<div class="row" style="text-align:center;">
+						<h4 style="color:#f4f4f6c2">DSME流通量(HECO&CONFLUX)</h4>
+					</div>
+					<div class="row" style="text-align:center;color:#B3FFAB">
+						<span>49,751.77</span>&nbsp;DSME
+					</div>
+					<!-- 留白行 -->
+					<div class="row" style="height:15px;">
+						<!-- 留白行 -->
+					</div>
+			</div>
+		</div>
+	</div>
+	<!-- 签到功能 -->
+	<div class="container-fluid" style="margin-top:8px;">
+		<div class="container fontcolor6"style="text-align:center;border-radius:12px;">
+			<!-- 盲盒空投 -->
+			<div class="row">
+				<h3 style="color:#86a0a9">盲盒空投</h3>
+			</div>
+			<!-- 盲盒空头规则 -->
+			<div class="row" style="margin-left: 250px;margin-top: -15px;">
+				<button type="button"data-toggle="modal" class="fontcolor6 btn" data-target="#myModal1" style="border-radius:20px;background-color:#ead1ea40;outline:none;"><strong>空投规则</strong></button>
+			</div>
+			<!-- 规则模态框 -->
+			<div class="modal fade " id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" >
+					<div class="modal-content"style="background-color:#cecece;">
+						<!-- 提示框头部+关闭符号 -->
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" 
+									aria-hidden="true">×
+							</button>
+							<!-- 标题内容 -->
+							<h4 class="modal-title" id="myModalLabel" style="text-align: center;">
+								<strong>DSME盲盒空投规则</strong>
+							</h4>
+						</div>
+						<!-- 模态框主要内容 -->
+						<div class="modal-body">
+							<!-- 规则内容 -->
+							<div class="row"style="width:92%;margin-left:14px;border-radius:10px;">					
+								1、流程：通过特邀链接激活-加入微信群-发送钱包地址等待添加白名。
+								2、初级空投、中级空投每24小时可以领取一次。
+								3、中级空投C链暂未开放。
+								4、每次0.4-1.2cDSME。
+								5、邀请奖励:一级50%，二级20%，邀请链接联系微信获取。
+								cDSME合约地址:<br>cfx:acayf79s2bdjn8hhrjkj4g2j75e44y9rja1prjy0a9。
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 分割线行 -->
+			<!-- <div class="row"style="border-bottom:1px solid rgb(99, 111, 164);padding-bottom:10px"> -->
+				<!-- 分割线 -->
+			<!-- </div> -->
+			<div class="row" style="margin-top:10px;">
+					<div class="col-xs-4" style="background-color:#6051902e;width:130px;text-align:center;border-radius:12px;left:30px;">
+						<div class="row">
+							<h4>初级空投</h4>
+						</div>
+						<div class="row">
+							领取次数:&nbsp;<span id = "chu_ge" style="color:#7F00FF;">0</span>&nbsp;次
+						</div>
+						<div class="row">
+							参与人次:&nbsp;<span id = "chu_all" style="color:#7303c0;">0</span>&nbsp;次
+						</div>
+						<div class="row" style="margin-top:10px">
+							<button id = "button_chuji" type="button" class="btn" style="border-radius:12px;width:70px;background-color:#ead1ea40">领取</button>
+						</div>
+						<!--留白行-->
+						<div class="row" style="height:10px">
+						    <!--留白行-->
+						</div>
+					</div>
+					<!-- 中级空投详情 -->
+					<div class="col-xs-4" style="background-color:#6051902e;width:130px;text-align:center;border-radius:12px;left:72px;">
+						<div class="row">
+							<h4>中级空投</h4>
+						</div>
+						<div class="row" >
+							领取次数:&nbsp;<span id = "zhong_ge" style="color:#7F00FF;">0</span>&nbsp;次
+						</div>
+						<div class="row">
+							参与人次:&nbsp;<span id = "zhong_all" style="color:#7303c0;">0</span>&nbsp;次
+						</div>
+						
+						<div class="row"style="margin-top:10px">
+							<button id = "button_zhongji" type="button" class="btn" style="border-radius:12px;width:70px;background-color:#ead1ea40">领取</button>
+						</div>
+						<!--留白行-->
+						<div class="row" style="height:10px">
+						    <!--留白行-->
+						</div>
+					</div>
+			</div>
+			<!-- 留白行 -->
+			<div class="row" style="height: 30px;">
+				<!-- 留白行 -->
+			</div>
+		</div>
+	</div>
+	<!-- pos矿池 -->
+	<div class="container-fluid">
+		<div class="container fontcolor4"style="margin-top:8px;border-radius:20px;">
+			<!-- POS标题 -->
+			<div class="row" style="text-align:center;">
+				<h3 style="color:#86a0a9">Decology CFX POS</h3>
+			</div>
+			<!-- POS规则按钮 -->
+			<div class="row" style="margin-left:275px;margin-top: -15px;">
+				<button type="button"data-toggle="modal" class="fontcolor6 btn" data-target="#myModal2" style="border-radius:20px;background-color:#ead1ea40;outline:none;"><strong>规则</strong></button>
+			</div>
+			<!-- POS规则模态框 -->
+			<div class="modal fade " id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" >
+					<div class="modal-content"style="background-color:#cecece;">
+						<!-- 提示框头部+关闭符号 -->
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" 
+									aria-hidden="true">×
+							</button>
+							<!-- 标题内容 -->
+							<h4 class="modal-title" id="myModalLabel" style="text-align: center;">
+								<strong>DSME POS规则</strong>
+							</h4>
+						</div>
+						<!-- 模态框主要内容 -->
+						<div class="modal-body">
+							<!-- 规则内容 -->
+							<div class="row"style="text-align:left;width:92%;margin-left:14px;border-radius:10px;">					
+								&nbsp;&nbsp;&nbsp;&nbsp;1、每日调仓时间为21点-22点，期间不能操作。<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;2、DCFX代币为矿池质押权益凭证，支持场外自由交易，无视等待期。<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;3、赎回申请提交8天后可普通提取（优惠期费用：0.0%，原0.3%），0-8天内可快捷提取（优惠期费用：0.5%，原1%）,矿池每日从净值盈利中收取4%服务费（当前处于优惠期，收取0%）<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;3、矿池优势：①场外自由交易 ②自动复投，收益相比传统矿池提高20%。 ③调仓原理，官方快速赎回通道最快仅需0天 ④矿池原理简洁，代码安全性更高<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;4、投资有风险，请注意POS制度自身风险，我们全力维护矿池资产安全。<br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- POS头部总内容 -->
+			<div class="row" style="margin: 0 0;">
+				<div class="col-xs-9" style="margin-top:-20px;left:40px;">
+					<!-- 基金估值 -->
+					<div  style=" text-align:center;padding-left:8px;font-size:16px;color:#8f94fb;">
+						<span style="color:#6441A5;">基金估值：</span><span id="jijincfx">0.00</span>w&nbsp;CFX
+					</div>
+					<!-- DCFX流 -->
+					<div  style=" text-align:center;font-size:16px;color:#8f94fb;">
+						<span style="color:#6441A5;">DCFX all：</span><span id="dcfxall">0.00</span>w&nbsp;DCFX
+					</div>
+					<!-- 1CFX=120CFX+切换按钮1 (首先展示)-->
+					<div class="row" id="qiehuan1_2" style="color:rgb(32 156 181);display:block;margin-top:4px">
+						<div class="col-xs-12" style="font-size:15px;text-align: center;">
+							<span>1</span>&nbsp;DCFX&nbsp;<img src="V2/images/qiehuan.png" onclick="qiehuan1_1()" style="width:20px;margin-top:-4px;">&nbsp;<span id="dcfxtocfx">1.00000000</span>&nbsp;CFX
+						</div>
+					</div>
+					<!-- 1CFX=120CFX+切换按钮2 (触发方法切换)-->
+					<div class="row" id="qiehuan2_2" style="color:rgb(67 177 131);display:none;margin-top:4px">
+						<div class="col-xs-12" style="font-size:15px;text-align: center;">
+							<span>1</span>&nbsp;CFX&nbsp;<img src="V2/images/qiehuan.png" onclick="qiehuan2_1()" style="width:20px;margin-top:-4px;">&nbsp;<span id="cfxtodcfx">1.00000000</span>&nbsp;DCFX
+						</div>
+					</div>
+				</div>
+				<!-- POS折叠符号 -->
+				<div class="col-xs-3"style="left:15px;top:3px;">
+					<button type="button" style="outline: none;" class="btn1 btn btn-link" data-toggle="collapse" data-target="#demo1">
+					    <span class="glyphicon glyphicon-chevron-down" style="color: #6dd5ed;"></span>
+					</button>
+				</div>
+			</div>
+			<!--留白行-->
+			<div class="row" style="height:15px">
+			</div>
+			<!-- POS被折叠的提案信息内容 -->
+			<div id="demo1" class="row collapse" style="margin:0 0;line-height:30px;">
+				<!-- POS余额状况 -->
+				<div class="row">
+					<div class="col-xs-6"style="color:#67B26F;">
+						<strong style="color:#ACB6E5"><span>余额:</span></strong><br>
+						<span id="dcfxBanlance">-</span>&nbsp;DCFX<br>
+						<span style="font-size:12px;color:rgb(108 184 183);">(&nbsp;<span>0.00</span>&nbsp;DCFX双挖中&nbsp;<span data-toggle="tooltip" data-placement="top" title="DCFX双挖部分需关闭双挖功能后方可赎回"><img src="V2/images/bangzhu.png" style="width:16px;"></span>&nbsp;)</span>
+					</div>
+					<div class="col-xs-4 col-xs-offset-2"style="text-align:right;color:#4ca2cd;">
+						<strong style="color:#ACB6E5">余额:</strong><br><span id="cfxBanlance">-</span>&nbsp;CFX
+					</div>
+				</div>
+				<!-- POS输入框+按钮 -->
+				<div class="row">
+					<div class="container-fluid">
+						<div class="row" style="margin:0 0;text-align: center;">
+							<h4 style="color: #aa4b6b;"><strong>参与 CFX POS</strong></h4>
+						</div>
+						<!-- POS数量input框 -->
+						<form action="" method="post" style="margin-left:30px;">
+							<input  id="cfxposvalue"type="text" class="bt btn"style="outline: none;color:white;border-radius:25px;width:91%;height:50px;border:none;background-color:#f0f0f05c;" value="" placeholder="质押输入CFX 赎回输入DCFX"/>
+						</form>
+						<!-- POS购买+APPLY按钮 -->
+						<div class="row" style="margin-top:15px">
+							<!-- BUY按钮 -->
+							<div class="col-xs-4 col-xs-offset-1" style="left:27px;">
+								<button id="posbuy" tye="buttons" class="btn-lg fontcolor1" style="width:70px;">质押</button>
+							</div>
+							<!-- APPLY按钮 -->
+							<div class="col-xs-4 col-xs-offset-2">
+								<button id="possell" type="button" class="btn-lg fontcolor3">赎回</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- POS普通+双挖按钮切换 -->
+				<div class="row" style="margin-top:10px;">
+					<div class="container-fluid">
+							<div class="row">
+								<div class="col-xs-6 col-xs-offset-3" style="color:skyblue;font-size:15px;text-align: center;left:5px;">
+									<!-- id='poszhuanhuan'为控制标题内容变化 -->
+									<strong><span id="poszhuanhuan">POS&nbsp;普通矿池</span></strong>&nbsp;&nbsp;<img src="V2/images/qiehuan2.png" style="width:20px;" onclick="yy1()">
+								</div>
+							</div>
+					</div>
+				</div>
+				<!-- POS普通赎回模块 -->
+				<div class="row" id="y1" style="margin-top:10px;display:block;">
+					<div class="container-fluid" style="width: 300px;background-color:#6051902e;border-radius: 12px;">
+							<!-- 赎回金额 -->
+							<div class="row"style="margin-top:10px;" >
+								<!-- 赎回申请文字 -->
+								<div class="col-xs-5" style="color: #c78035;">
+									<strong>我的今日盈利:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-7" style="color: #f11f10;text-align:right;">
+									<div class="row">
+										<div class="col-xs-9" style="left:20px;">
+											<strong>+<span id="yingli"> 0.00</span></strong> CFX
+										</div>
+										<div class="col-xs-3" data-toggle="tooltip"  title="&nbsp;&nbsp;收益自动复投，计算日期为：昨日22点至当日21点" style="top:-2px;">
+											<img src="V2/images/bangzhu.png" style="width:16px;" >
+										</div>
+										<script>
+											$(function () { $("[data-toggle='tooltip']").tooltip(); });
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<!-- 赎回申请文字 -->
+								<div class="col-xs-6" style="color: #c78035;">
+									<strong>矿池快捷赎回金额:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-6" style="color: #c471ed;text-align:right;">
+									<strong><span id="kuaijiejine">0.00</span></strong> CFX
+								</div>
+							</div>
+							<div class="row" >
+								<!-- 赎回金额文字 -->
+								<div class="col-xs-6" style="color: #556270;">
+									<strong>赎回金额:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-6" style="color: #86aaec;text-align:right;">
+									<strong><span id="shuhuicfx">0.00</span></strong> CFX
+								</div>
+							</div>
+							<!-- 赎回申请文字+赎回状态 -->
+							<div class="row" >
+								<!-- 赎回申请文字 -->
+								<div class="col-xs-6" style="color: #556270;">
+									<strong>赎回状态:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-6" style="color: #3fada8;text-align:right;">
+									<strong><span id="shuhuitai">无记录</span></strong>
+								</div>
+							</div>
+							<!-- 赎回日期文字+日期 -->
+							<div class="row">
+								<!-- 赎回申请文字 -->
+								<div class="col-xs-6" style="color: #556270;">
+									<strong>普通赎回日期:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-6" style="color: #799F0C;text-align:right;">
+									<strong><span id="shuhuireqi">无记录</span></strong>
+								</div>
+							</div>
+							<!-- 提取按钮 -->
+							<div class="row" style="margin-top: 8px;">
+								<div class="col-xs-5 col-xs-offset-3" style="left:8px;">
+									<button id="poswithdraw" type="button" class="btn-lg fontcolor1_1" style="width:105px;">赎回领取</button>
+								</div>
+							</div>	
+							<!-- 留白行 -->
+							<div class="row" style="height:10px;">
+								
+							</div>
+					</div>
+				</div>
+				<!-- POS双挖赎回模块 -->
+				<div class="row" id="y2" style="margin-top:10px;display:none;">
+					<div class="container-fluid" style="width: 300px;background-color:#6051902e;border-radius: 12px;">
+							<!-- POS双挖文字:当前每届POS委员会产出1.2DSME -->
+							<div class="row" style="margin-top:10px;">
+								<!-- POS双挖分配文字 -->
+								<div class="col-xs-12" style="color:#c471ed;font-size:15px;text-align:center;">
+									<strong>当前每届POS委员会产出<span id="" style="color:#799F0C;">0.0</span>DSME</strong>
+								</div>
+							</div>
+							<!-- POS双挖分配文字 -->
+							<div class="row">
+								<!-- POS双挖分配文字 -->
+								<div class="col-xs-12" style="color: #c78035;font-size:14px;margin-top:5px;">
+									<div class="row" style="height:50px;">
+										<div class="col-xs-4" style="left:2px;">
+											<strong>双挖分配:</strong>
+										</div>
+										<div class="col-xs-8" style="text-align:right;line-height:20px;top:7px;">
+											<span style="color:#3fada8;"><span id="" style="color:#799F0C;">85%</span>供DCFX持有者<br><span id="" style="color:#799F0C;">15%</span>供二级奖励</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 双挖金额文字 -->
+							<div class="row" style="color: #c78035;font-size:14px;margin: 0 -13px;">
+								<!-- POS双挖状态文字 -->
+								<div class="col-xs-6">
+									<strong>参与金额:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-6" style="color: #799F0C;text-align:right;">
+									<span>0.00</span> DCFX
+								</div>
+							</div>
+							<!-- 双挖状态文字 -->
+							<div class="row" style="color: #c78035;font-size:14px;margin: 0 -13px;">
+								<!-- POS双挖状态文字 -->
+								<div class="col-xs-6">
+									<strong>双挖奖励:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-6" style="color: #799F0C;text-align:right;">
+									<span>0.00</span> cDSME
+								</div>
+							</div>
+							<!-- POS双挖操作文字+操作状态 -->
+							<div class="row" style="color: #c78035;font-size:14px;margin: 0 -13px;">
+								<!-- POS双挖操作文字 -->
+								<div class="col-xs-6">
+									<strong>双挖操作:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-4" style="top: 5px;left:68px;color: #3fada8;">
+									<input type="checkbox" id="toggle">
+									<div id="inner"></div>
+								</div>
+							</div>
+							<!-- 双挖状态文字 -->
+							<div class="row" style="color: #c78035;font-size:14px;margin: 0 -13px;">
+								<!-- POS双挖状态文字 -->
+								<div class="col-xs-6">
+									<strong>双挖状态:</strong>
+								</div>
+								<!-- 赎回状态显示 -->
+								<div class="col-xs-6" style="color: #799F0C;text-align:right;">
+									<span>(未启动)</span>
+								</div>
+							</div>
+							<!-- POS双挖申请赎回提取按钮 -->
+							<div class="row" style="margin-top: 8px;">
+								<div class="col-xs-5 col-xs-offset-3" style="left:8px;">
+									<button  type="button" class="btn-lg fontcolor1_1" style="width:105px;">双挖领取</button>
+								</div>
+							</div>	
+							<!-- 留白行 -->
+							<div class="row" style="height:10px;">
+								
+							</div>
+					</div>
+				</div>
+				<!--留白行-->
+			    <div class="row" style="height:15px">
+			    </div>
+			</div>
+		</div>
+		<!-- //折叠内容js -->
+		<script>
+		    $(document).ready(function(){
+				$('#demo1').collapse('hide');
+		        $("#demo1").on("hide.bs.collapse", function(){
+		            $(".btn1").html('<span class="glyphicon glyphicon-chevron-down" style="color: #6dd5ed;"></span>');
+		        });
+		        $("#demo1").on("show.bs.collapse", function(){
+		            $(".btn1").html('<span class="glyphicon glyphicon-chevron-up" style="color: #6dd5ed;"></span>');
+		        });
+		    });
+		</script>
+	</div>
+	<!-- 单币质押功能 -->
+	<div class="container-fluid">
+		<div class="container fontcolor4"style="margin-top:8px;border-radius:20px;">
+			<!-- DSME单币质押标题 -->
+			<div class="row" style="text-align:center;">
+				<h3 style="color:#86a0a9">DSPOOL CFX/FC LP</h3>
+			</div>
+			<!-- 单笔质押头部第一行 -->
+			<div class="row" style="margin: 0 0;">
+				<!-- 提案信息图标+文字 -->
+				<div class="col-xs-4" style="padding:0px;margin-top:9px;">
+					<ul class="list-inline">
+						<li><img src="V2/images/TopTB.png" style="width:30px;height:30px;margin-top:-5px;"></span></li>
+						<li><h4 style="color:#c8522c">CFX/FC</h4></li>
+					</ul>
+				</div>
+				<!-- 提案信息折叠符号 -->
+				<div class="col-xs-3 col-xs-offset-5"style="left:15px;top:3px;">
+					<button type="button" style="outline: none;" class="bt btn btn-link" data-toggle="collapse" data-target="#demo">
+					    <span class="glyphicon glyphicon-chevron-down" style="color: red;"></span>
+					</button>
+				</div>
+			</div>
+			<!-- 单笔质头部内容 -->
+			<!-- Earned -->
+			<div class="row">
+				<div class="col-xs-4"style="color:gray;">
+					Earned
+				</div>
+				<div class="col-xs-5 col-xs-offset-3" style="text-align:right;color:royalblue;">
+					<strong><span id="lpShouyi">0.00000000</span>&nbsp;cDSME</strong>
+				</div>
+			</div>
+			<!-- APY -->
+			<div class="row"style="color:gray;">
+				<div class="col-xs-4">
+					APY
+				</div>
+				<div class="col-xs-5 col-xs-offset-3"style="text-align:right;color: green;">
+					<strong><span id="lpApy">0.00%</span></strong>
+				</div>
+			</div>
+			<!-- Total Deposit -->
+			<div class="row">
+				<div class="col-xs-4"style="color:gray;">
+					Total Deposit
+				</div>
+				<div class="col-xs-5 col-xs-offset-3"style="text-align:right;color:#ffd452;">
+					<strong><span id="lpAll">0.00</span></strong>
+				</div>
+			</div>
+			<!--留白行-->
+			    <div class="row" style="height:15px">
+			    </div>
+			<!-- 被折叠的提案信息内容 -->
+			<div id="demo" class="row collapse" style="margin:0 0;line-height:30px;">
+				<div class="row">
+					<div class="col-xs-4"style="color:#67B26F;">
+						<strong style="color:#ACB6E5">Balance:</strong><br><span id="dsmeBanlance">-</span>&nbsp;cDSME
+					</div>
+					<div class="col-xs-4 col-xs-offset-4"style="text-align:right;color:#4ca2cd;">
+						<strong style="color:#ACB6E5">Balance:</strong><br><span id="cfxfcBanlance">-</span>&nbsp;CFX/FC
+					</div>
+				</div>
+				<div class="row">
+					<div class="container-fluid">
+						<!-- 授权数量input框 -->
+						<form action="" method="post" style="margin-left:30px;">
+							<input id="approveValue" type="text" class="bt btn"style="outline: none;color:white;border-radius:25px;width:90%;height:50px;border:none;background-color:#f0f0f05c;" value="" placeholder=""/>
+						</form>
+						<!-- 滑动进度条 -->
+						
+						<!-- 授权按钮 -->
+						<div class="row" style="margin-top:15px">
+							<div class="container">
+								<div class="row">
+									<div class="col-xs-4 col-xs-offset-4">
+										<button id="approve" type="button" class="btn-lg fontcolor1">Approve</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Deposited沉积+Earned -->
+						<div class="row">
+							<!-- Deposited沉积 -->
+							<div class="col-xs-4"style="color:#4ca2cd;">
+								<strong style="color:#74ebd5;">Deposited:</strong><br><span id="dcflBanlance">-</span>&nbsp;CFX/FC
+							</div>
+							<!-- Earned -->
+							<div class="col-xs-8" style="text-align:right;color:#67B26F;">
+								<strong style="color:#74ebd5;">BUFF:</strong><br><span id="lpBuff">0 </span>&nbsp;% 
+							</div>
+						</div>
+						<!-- 确认输入框数量 -->
+						<!-- 授权数量input框 -->
+						<form action="" method="post" style="margin-left: 30px;">
+							<input id="changeValue" type="text" class="bt btn" style="outline: none;color:white;border-radius:25px;width:90%;height:50px;border:none;background-color:#f0f0f05c;"  value="" placeholder=""/>
+						</form>
+						<!-- 滑动进度条 -->
+						<!-- 撤回+质押确认按钮 -->
+						<div class="row" style="margin-top:15px">
+							<!-- Withdraw撤回按钮 -->
+							<div class="col-xs-4 col-xs-offset-1">
+								<button id="withdraw" type="buttons" class="btn-lg fontcolor2">Withdraw</button>
+							</div>
+							<!-- Claim质押按钮 -->
+							<div class="col-xs-4 col-xs-offset-2">
+								<button id="pledge" type="button" class="btn-lg fontcolor3">Pledge</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--留白行-->
+			    <div class="row" style="height:15px">
+			    </div>
+			</div>
+		</div>
+		<!-- //折叠内容js -->
+		<script>
+		    $(document).ready(function(){
+				$('#demo').collapse('hide');
+		        $("#demo").on("hide.bs.collapse", function(){
+		            $(".bt").html('<span class="glyphicon glyphicon-chevron-down" style="color: red;"></span>');
+		        });
+		        $("#demo").on("show.bs.collapse", function(){
+		            $(".bt").html('<span class="glyphicon glyphicon-chevron-up" style="color: red;"></span>');
+		        });
+		    });
+
+			//公共数据RPC节点获取
+			//初级空投heco领取人次
+			KC_heco.methods.random().call().then(function(res){
+				//初级空投conflux领取人次
+				kongtouR.random().call({from:"0x1a781152365291daa5e06617e59019c7d7c8cc6b"}).then(function(response){
+					$("#chu_all").html( response[0]/1 + res/1 );
+				})
+			})
+			//中级空投领取人次
+			KZ_heco.methods.random().call().then(function(response){
+				$("#zhong_all").html( response/2 + 1845.5 );
+			})
+			//lp质押总量与质押年华率
+			//lp显示
+			dspoolcflR.pledge_all().call().then(function(res){
+				dspoolcflR.reward_day().call().then(function(rr){
+					$("#lpAll").html(toDecimal2(res/ 10**18));
+					$("#lpApy").html(toDecimal2((rr*25000)/(res)) + "%" );	
+				})
+			})
+			//基金估值
+				cfxposR.getPosBalance().call().then(function(response){
+					$("#jijincfx").html(toDecimal2(response/10**22));
+				})
+				//dcfx总额
+				cfxposR.requireDcfxall().call().then(function(response){
+					$("#dcfxall").html(toDecimal2(response/10**22));
+				})
+				//dcfxtocfx
+				cfxposR.DcfxtoCfx("10000000000").call().then(function(response){
+					$("#dcfxtocfx").html(toDecimal8(response/10**10));
+				})
+				//cfxtodcfx
+				cfxposR.CfxtDcfx("10000000000").call().then(function(response){
+					$("#cfxtodcfx").html(toDecimal8(response/10**10));
+				})
+				//快捷赎回金额
+				cfxposR.kuaisuedu().call().then(function(response){
+					$("#kuaijiejine").html(toDecimal2(response/10**18));
+				})
+			
+			//中级空投未开放
+			button_zhongji.onclick = function(){
+				bootbox.alert({
+					title: "<h4><strong style='color:gray;margin-left:5px'>空投提示</strong></h4>",
+					message: "暂未开放",
+				})
+			}
+
+			//双挖提示
+			document.getElementById('toggle').checked=false
+			$('#toggle').change(function(){
+				document.getElementById('toggle').checked=false
+				bootbox.alert({
+					size: "small",
+					title: "双挖提示",
+					message:"请连接钱包",
+				})
+			})
+
+			//获取账户地址
+			conflux.request({method: "cfx_requestAccounts"}).then(function(accounts){
+				
+			//旧系统升级
+			cfxpos.vip(accounts[0]).call({from:accounts[0]}).then(function(response){
+				if(response == 0){
+				cfxpos.requireold().call({from:accounts[0]}).then(function(response){
+					if(response > 0 ){
+						bootbox.confirm({
+							size: "small",
+							title: "POS矿池升级（重要）",
+							message: "当前POS矿池已升级，点击确定立即升级,（请务优先升级，如有问题联系客服）",
+							callback: function(resultt) {
+								if (resultt) {
+									cfxpos.shengji().sendTransaction({from:accounts[0]}).then(function(re){
+										bootbox.alert({
+											size: "small",
+											title: "POS矿池升级（重要）",
+											message:"升级完成，请等待20s区块确定。",
+										})
+									})
+								}
+							}
+						})
+					}
+				})	
+				}
+			})	
+			
+			/*
+			//DSPOOL空投
+			dskong.vip(accounts[0]).call({from:accounts[0]}).then(function(response){
+				if(response == 0){
+					chaxuncoin.requrieBanlance("0x831478f6e85d3481f123853065bc26660c699d81").call({from:accounts[0]}).then(function(response){
+					if(response > 0 ){
+						if(response >= 1000*10**18){
+							a = 7.66
+						}else if(response >= 100*10**18 && response < 1000*10**18){
+							a = 3.66
+						}else if(response >= 10*10**18 && response < 100*10**18){
+							a = 2.66
+						}else if(response < 10*10**18){
+							a = 1.66
+						}
+						bootbox.confirm({
+							size: "small",
+							title: "空投领取",
+							message: "感谢您对Decology DSPOOL公测支持，我们为您准备了一份最高7.88cDSME的专属空投 ︿(￣︶￣)︿",
+							callback: function(resultt) {
+								if (resultt) {
+									dskong.kong().sendTransaction({from:accounts[0]}).then(function(re){
+										bootbox.alert({
+											size: "small",
+											title: "空投领取",
+											message: a + "cDSME已发放至您的钱包，请等待20s区块确定。",
+										})
+									})
+								}
+							}
+						})
+					}
+				})	
+				}
+			})	
+			*/
+				//查询cDSME数量
+				chaxuncoin.requrieBanlance("0x8142f7eec04685f8e76a128d1b08eec9ad53ed40").call({from:accounts[0]}).then(function(response){
+					$("#dsmeBanlance").html(toDecimal2(response/10**18));
+				})
+				//查询CFX/FC LP 持币数量
+				chaxuncoin.requrieBanlance("0x8df59e546877fc250f3d60934a3a4e1349810460").call({from:accounts[0]}).then(function(response){
+					$("#cfxfcBanlance").html(toDecimal2(response/10**18));
+				})
+				//查询质押CFX/FC LP 数量
+				chaxuncoin.requrieBanlance("0x831478f6e85d3481f123853065bc26660c699d81").call({from:accounts[0]}).then(function(response){
+					$("#dcflBanlance").html(toDecimal2(response/10**18));
+				})
+				//查询DCFX持币数量
+				chaxuncoin.requrieBanlance("0x84E1e1b5B70ABA6500C4e96F11Cc78B84bB684f8").call({from:accounts[0]}).then(function(response){
+					$("#dcfxBanlance").html(toDecimal2(response/10**18));
+					var a = response/10**18;
+					
+					cfxpos.yesterdaybili().call({from:accounts[0]}).then(function(re){
+						
+						cfxposR.DcfxtoCfx("10000000000").call().then(function(r){
+							console.log(r)
+							$("#yingli").html(toDecimal2(a * (r-re)/10**10));
+						})
+					})
+				})
+				//查询DCFX持币数量
+				chaxuncoin.requrieBanlance("0x84E1e1b5B70ABA6500C4e96F11Cc78B84bB684f8").call({from:accounts[0]}).then(function(response){
+					//判断DCFX是否大于0
+					if(response > 0){
+						//查询双挖金额，替换参与为双挖凭证
+						chaxuncoin.requrieBanlance("0x8df59e546877fc250f3d60934a3a4e1349810460").call({from:accounts[0]}).then(function(response){
+							//大于0则显示ON,且点击后关闭双挖
+							a = 1;
+							if(a == 1){
+								document.getElementById('toggle').checked=false
+								$('#toggle').change(function(){
+									document.getElementById('toggle').checked=false
+									bootbox.alert({
+										size: "small",
+										title: "双挖提示",
+										message:"双挖功能即将开始，敬请期待",
+									})
+								})
+							}else{
+								if(response > 0){
+									document.getElementById('toggle').checked=true;
+									$('#toggle').change(function(){
+										document.getElementById('toggle').checked=true;
+										//执行停止双挖合约，成功执行后状态改变
+									})
+								//小于0则显示OFF
+								}else if(response == 0){
+									document.getElementById('toggle').checked=false;
+									$('#toggle').change(function(){
+										document.getElementById('toggle').checked=false;
+										//执行开启双挖合约，成功执行后状态改变
+									})
+								}
+							}
+						})
+					}else if(response == 0){
+						document.getElementById('toggle').checked=false;
+						$('#toggle').change(function(){
+							document.getElementById('toggle').checked=false;
+							bootbox.alert({
+								size: "small",
+								title: "双挖提示",
+								message:"请先参与普通POS",
+							})
+						})
+					}
+				})
+				//查询cfx余额
+				confluxJS.cfx.getBalance(accounts[0]).then(function(response){
+					$("#cfxBanlance").html(toDecimal2(response/10**18));
+				})
+				
+				
+				//赎回金额
+				cfxpos.acountMap(accounts[0]).call().then(function(response){
+					$("#shuhuicfx").html(toDecimal2(response[0]/10**18));
+					if(response[1] == 0){
+						$("#shuhuireqi").html("无记录");
+					}else{
+						$("#shuhuireqi").html(getLocalTime(response[1]));
+					}
+					if(response[0] > 0){
+						cfxpos.ornot().call({from:accounts[0]}).then(function(response){
+							if(response == 1){
+								$("#shuhuitai").html("可以");
+							}else if(response == 2){
+								$("#shuhuitai").html("不可以");
+							}else if(response == 3){
+								$("#shuhuitai").html("可快捷赎回");
+							}
+						})
+					}
+				})
+                
+                var aa = 12
+
+				posbuy.onclick = function(){
+					var a = new Date().getTime()/1000
+					if( (a > (1646139600 + 86400*aa)) && (a < (1646139600 + 86400*aa+3600))){
+						bootbox.alert({
+								size: "small",
+								title: "POS提示",
+								message:"每晚9点-10点为调仓时间，请在此时间段外进行操作",
+						})
+					}else{
+						var value1 = $("#cfxposvalue").val();
+						cfxpos.pledge().sendTransaction({from:accounts[0],value:value1*10**18}).then(function(){
+							bootbox.alert({
+								size: "small",
+								title: "POS提示",
+								message:"POS参与成功，等待20S区块确定时间",
+							})
+						})
+					}
+				}
+
+				possell.onclick = function(){
+					var a = new Date().getTime()/1000
+					if( (a > (1646139600 + 86400*aa)) && (a < (1646139600 + 86400*aa+3600))){
+						bootbox.alert({
+								size: "small",
+								title: "POS提示",
+								message:"每晚9点-10点为调仓时间，请在此时间段外进行操作",
+						})
+					}else{
+						var value1 = $("#cfxposvalue").val();
+						cfxpos.whithdrawApply(value1 * 10**18).sendTransaction({from:accounts[0]}).then(function(){
+							bootbox.alert({
+								size: "small",
+								title: "POS提示",
+								message:"POS赎回申请成功，等待20S区块确定时间",
+							})
+						})
+					}
+				}
+				
+				poswithdraw.onclick = function(){
+					var a = new Date().getTime()/1000
+					if( (a > (1646139600 + 86400*aa)) && (a < (1646139600 + 86400*aa+3600))){
+						bootbox.alert({
+								size: "small",
+								title: "POS提示",
+								message:"每晚9点-10点为调仓时间，请在此时间段外进行操作",
+						})
+					}else{
+						cfxpos.diaocang3().sendTransaction({from:accounts[0]}).then(function(){
+							bootbox.alert({
+								size: "small",
+								title: "POS提示",
+								message:"POS领取成功,等待20S区块确定时间后查询钱包",
+							})
+						})
+					}
+				}
+				
+
+				//显示网络
+				$("#node_www").html( "CONFLUX" );
+				
+				//初级空投个人领取次数
+				cfxpos.postocontract().call({from:accounts[0]}).then(function(re) {
+					
+					console.log(re[0])
+					$("#chu_ge").html(re);
+					
+				})
+
+				//BUFF
+				//个人属性
+				system.playerMap(accounts[0]).call({from:accounts[0]}).then(function(resul) {
+					system.playersMap(resul).call({from:accounts[0]}).then(function(resu) {
+						//$("#sys_level").html("生态等级：" + resu[3]);
+						console.log(resu[3][0])
+						switch(resu[3][0]){
+							case 0:$("#lpBuff").html("0" );break;
+							case 1:$("#lpBuff").html("8" );break;
+							case 2:$("#lpBuff").html("20");break;
+							case 3:$("#lpBuff").html("50");break;
+						}
+					});
+				});
+
+				//邀请码
+				var a = 1000;
+				var aherf = window.location.href;
+
+				//初级空投激活
+				for(var i =  0 ;i<100;i++){
+					if(aherf[i] == "i"){
+						if(aherf[i+1] == "d"){
+							a = aherf[i+3] + aherf[i+4] + aherf[i+5] + aherf[i+6];
+							system.playerMap(accounts[0]).call().then(function(resu) {
+								if(resu == 0){
+									bootbox.confirm({
+										size: "small",
+										title: "资格激活",
+										message: "您的好友赠送您初级空投资格，点击OK立刻激活",
+										callback: function(re){
+											if(re){
+												system.registerforplayer("Dplayer",a).sendTransaction({from:accounts[0]}).then(function(result){
+													if(result){
+														bootbox.alert({
+															size: "small",
+															title: "激活提示",
+															message: "激活成功，请立即加入群聊，开启空投领取",
+														})
+													}},function(){
+														bootbox.alert({
+															size: "small",
+															title: "激活提示",
+															message: "激活失败",
+														})
+													}	
+												)
+											}
+										}
+									})
+								}
+							})
+						}
+					}
+				}
+
+				//授权数量
+				approve.onclick = function(){
+					var value = $("#approveValue").val();
+					dsmetoken.approve('0x8ee6088fd06e20022e4e38c6587b391596c1959b',value*10**18).sendTransaction({from:accounts[0]}).then(function(r){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message:"授权成功,请等待20s,区块完成确定后再进行质押",
+						})
+					})
+				}
+
+				//初级空投领取
+				button_chuji.onclick = function(){
+					system.playerMap(accounts[0]).call().then(function(resul) {
+						if (resul > 0) {
+							kongtou.playmap(accounts[0]).call().then(function(resu) {
+								if (new Date().getTime() / 1000 - resu[0] >= 86400){											
+									kongtou.sign().sendTransaction({from:accounts[0]}).then(function(){
+										kongtou.playmapping(accounts[0]).call().then(function(response){
+											if(response[0].length == 0){
+												bootbox.alert({
+												size: "small",
+												title: "空投提示",
+												message:"恭喜您领取成功",
+												callback:function(){}
+											})
+											}else{
+											bootbox.alert({
+												size: "small",
+												title: "空投提示",
+												message:"恭喜您领取成功，本次空投公共基础系数Abs：" + response[0]/10 + ",空投随机系数N：" + response[3]/10 +
+												",等级加成Ls：" + response[4] + "%,共获得奖励 = Abs * N *(1+Ls) = " + response[2]/10**18 + " DSME" ,
+												callback:function(){}
+											})
+											}
+										})
+									},function(){
+										bootbox.alert({
+											size: "small",
+											title: "空投提示",
+											message: "领取失败,请先获得领取白名",
+										})
+										}
+									)																														
+								} else {
+									bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "<p>上次领取时间：" + getLocalTime(resu[
+												0]) +
+											",</p><p> 还未到领取时间哦</p>",
+									})
+								}
+							})
+						} else {
+							bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "请完成激活后领取空投",
+									})
+						}
+					})
+				}	
+
+				//质押lp
+				pledge.onclick = function(){
+					var value = $("#changeValue").val();
+					if(new Date().getTime() / 1000 < 1646485200){
+						bootbox.alert({
+							size: "small",
+							title: "质押提示",
+							message: "公测已经结束，质押正式上线时间为北京时间：2022.3.5 21:00:00，已参与质押的用户无需操作。",
+						
+							})
+					}else{
+						dspoolcfl.pledge(value * 10**18).sendTransaction({from:accounts[0]}).then(function(r){
+							bootbox.alert({
+								size: "small",
+								title: "交易提示",
+								message: "质押成功",
+							})
+							},function(r){
+							bootbox.alert({
+								size: "small",
+								title: "交易提示",
+								message: "质押失败",
+							})
+						})
+					}
+				}
+
+				//撤回
+				withdraw.onclick = function (){
+					var value = $("#changeValue").val();
+					dspoolcfl.withdrawPledge(value * 10**18).sendTransaction({from:accounts[0]}).then(function(r){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message: "撤回成功",
+						})
+						},function(r){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message: "撤回失败",
+						})
+					})	
+				}
+				//lp收益
+				dspoolcfl.calculation().call({from:accounts[0]}).then(function(re){
+					$("#lpShouyi").html(toDecimal8(re/10**18));
+				})
+			})	
+		</script>
+		
+		
+	</div>
+	<!-- 生态简介 -->
+	<div class="container-fluid" style="margin-top:8px;">
+		<div class="container fontcolor5"style="text-align:center;border-radius:12px;">
+			<div class="row" style="text-align:center;margin-top:10px">
+				<h4 style="color:#86a0a9">DSME应用场景</h4>
+			</div>
+			<div class="row" style="margin-top:10px">
+			    <!--销毁回收-->
+				<div class="col-xs-4">
+					<img src="V2/images/xiaohui.png" style="width:25px"><br/>
+					<div class="row" style="height:7px">
+					    <!--上下空白间隙-->
+					</div>
+					<strong><span>回收销毁</span> </strong>
+					<p style="font-size:10px">用于回收并销毁DSME</p>
+				</div>
+				<!--奖励模块-->
+				<div class="col-xs-4">
+					<img src="V2/images/jiangli.png" style="width:25px"><br/>
+					<div class="row" style="height:5px">
+					    <!--上下空白间隙-->
+					</div>
+					<strong><span>奖励</span> </strong>
+					<p style="font-size:10px">质押DSME奖励</p>
+				</div>
+				<!--DAO模块-->
+				<div class="col-xs-4">
+					<img src="V2/images/dao.png" style="width:25px"><br/>
+					<div class="row" style="height:5px">
+					    <!--上下空白间隙-->
+					</div>
+					<strong><span>DAO</span> </strong>
+					<p style="font-size:10px">社区提案及提案</p>
+				</div>
+				<!--留白行-->
+				<div class="row" style="height:50px">
+				    <!--留白行-->
+				</div>
+			</div>
+		</div>
+		<!--留白行-->
+				<div class="row" style="height:50px">
+				    <!--留白行-->
+				</div>
+	</div>
+	</body>
+</html>

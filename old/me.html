@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>ME</title>
+	
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="js/web3.min1.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/contractport.js"></script>
+		<script src="js/contractport1.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<!-- <script src="js/bootbox.locales.min.js"></script> -->
+		<script src="js/bootbox.min.js"></script>
+		
+	</head>
+	
+	<script>
+		window.onload = function() {
+			//精确补零
+			function toDecimal2(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 100) / 100;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 2) {
+					s += '0';
+				}
+				return s;
+			}
+
+			test_system1 = test_system2;
+			test_system2 = test_system4;
+
+			web3js.eth.getAccounts(function(error, result) {
+
+				//个人流通DSME数量
+				coin_balance.methods.requrie_banlance("0xdc38a8732f236e8f3e993775f0a68b7126a67e3c").call({from:result[0]}).then(function(resu){
+					$("#means_box_list_flow").html("unlucked：" + toDecimal2(resu/10**18));
+				})
+				//个人质押DSME数量
+				coin_balance.methods.requrie_banlance("0x5413f42064ed7beb1f50d368df6b85d63873f525").call({from:result[0]}).then(function(resu){
+					$("#means_box_list_free").html("lucked：" + toDecimal2(resu/10**18));
+				})
+
+				//个人属性
+				test_system2.methods.playerMap(result[0]).call().then(function(resul) {
+					test_system2.methods.playersMap(resul).call().then(function(resu) {
+						$("#name_box_id").html("ID：" + resu[2]);
+						$("#name_box_nino").html("昵称：" + resu[0]);
+						$("#sys_level").html("生态等级：" + resu[3]);
+						switch(resu[3]){
+							case "0":$("#sys_add").html("等级加成：0%" );break;
+							case "1":$("#sys_add").html("等级加成：8%" );break;
+							case "2":$("#sys_add").html("等级加成：30%" );break;
+							case "3":$("#sys_add").html("等级加成：100%" );break;
+
+						}
+						//$("#sys_add").html("等级加成：0%" );
+						$("#dao_level").html("生态公信等级:" + resu[10]);
+						$("#dao_li").html("生态公信力:" +resu[10] );
+						$("#invite_first").html("一级好友：" + resu[6] + " 一级奖励：" + toDecimal2(resu[8]/10**18) );
+						$("#invite_second").html("二级好友："+ resu[7] + "  二级奖励：" + toDecimal2(resu[9]/10**18) );
+						$("#invite_second_lmjx").html("邀请:https://www.dsme.vip/heco.html?id=" +  resu[2]);
+					});
+				});
+			});
+
+			shandui.onclick = function(){
+				window.location = "dbtc.html";
+			}
+
+			add_level.onclick = function(){
+				bootbox.alert({
+					size: "small",
+					title: "未开放提示",
+					message:"暂未开放，即将上线，敬请期待！",
+					callback:function(){location.reload();}
+				})
+			}
+
+			dao.onclick = function(){
+				bootbox.alert({
+					size: "small",
+					title: "未开放提示",
+					message:"暂未开放，即将上线，敬请期待！",
+					callback:function(){location.reload();}
+				})
+			}
+
+			gonghui.onclick = function(){
+				bootbox.alert({
+					size: "small",
+					title: "未开放提示",
+					message:"暂未开放，即将上线，敬请期待！",
+					callback:function(){location.reload();}
+				})
+			}
+
+			invite_guize.onclick = function(){
+				bootbox.alert({
+					size: "small",
+					title: "未开放提示",
+					message:"暂未开放，即将上线，敬请期待！",
+					callback:function(){location.reload();}
+				})
+			}
+		}
+	</script>
+	<body style="background-color: white;">
+		<!-- 顶部 昵称ID保持不动 -->
+		<div id="name_box">
+			<div id="name_box_nino">昵称：<span style="font-family: "微软雅黑";">load</span></div>
+			<div id="name_box_id">ID：load</div>	
+		</div>		
+		
+		<div id="big_box">
+			<!-- 资产情况.流向质押闪兑 -->
+			<div id="means_box">
+				<div id="means_box_name">资产 DSME</div>
+				<!-- 资产明细 -->
+				<div id="means_box_list">
+					<div id="means_box_list_flow" style="font-family: fangsong; font-size: 16px;">unlucked：load</div>
+					<div id="means_box_list_free" style="font-family: fangsong; font-size: 16px;">lucked：load</div>
+				</div>	
+				<!-- 闪兑 -->
+				<div id="shandui">
+					<button id="btn" style="" type="button" id="menu1" data-toggle="dropdown">交换</button>
+			</div>	
+			
+			<!-- 生态等级 -->
+			<div id="rank">
+				<div id="rank_name">
+					等级
+				</div>
+				<div id="rank_info">
+					<div id="sys_level" style="font-family: fangsong; font-size: 16px;color: #23395B;">生态等级：load</div>
+					<div id="sys_add" style="font-family: fangsong; font-size: 16px;color: #23395B;">等级加成：load</div>
+				</div>
+				<!-- 提升等级 -->
+				<div id="add_level">
+					<button id="btn2" style="" type="button" id="menu1" data-toggle="dropdown">提升等级</button>
+				</div>
+			</div>
+			
+			<!-- 公信等级 -->
+			<div id="rank2">
+				<div id="rank_name">
+					公信
+				</div>
+				<div id="rank_info">
+					<div id="dao_level" style="font-family: fangsong; font-size: 16px;color: #23395B;">生态公信等级:load</div>
+					<div id="dao_li" style="font-family: fangsong; font-size: 16px;color: #23395B;">生态公信力:load</div>
+				</div>
+				<!-- 提升等级 -->
+				<div id="dao">
+					<button id="btn2" style="" type="button" id="menu1" data-toggle="dropdown">DAO</button>
+				</div>
+			</div>
+			
+			<!-- 公会 -->
+			<div id="rank2">
+				<div id="rank_name">
+					公会
+				</div>
+				<div id="rank_info">
+					<div id="" style="font-family: fangsong; font-size: 16px;color: #23395B;">所属公会：画江湖</div>
+					<div id="" style="font-family: fangsong; font-size: 16px;color: #23395B;">公会加成：无</div>
+				</div>
+				<!-- 提升等级 -->
+				<div id="gonghui">
+					<button id="btn2" style="" type="button" id="menu1" data-toggle="dropdown">公会</button>
+				</div>
+			</div>
+			
+			<!-- 邀请系统 -->
+			<div id="invite">
+				<div id="invite_gvze" style="width: 96%;height: 35px;">
+					<div id="invite_gvze_name">邀请 | 奖励(DSME)</div>
+					<div id="invite_guize">邀请规则</div>
+				</div>
+				<div id="invite_first" style="font-family: fangsong; font-size: 16px;color: #23395B;">一级好友：load  一级奖励：load</div>
+				<div id="invite_second" style="font-family: fangsong; font-size: 16px;color: #23395B;">二级好友：load  二级奖励：load</div>
+				<div id="invite_second_lmjx" style="font-family: fangsong;">邀请:https://www.dsme.vip/heco.html</div>
+			</div>
+			
+			<div id="service">
+				<div id="service_bjbf" style="font-family: fangsong;color: #23395B;">系统等级：V0.4.0</div>
+				<div id="service_date" style="font-family: fangsong;color: #23395B;">开元日期：混沌天元</div>
+			</div>
+		</div>
+		<!-- 留白 -->
+		<!-- <div id="" style="height: 500px;">
+			
+		</div> -->
+		<!-- 底部 -->
+		<nav class="navbar-fixed-bottom">
+			<div class="container-fluid">
+				<div class="row">
+				<a href="index.html">
+					<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class=" glyphicon glyphicon-home ">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							HOME
+						</div>
+					</div>
+				</a>
+				<a href="financial.html">
+					<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-piggy-bank">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							DEFI
+						</div>
+					</div>
+				</a>
+				<a href="me.html">
+					<div class="navbottom navbottom2" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-user">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							ME
+						</div>
+					</div>
+				</a>
+					
+				</div>
+			</div>
+		</nav>
+		
+	</body>
+
+	<style>
+		a,
+		a:visited,
+		a:hover,
+		a:active {
+			/*全部状态都一样的效果*/
+			text-decoration: none;
+			/*没有下划线*/
+			color: white;
+			/*一直都蓝色*/
+		}
+		
+		#service_bjbf {
+			float: left;
+			width: 45%;
+			margin-left: 5%;
+		}
+		
+		#service {
+			height: 45px;
+			line-height: 45px;
+			border-radius: 16px;
+			border: 1px solid #EEC643;
+			background-color: #EEC643;
+			margin-top: 10px;
+		}
+		#btn2{
+			margin-top: -20px;
+			font-size: 14px;
+			margin-right: 10px;
+			width: 70px;
+			height: 35px;
+			float: right;
+			background-color: #fde74ca1;
+			text-align: center;
+			border: 1px solid #fde74ca1;
+			color: white;
+			font-weight: bold;" class="btn btn-default dropdown-toggle
+		}
+		
+		#btn{
+			margin-top: 5px;
+			font-size: 14px;
+			margin-right: 10px;
+			width: 70px;
+			height: 45px;
+			float: right;
+			background-color: #fde74ca1;
+			text-align: center;
+			border: 1px solid #fde74ca1;
+			color: white;
+			font-weight: bold;" class="btn btn-default dropdown-toggle
+		}
+		
+		#big_box{
+			margin-top: 10px;
+			border-radius: 16px;
+			height: 500px;
+			width: 96%;
+			margin-left: 2%;
+			border: 1px solid #F4A259;
+			background-color: #F4A259;
+		}
+		
+		#invite_second_lmjx {
+			margin-top: 5px;
+			margin-left: 5px;
+		}
+		
+		#invite_second {
+			margin-left: 20%;
+			height: 20px;
+			margin-top: 5px;
+		}
+		#invite_first{
+			clear: both;
+			margin-left: 20%;
+			height: 20px;
+		}
+		#invite_gvze_myxi{
+			height: 40px;
+			line-height: 40px;
+			float: right;
+			width: 20%;
+			color: white;
+		}
+		
+		#invite_gvze_name{
+			height: 40px;
+			line-height: 40px;
+			float: left;
+			width: 75%;
+			margin-left: 5%;
+		}
+		
+		#invite {
+			border-radius: 16px;
+			border: 1px solid #EEC643;
+			width: 100%;
+			height: 120px;
+			background-color: #EEC643;
+			margin-top: 10px;
+		}
+		#rank_advance_btn{
+			float: right;
+			width: 30%;
+			height: 30px;
+			line-height: 0px;
+			font-size: 12px;
+			padding-left: 10%;
+		}
+		
+		#rank_info {
+			width: 65%;
+			height: 30px;
+			line-height: 30px;
+			margin-left: 28%;
+		}
+		#rank2 {
+			border-radius: 16px;
+			border: 1px solid #EEC643;
+			width: 100%;
+			height: 60px;
+			background-color: #EEC643;
+			margin-top: 10px;
+		}
+		#rank_name {
+			float: left;
+			width: 20%;
+			height: 60px;
+			line-height: 60px;
+			margin-left: 5%;
+			font-size: 18px;
+			font-family: "黑体";
+		}
+		
+		#rank {
+			clear: both;
+			border-radius: 16px;
+			border: 1px solid #EEC643;
+			width: 100%;
+			height: 60px;
+			background-color: #EEC643;
+			margin-top: 75px;
+		}
+		
+		#means_box_btn{
+			margin-bottom: 10px;
+		}
+		
+		
+		#means_box_id {
+			color: #080808;
+		}
+		#means_box_list {
+			color: #23395B;
+			float: left;
+			width: 34%;
+			height: 30px;
+			line-height: 30px;
+			margin-left: 28%;
+		}
+		#means_box_name {
+			margin-top: 5px;
+			width: 30%;
+			height: 20px;
+			line-height: 20px;
+			color: #001F54;
+			font-size: 18px;
+			margin-left: 5%;
+			font-family: "黑体";
+		}
+		
+		#means_box {
+			border-radius: 16px;
+			border: 1px solid #EEC643;
+			margin-top: 5px;
+			width: 96%;
+			height: 90px;
+			margin-left: 2%;
+			background-color: #EEC643;
+		}
+		
+		#name_box_nino {
+			margin-left: 10%;
+			float: left;
+			height: 80px;
+			line-height: 80px;
+			font-size: 18px;
+			width: 65%;
+			color: white;
+		}
+		#name_box_id {
+			width: 25%;
+			height: 80px;
+			line-height: 80px;
+			font-size: 18px;
+			float: right;
+			color: white;
+		}
+		
+		
+		#name_box {
+			border-radius: 16px;
+			border: 1px solid #D45113;
+			background-color: #D45113;
+			width: 96%;
+			height: 80px;
+			margin-left: 2%;
+			margin-top: 5px;
+		}
+		.navbottom {
+			background-color: #eca400;
+			color:D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+		
+		}
+		.navbottom2 {
+			background-color: #eca400;
+			color:#D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+		
+		}
+
+		
+
+		
+		
+		
+	</style>
+</html>

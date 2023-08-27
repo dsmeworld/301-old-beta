@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>DSME</title>
+		
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-conflux-sdk/dist/js-conflux-sdk.umd.min.js"></script>
+		<script src="V2/js/hecorpc.js"></script>
+		<script src="V2/js/confluxrpc.js"></script>
+		<script src="V2/js/bootbox.min.js"></script>
+        <script src="js/contractport.js"></script>
+		<script src="js/contractport1.js"></script>
+		<script src="js/contractport3.js"></script>
+		<link rel="stylesheet" type="text/css" href="V2/css/index.css"/>
+		<script src="V2/js/index.js" type="text/javascript" charset="utf-8"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+
+	</head>
+	<body>
+	<!-- 头部 -->
+	<div class="container-fluid" >
+			<div class="row" style="background:#363433;height:40px;">
+				<div class="col-xs-6" style="padding-left:40px;margin-top:10px;">
+						<ul class="list-inline">
+							<li><img src="V2/images/logo.png" style="width:30px;height:30px;margin-top:-5px;"></li>
+							<li><strong class="fontcolor8">DSME</strong></li>
+						</ul>
+				</div>
+				<!-- 头部右侧HECO+菜单栏 -->
+				<div class="col-xs-4 col-xs-offset-1">
+					    <div class="row">
+					    	<div class="col-xs-4" style="margin-top:8px;">
+					    		<button type="button" id="node_www" class="fontcolor9" style="width:75px;height:25px;border-radius:90.3px;border:none;">NOT</button>
+					    	</div>
+					    	<div class="col-xs-7" style="margin-top:8px;padding-left:60px;">
+					    		<div class="dropdown">
+									<!-- 菜单栏 -->
+					    		    <span class="glyphicon glyphicon-align-justify dropdown-toggle fontcolor8" style="font-size:18px" id="dropdownMenu1" data-toggle="dropdown"></span>
+					    		    <!-- 菜单栏下拉内容 -->
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="min-width:95px;border-radius:12px; font-size:16px;margin-left:-47px;margin-top:9px;background:#000000CC;text-align:center">
+					    		        <li role="presentation">
+					    		            <a role="menuitem" style="color:#f5f5f7;" tabindex="-1" href="#">首页</a>
+					    		        </li>
+					    		        <li role="presentation">
+					    		            <a role="menuitem" style="color:#f5f5f7;" tabindex="-1" href="#">Dao</a>
+					    		        </li>
+					    		        <li role="presentation">
+					    		            <a role="menuitem" style="color:#f5f5f7;" tabindex="-1" href="#">Defi</a>
+					    		        </li>
+					    		    </ul>
+					    		</div>
+					        </div>
+					    </div>
+				</div>
+			</div>
+	</div>
+	<!-- 轮播图 -->
+	<!-- 轮播图模块 -->
+	<div class="container-fluid" style="margin-top:3px">
+		<div class="container">
+			<div id="myCarousel" class="row carousel slide" data-ride="carousel">
+			    <!-- 轮播（Carousel）指标 -->
+			    <ol class="carousel-indicators">
+			        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			        <li data-target="#myCarousel" data-slide-to="1"></li>
+			        <li data-target="#myCarousel" data-slide-to="2"></li>
+			    </ol>   
+			    <!-- 轮播（Carousel）项目 -->
+			    <div class="carousel-inner">
+			        <div class="item active">
+			            <img src="V2/images/loge1.png" alt="First slide">
+			            <div class="carousel-caption"></div>
+			        </div>
+			        <div class="item">
+			            <img src="V2/images/loge2.png" alt="Second slide">
+			            <div class="carousel-caption"></div>
+			        </div>
+			        <div class="item">
+			            <img src="V2/images/loge3.png" alt="Third slide">
+			            <div class="carousel-caption"></div>
+			        </div>
+			    </div>
+			    <!-- 轮播（Carousel）导航 -->
+			    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+			        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			        <span class="sr-only">Previous</span>
+			    </a>
+			    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+			        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			        <span class="sr-only">Next</span>
+			    </a>
+			</div>
+		</div>
+	</div>
+	<!-- DAO生态数据展示 -->
+	<div class="container-fluid" style="margin-top:8px;">
+		<div class="container fontcolor7" style="color:#f4f4f6;border-radius:12px;">
+			<div class="row" style="text-align:center;margin-top: 18px;">
+						<h4 style="color:#f4f4f6c2">持币地址(HECO&CONFLUX)</h4>
+					</div>
+					<div class="row" style="text-align:center;color:#a80077">
+						<span>374</span>&nbsp;个
+					</div>
+					<div class="row" style="text-align:center;">
+						<h4 style="color:#f4f4f6c2">DSME流通量(HECO&CONFLUX)</h4>
+					</div>
+					<div class="row" style="text-align:center;color:#B3FFAB">
+						<span>85,259.74</span>&nbsp;DSME
+					</div>
+					<!-- 留白行 -->
+					<div class="row" style="height:15px;">
+						<!-- 留白行 -->
+					</div>
+			</div>
+		</div>
+	</div>
+	<!-- 签到功能 -->
+	<div class="container-fluid" style="margin-top:8px;">
+		<div class="container fontcolor6"style="text-align:center;border-radius:12px;">
+			<!-- 盲盒空投 -->
+			<div class="row">
+				<h3 style="color:#86a0a9">盲盒空投</h3>
+			</div>
+			<!-- 盲盒空头规则 -->
+			<div class="row" style="margin-left: 250px;margin-top: -15px;">
+				<button type="button"data-toggle="modal" class="fontcolor6 btn" data-target="#myModal1" style="border-radius:20px;background-color:#ead1ea40;outline:none;"><strong>空投规则</strong></button>
+			</div>
+			<!-- 规则模态框 -->
+			<div class="modal fade " id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" >
+					<div class="modal-content"style="background-color:#cecece;">
+						<!-- 提示框头部+关闭符号 -->
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" 
+									aria-hidden="true">×
+							</button>
+							<!-- 标题内容 -->
+							<h4 class="modal-title" id="myModalLabel" style="text-align: center;">
+								<strong>DSME盲盒空投规则</strong>
+							</h4>
+						</div>
+						<!-- 模态框主要内容 -->
+						<div class="modal-body">
+							<!-- 规则内容 -->
+							<div class="row"style="width:92%;margin-left:14px;border-radius:10px;">					
+								1、流程：通过特邀链接激活-获取白名单。（暂停添加新白名单，已有不变）
+								2、初级空投、中级空投每24小时可以领取一次。
+								3、邀请奖励:一级8%，二级5%。(暂停邀请开通，已有关系不变)
+								DSME合约地址:<br>0xdc38a8732f236e8F3E993775F0a68b7126a67e3C
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 分割线行 -->
+			<!-- <div class="row"style="border-bottom:1px solid rgb(99, 111, 164);padding-bottom:10px"> -->
+				<!-- 分割线 -->
+			<!-- </div> -->
+			<div class="row" style="margin-top:10px;">
+					<div class="col-xs-4" style="background-color:#6051902e;width:130px;text-align:center;border-radius:12px;left:30px;">
+						<div class="row">
+							<h4>初级空投</h4>
+						</div>
+						<div class="row">
+							领取次数:&nbsp;<span id = "chu_ge" style="color:#7F00FF;">0</span>&nbsp;次
+						</div>
+						<div class="row">
+							参与人次:&nbsp;<span id = "chu_all" style="color:#7303c0;">0</span>&nbsp;次
+						</div>
+						<div class="row" style="margin-top:10px">
+							<button id = "button_chuji" type="button" class="btn" style="border-radius:12px;width:70px;background-color:#ead1ea40">领取</button>
+						</div>
+						<!--留白行-->
+						<div class="row" style="height:10px">
+						    <!--留白行-->
+						</div>
+					</div>
+					<!-- 中级空投详情 -->
+					<div class="col-xs-4" style="background-color:#6051902e;width:130px;text-align:center;border-radius:12px;left:72px;">
+						<div class="row">
+							<h4>中级空投</h4>
+						</div>
+						<div class="row" >
+							领取次数:&nbsp;<span id = "zhong_ge" style="color:#7F00FF;">0</span>&nbsp;次
+						</div>
+						<div class="row">
+							参与人次:&nbsp;<span id = "zhong_all" style="color:#7303c0;">0</span>&nbsp;次
+						</div>
+						
+						<div class="row"style="margin-top:10px">
+							<button id = "button_zhongji" type="button" class="btn" style="border-radius:12px;width:70px;background-color:#ead1ea40">领取</button>
+						</div>
+						<!--留白行-->
+						<div class="row" style="height:10px">
+						    <!--留白行-->
+						</div>
+					</div>
+			</div>
+			<!-- 留白行 -->
+			<div class="row" style="height: 30px;">
+				<!-- 留白行 -->
+			</div>
+		</div>
+	</div>
+	<!-- 单币质押功能 -->
+	<div class="container-fluid">
+
+
+		<!--DSPOOL-DBTC-->
+		<div class="container fontcolor4"style="margin-top:8px;border-radius:20px;">
+			<!-- DSME单币质押标题 -->
+			<div class="row" style="text-align:center;">
+				<h3 style="color:#86a0a9">DBTC质押池</h3>
+			</div>
+			<!-- 单笔质押头部第一行 --> 
+			<div class="row" style="margin: 0 0;">
+				<!-- 提案信息图标+文字 -->
+				<div class="col-xs-4" style="padding:0px;margin-top:9px;">
+					<ul class="list-inline">
+						<li><img src="V2/images/dbtc.png" style="width:30px;height:30px;margin-top:-5px;"></span></li>
+						<li><h4 style="color:#c8522c">DBTC</h4></li>
+					</ul>
+				</div>
+				<!-- 提案信息折叠符号 -->
+				<div class="col-xs-3 col-xs-offset-5"style="padding-left:40px;margin-top:11px;">
+					<button type="button" style="outline: none;" class="bt btn btn-link" data-toggle="collapse" data-target="#demo">
+					    <span class="glyphicon glyphicon-chevron-down" style="color: red;"></span>
+					</button>
+				</div>
+			</div>
+			<!-- 单笔质头部内容 -->
+			<!-- Earned -->
+			<div class="row">
+				<div class="col-xs-4"style="color:gray;">
+					Earned
+				</div>
+				<div class="col-xs-5 col-xs-offset-3" style="text-align:right;color:royalblue;">
+					<strong><span id="lpShouyi">0.00000000</span>&nbsp;DSME</strong>
+				</div>
+			</div>
+			<!-- APY -->
+			<div class="row"style="color:gray;">
+				<div class="col-xs-4">
+					APY
+				</div>
+				<div class="col-xs-5 col-xs-offset-3"style="text-align:right;color: green;">
+					<strong><span id="lpApy">0.00%</span></strong>
+				</div>
+			</div>
+			<!-- Total Deposit -->
+			<div class="row">
+				<div class="col-xs-4"style="color:gray;">
+					Total Deposit
+				</div>
+				<div class="col-xs-5 col-xs-offset-3"style="text-align:right;color:#ffd452;">
+					<strong><span id="lpAll">0.00</span> DBTC</strong>
+				</div>
+			</div>
+			<!--留白行-->
+			    <div class="row" style="height:15px">
+			    </div>
+			<!-- 被折叠的提案信息内容 -->
+			<div id="demo" class="row collapse" style="margin:0 0;line-height:30px;">
+				<div class="row">
+					<div class="col-xs-4"style="color:#67B26F;">
+						<strong style="color:#ACB6E5">Balance:</strong><br><span id="dsmeBanlance">-</span>&nbsp;DSME
+					</div>
+					<div class="col-xs-4 col-xs-offset-4"style="text-align:right;color:#4ca2cd;">
+						<strong style="color:#ACB6E5">Balance:</strong><br><span id="cfxfcBanlance">-</span>&nbsp;DBTC
+					</div>
+				</div>
+				<div class="row">
+					<div class="container-fluid">
+						<!-- 授权数量input框 -->
+						<form action="" method="post" style="margin-left:30px;">
+							<input id="approveValue" type="text" class="bt btn"style="outline: none;color:white;border-radius:25px;width:90%;height:50px;border:none;background-color:#f0f0f05c;" value="" placeholder=""/>
+						</form>
+						<!-- 滑动进度条 -->
+						
+						<!-- 授权按钮 -->
+						<div class="row" style="margin-left:115px; margin-top:15px">
+							<button id="approve" type="button" class="btn-lg fontcolor1">授权DBTC</button>
+						</div>
+						<!-- Deposited沉积+Earned -->
+						<div class="row">
+							<!-- Deposited沉积 -->
+							<div class="col-xs-4"style="color:#4ca2cd;">
+								<strong style="color:#74ebd5;">Deposited:</strong><br><span id="dcflBanlance">-</span>&nbsp;DBTC
+							</div>
+							<!-- Earned -->
+							<div class="col-xs-8" style="text-align:right;color:#67B26F;">
+								<strong style="color:#74ebd5;">BUFF:</strong><br><span id="lpBuff">0</span>&nbsp;%
+							</div>
+						</div>
+						<!-- 确认输入框数量 -->
+						<!-- 授权数量input框 -->
+						<form action="" method="post" style="margin-left: 30px;">
+							<input id="changeValue" type="text" class="bt btn" style="outline: none;color:white;border-radius:25px;width:90%;height:50px;border:none;background-color:#f0f0f05c;"  value="" placeholder=""/>
+						</form>
+						<!-- 滑动进度条 -->
+						<!-- 撤回+质押确认按钮 -->
+						<div class="row" style="margin-top:15px">
+							<!-- Withdraw撤回按钮 -->
+							<div class="col-xs-4 col-xs-offset-1">
+								<button id="withdraw" type="buttons" class="btn-lg fontcolor2">赎回</button>
+							</div>
+							<!-- Claim质押按钮 -->
+							<div class="col-xs-4 col-xs-offset-2">
+								<button id="pledge" type="button" class="btn-lg fontcolor3">质押</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--留白行-->
+			    <div class="row" style="height:15px">
+			    </div>
+			</div>
+		</div>
+
+
+		<!--DSPOOL-DSME-->
+		<div class="container fontcolor4"style="margin-top:8px;border-radius:20px;">
+			<!-- DSME单币质押标题 -->
+			<div class="row" style="text-align:center;">
+				<h3 style="color:#86a0a9">DSME质押池</h3>
+			</div>
+			<!-- 单笔质押头部第一行 --> 
+			<div class="row" style="margin: 0 0;">
+				<!-- 提案信息图标+文字 -->
+				<div class="col-xs-4" style="padding:0px;margin-top:9px;">
+					<ul class="list-inline">
+						<li><img src="V2/images/logo.png" style="width:30px;height:30px;margin-top:-5px;"></span></li>
+						<li><h4 style="color:#c8522c">DSME</h4></li>
+					</ul>
+				</div>
+				<!-- 提案信息折叠符号 -->
+				<div class="col-xs-3 col-xs-offset-5"style="padding-left:40px;margin-top:11px;">
+					<button type="button" style="outline: none;" class="bt btn btn-link" data-toggle="collapse" data-target="#demo2">
+					    <span class="glyphicon glyphicon-chevron-down" style="color: red;"></span>
+					</button>
+				</div>
+			</div>
+			<!-- 单笔质头部内容 -->
+			<!-- Earned -->
+			<div class="row">
+				<div class="col-xs-4"style="color:gray;">
+					Earned
+				</div>
+				<div class="col-xs-5 col-xs-offset-3" style="text-align:right;color:royalblue;">
+					<strong><span id="lpShouyi2">0.00000000</span>&nbsp;DSME</strong>
+				</div>
+			</div>
+			<!-- APY -->
+			<div class="row"style="color:gray;">
+				<div class="col-xs-4">
+					APY
+				</div>
+				<div class="col-xs-5 col-xs-offset-3"style="text-align:right;color: green;">
+					<strong><span id="lpApy2">0.00%</span></strong>
+				</div>
+			</div>
+			<!-- Total Deposit -->
+			<div class="row">
+				<div class="col-xs-4"style="color:gray;">
+					Total Deposit
+				</div>
+				<div class="col-xs-5 col-xs-offset-3"style="text-align:right;color:#ffd452;">
+					<strong><span id="lpAll2">0.00</span> DSME</strong>
+				</div>
+			</div>
+			<!--留白行-->
+			    <div class="row" style="height:15px">
+			    </div>
+			<!-- 被折叠的提案信息内容 -->
+			<div id="demo2" class="row collapse" style="margin:0 0;line-height:30px;">
+				<div class="row">
+					<div class="col-xs-4"style="color:#67B26F;">
+						<strong style="color:#ACB6E5">Balance:</strong><br><span id="dsmeBanlance2">-</span>&nbsp;DSME
+					</div>
+					<!--
+					<div class="col-xs-4 col-xs-offset-4"style="text-align:right;color:#4ca2cd;">
+						<strong style="color:#ACB6E5">Balance:</strong><br><span id="cfxfcBanlance2">0.0000</span>&nbsp;DBTC
+					</div>
+					-->
+				</div>
+				<div class="row">
+					<div class="container-fluid">
+						<!-- 授权数量input框 -->
+						<form action="" method="post" style="margin-left:30px;">
+							<input id="approveValue2" type="text" class="bt btn"style="outline: none;color:white;border-radius:25px;width:90%;height:50px;border:none;background-color:#f0f0f05c;" value="" placeholder=""/>
+						</form>
+						<!-- 滑动进度条 -->
+						
+						<!-- 授权按钮 -->
+						<div class="row" style="margin-left:115px; margin-top:15px">
+							<button id="approve2" type="button" class="btn-lg fontcolor1">授权DSME</button>
+						</div>
+						<!-- Deposited沉积+Earned -->
+						<div class="row">
+							<!-- Deposited沉积 -->
+							<div class="col-xs-4"style="color:#4ca2cd;">
+								<strong style="color:#74ebd5;">Deposited:</strong><br><span id="dcflBanlance2">-</span>&nbsp;DSME
+							</div>
+							<!-- Earned -->
+							<div class="col-xs-8" style="text-align:right;color:#67B26F;">
+								<strong style="color:#74ebd5;">BUFF:</strong><br><span id="lpBuff2">0</span>&nbsp;%
+							</div>
+						</div>
+						<!-- 确认输入框数量 -->
+						<!-- 授权数量input框 -->
+						<form action="" method="post" style="margin-left: 30px;">
+							<input id="changeValue2" type="text" class="bt btn" style="outline: none;color:white;border-radius:25px;width:90%;height:50px;border:none;background-color:#f0f0f05c;"  value="" placeholder=""/>
+						</form>
+						<!-- 滑动进度条 -->
+						<!-- 撤回+质押确认按钮 -->
+						<div class="row" style="margin-top:15px">
+							<!-- Withdraw撤回按钮 -->
+							<div class="col-xs-4 col-xs-offset-1">
+								<button id="withdraw2" type="buttons" class="btn-lg fontcolor2">赎回</button>
+							</div>
+							<!-- Claim质押按钮 -->
+							<div class="col-xs-4 col-xs-offset-2">
+								<button id="pledge2" type="button" class="btn-lg fontcolor3">质押</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--留白行-->
+			    <div class="row" style="height:15px">
+			    </div>
+			</div>
+		</div>
+
+		<!-- //折叠内容js -->
+		<script>
+		    $(document).ready(function(){
+				$('#demo').collapse('hide');
+		        $("#demo").on("hide.bs.collapse", function(){
+		            $(".bt").html('<span class="glyphicon glyphicon-chevron-down" style="color: red;"></span>');
+		        });
+		        $("#demo").on("show.bs.collapse", function(){
+		            $(".bt").html('<span class="glyphicon glyphicon-chevron-up" style="color: red;"></span>');
+		        });
+
+				$('#demo2').collapse('hide');
+		        $("#demo2").on("hide.bs.collapse", function(){
+		            $(".bt").html('<span class="glyphicon glyphicon-chevron-down" style="color: red;"></span>');
+		        });
+		        $("#demo2").on("show.bs.collapse", function(){
+		            $(".bt").html('<span class="glyphicon glyphicon-chevron-up" style="color: red;"></span>');
+		        });
+		    });
+			
+            bootbox.alert({
+				size: "small",
+				title: "2023/7.14社区公告",
+				message: "亲爱的社区朋友，你们好！我们已于2023/7/14日升级了公共节点，并优化了连接WEB3的标准，解决了公共节点访问失败问题。我们的社区邮件为admin@dsme.space，如果有任何疑问请邮箱沟通，期待来信！🤗",
+			})
+			
+            test_system1 = test_system2;
+			test = test_system4;
+
+			//DSPOOL-DSME
+			test_dspool2 = test_dspool;
+			//DSPOOL-DBTC
+            test_dspool = dspool_dbtc;
+
+			let dbtced = 0;
+			let dsmeed = 0;
+            
+			//公共数据RPC节点获取
+			//初级空投heco领取人次
+			KC_heco.methods.random().call().then(function(res){
+				//初级空投conflux领取人次
+				kongtouR.random().call({from:"0x1a781152365291daa5e06617e59019c7d7c8cc6b"}).then(function(response){
+					$("#chu_all").html( Number(response[0]) + Number(res) );
+				})
+			})
+			//中级空投领取人次
+			KZ_heco.methods.random().call().then(function(response){
+				$("#zhong_all").html( Number(response)/2 + 1845.5);
+			})
+			
+			//DBTC-lp质押总量与质押年华率
+            dbtcr.methods.pledge_all().call().then(function(res){
+				dbtcr.methods.reward_day().call().then(function(rr){
+					$("#lpAll").html(toDecimal4(Number(res)/10**18));
+					$("#lpApy").html(toDecimal4((Number(rr)*36500)/(Number(res)*108000)) + "%" );	
+				})
+			})
+			//DSME-lp质押总量与质押年华率
+			dsmer.methods.pledge_all().call().then(function(res){
+				dbtcr.methods.reward_day().call().then(function(rr){
+					$("#lpAll2").html(toDecimal4(Number(res)/10**18));
+					$("#lpApy2").html(toDecimal4((Number(rr)*36500*3)/(Number(res))) + "%" );	
+				})
+			})
+			//获取账户地址
+            //web3js.eth.getAccounts(function(error,result){
+			window.ethereum.enable()
+				.then(() => {
+				// 获取钱包账户地址
+				return web3js.eth.getAccounts();
+				})
+				.then((accounts) => {
+				const result = accounts;
+				//console.log('Connected to MetaMask with account:', result[0]);
+				// 在这里可以继续执行您的代码逻辑，与钱包进行交互等
+							
+				//防止API获取失败，再次获取
+				//初级空投heco领取人次
+				kongtou_chuji.methods.random().call().then(function(res){
+					//初级空投conflux领取人次
+					kongtouR.random().call({from:"0x1a781152365291daa5e06617e59019c7d7c8cc6b"}).then(function(response){
+						$("#chu_all").html( Number(response[0])/1 + Number(res)/1 );
+					})
+				})
+				//中级空投领取人次
+				test_kongtou.methods.random().call().then(function(response){
+					$("#zhong_all").html( Number(response)/2 + 1845.5 );
+				})
+				
+				//DBTC-lp质押总量与质押年华率
+				dspool_dbtc.methods.pledge_all().call().then(function(res){
+					dspool_dbtc.methods.reward_day().call().then(function(rr){
+						$("#lpAll").html(toDecimal4(Number(res)/ 10**18));
+						$("#lpApy").html(toDecimal2((Number(rr)*0.5*36500*2)/(Number(res)*108000)) + "%" );	
+					})
+				})
+				//DSME-lp质押总量与质押年华率
+				test_dspool2.methods.pledge_all().call().then(function(res){
+					test_dspool2.methods.reward_day().call().then(function(rr){
+						$("#lpAll2").html(toDecimal4(Number(res)/ 10**18));
+						$("#lpApy2").html(toDecimal2((Number(rr)*36500*3)/(Number(res))) + "%" );	
+					})
+				})
+
+				//查询DSME数量
+                coin_balance.methods.requrie_banlance("0xdc38a8732f236e8f3e993775f0a68b7126a67e3c").call({from:result[0]}).then(function(resu){
+					$("#dsmeBanlance").html(toDecimal2(Number(resu)/10**18));
+					$("#dsmeBanlance2").html(toDecimal2(Number(resu)/10**18));
+				})
+				//查询DBTC持币数量
+                coin_balance.methods.requrie_banlance("0x69235b15Df012EE671467aaF81b676Cf0628F927").call({from:result[0]}).then(function(resu){
+					$("#cfxfcBanlance").html(toDecimal4(Number(resu)/10**18));
+				})
+				//查询质押DBTC数量
+                coin_balance.methods.requrie_banlance("0x0fea739de3B4fd3D21eCa5A011a4e96bB9f4919b").call({from:result[0]}).then(function(resu){
+					$("#dcflBanlance").html(toDecimal4(Number(resu)/10**18));
+					//刷新收益
+					if(resu > 0){
+						//DSPOOL-DBTC收益
+						test_dspool.methods.calculation().call({from:result[0]}).then(function(re){
+							$("#lpShouyi").html(toDecimal8(Number(re)/10**18));
+						})
+						var accountInterval = setInterval(function() {
+							//DSPOOL-DBTC收益
+							test_dspool.methods.calculation().call({from:result[0]}).then(function(re){
+								$("#lpShouyi").html(toDecimal8(Number(re)/10**18));
+							})
+						}, 3000);
+					}
+				})
+				//查询质押DSME数量
+                coin_balance.methods.requrie_banlance("0x5413f42064ed7beb1f50d368df6b85d63873f525").call({from:result[0]}).then(function(resu){
+					$("#dcflBanlance2").html(toDecimal4(Number(resu)/10**18));
+					//刷新收益
+					if(resu > 0){
+						//DSPOOL-DSME收益
+						test_dspool2.methods.calculation().call({from:result[0]}).then(function(re){
+							$("#lpShouyi2").html(toDecimal8(Number(re)/10**18));
+						})
+						var accountInterval = setInterval(function() {
+							//DSPOOL-DSME收益
+							test_dspool2.methods.calculation().call({from:result[0]}).then(function(re){
+								$("#lpShouyi2").html(toDecimal8(Number(re)/10**18));
+							})
+						}, 3000);
+					}
+				})
+
+				//显示网络
+				$("#node_www").html( "HECO" );
+				
+				//空投个人领取次数
+                test_kongtou.methods.playmap(result[0]).call().then(function(result) {
+						$("#zhong_ge").html( Number(result[1]) );		
+				});
+				
+				kongtou_chuji.methods.playmap(result[0]).call().then(function(result) {
+						$("#chu_ge").html( Number(result[1]) );		
+				});
+				/*
+				//BUFF
+				//个人属性
+				system.playerMap(accounts[0]).call({from:accounts[0]}).then(function(resul) {
+					system.playersMap(resul).call({from:accounts[0]}).then(function(resu) {
+						//$("#sys_level").html("生态等级：" + resu[3]);
+						console.log(resu[3][0])
+						switch(resu[3][0]){
+							case 0:$("#lpBuff").html("0" );break;
+							case 1:$("#lpBuff").html("8" );break;
+							case 2:$("#lpBuff").html("20");break;
+							case 3:$("#lpBuff").html("50");break;
+						}
+					});
+				});
+                */
+                //邀请码
+				var a = 1000;
+				var aherf = window.location.href;
+
+                //邀请激活
+				for(var i =  0 ;i<100;i++){
+					if(aherf[i] == "i"){
+						if(aherf[i+1] == "d"){
+							a = aherf[i+3] + aherf[i+4] + aherf[i+5] + aherf[i+6];
+							test.methods.playerMap(result[0]).call().then(function(resu) {
+								if(resu == 0){
+									bootbox.confirm({
+										size: "small",
+										title: "资格激活",
+										message: "您的好友赠送您初级空投资格，点击OK立刻激活",
+										callback: function(re){
+											if(re){
+												test_system4.methods.register_for_player("Dplayer",a).send({from:result[0],gas:500000}).then(function(result){
+													if(result){
+														bootbox.alert({
+															size: "small",
+															title: "激活提示",
+															message: "激活成功，请立即加入群聊，开启空投领取",
+														})
+													}},function(){
+														bootbox.alert({
+															size: "small",
+															title: "激活提示",
+															message: "激活失败",
+														})
+													}	
+												)
+											}
+										}
+									})
+								}
+							})
+						}
+					}
+				}
+
+                //中级签到空投
+				button_zhongji.onclick = function() {
+					test_kongtou.methods.playmap(result[0]).call().then(function(resul) {
+						if (Number(resul[1]) != 0) {
+							test_kongtou.methods.playmap(result[0]).call().then(function(resu) {
+								if (new Date().getTime() / 1000 - Number(resu[0]) >= 86400) {
+									bootbox.prompt({ 
+    									size: "small",
+    									title: "请填写随机整数（0~20），猜中空投翻倍~",
+										callback: function(re){
+											if(re){
+												re1 = re.toString();
+												test_kongtou.methods.sign(re1).send({from: result[0],gas: 400000}).then(function(rr){
+													test_kongtou.methods.playmapping(result[0]).call().then(function(response){
+														if(Number(response[1]) == re1){
+															bootbox.alert({
+																size: "small",
+																title: "空投提示",
+																message:"恭喜您领取成功，本次空投公共基础系数Abs：" + Number(response[0])/10 + ",空投随机系数N：" + Number(response[3])/10 +  
+																",竞猜随机数M：" + Number(response[1]) + ",等级加成Ls：" + Number(response[4]) + "%,本次您已中奖，空投翻倍，共获得奖励 = Abs * N * 2 *(1+Ls) = " + Number(response[2])/10**18 + " DSME" ,
+																callback:function(){}
+															})
+														}else{
+															bootbox.alert({
+																size: "small",
+																title: "空投提示",
+																message:"恭喜您领取成功，本次空投公共基础系数Abs：" + Number(response[0])/10 + ",空投随机系数N：" + Number(response[3])/10 +
+																",竞猜随机数M：" + Number(response[1]) + ",等级加成Ls：" + Number(response[4]) + "%,本次您未中奖，共获得奖励 = Abs * N *(1+Ls) = " + Number(response[2])/10**18 + " DSME" ,
+																callback:function(){}
+															})
+														}
+													},function(){
+														bootbox.alert({
+															size: "small",
+															title: "空投提示",
+															message: "领取失败",
+														})
+													}
+													)
+												})
+											}
+										}
+									})
+								} else {
+									bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "<p>上次领取时间：" + getLocalTime(resu[
+												0]) +
+											",</p><p> 还未到领取时间哦</p>",
+									})
+								}
+							})
+						} else {
+							bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "中级空投暂仅对部分用户开放",
+									})
+						}
+					})
+				};
+
+				//授权DBTC数量
+				approve.onclick = function(){
+					var value = $("#approveValue").val();
+                    var resul2 = value*100000000 +"0000000000";
+					dbtc.methods.approve('0xAaE080a4ac77529Ac2efc65D854b8b587eF808cd',resul2).send({from:result[0]}).then(function(r){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message:"授权成功",
+						})
+					})
+				}
+
+				//授权DSME数量
+				approve2.onclick = function(){
+					var value = $("#approveValue2").val();
+                    var resul2 = value*100000000 +"0000000000";
+					dsmecoin.methods.approve('0x8ab98958da97d492543dee98075bd1d370908a0e',resul2).send({from:result[0]}).then(function(r){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message:"授权成功",
+						})
+					})
+				}
+
+				//初级空投领取
+				button_chuji.onclick = function(){
+					test.methods.playerMap(result[0]).call().then(function(resul) {
+						if (Number(resul) > 1070) {
+							kongtou_chuji.methods.playmap(result[0]).call().then(function(resu) {
+								if (new Date().getTime() / 1000 - Number(resu[0]) >= 86400 * 2) {											
+									kongtou_chuji.methods.sign().send({from: result[0],gas: 330000}).then(function(){
+										kongtou_chuji.methods.playmapping(result[0]).call().then(function(response){
+											bootbox.alert({
+												size: "small",
+												title: "空投提示",
+												message:"恭喜您领取成功，本次空投公共基础系数Abs：" + Number(response[0])/10 + ",空投随机系数N：" + Number(response[3])/10 +
+												",等级加成Ls：" + Number(response[4]) + "%,共获得奖励 = Abs * N *(1+Ls) = " + Number(response[2])/10**18 + " DSME" ,
+												callback:function(){}
+											})
+										})
+									},function(){
+										bootbox.alert({
+											size: "small",
+											title: "空投提示",
+											message: "领取失败,请先获得领取资格",
+										})
+										}
+									)																														
+								} else {
+									bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "<p>上次领取时间：" + getLocalTime(Number(resu[
+												0])) +
+											",</p><p> 还未到领取时间哦</p>",
+									})
+								}
+							})
+						} else {
+							bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "请完成激活后领取空投",
+									})
+						}
+					})
+				}	
+
+				//质押DBTC
+				pledge.onclick = function(){
+					var value = $("#changeValue").val();
+                    var resul2 = value*100000000 +"0000000000";
+					if(new Date().getTime() / 1000 < 1644753600){
+						bootbox.alert({
+							size: "small",
+							title: "质押提示",
+							message: "质押开始时间为北京时间：2022.2.13 20:00:00",
+						    callback: function(){location.reload();}
+							})
+					}else{
+						test_dspool.methods.pledge(resul2).send({from:result[0],gas:300000}).then(function(ree){
+							bootbox.alert({
+								size: "small",
+								title: "交易提示",
+								message: "质押成功",
+							})
+							},function(r){
+							bootbox.alert({
+								size: "small",
+								title: "交易提示",
+								message: "质押失败",
+							})
+						})
+					}
+				}
+
+				//撤回DBTC
+				withdraw.onclick = function (){
+					var value = $("#changeValue").val();
+                    var resul2 = value*100000000 +"0000000000";
+                    test_dspool.methods.withdraw_pledge(resul2).send({from:result[0],gas:300000}).then(function(ree){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message: "撤回成功",
+						})
+						},function(r){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message: "撤回失败",
+						})
+					})	
+				}
+
+				//质押DSME
+				pledge2.onclick = function(){
+					var value = $("#changeValue2").val();
+                    var resul2 = value*100000000 +"0000000000";
+					if(new Date().getTime() / 1000 < 1644753600){
+						bootbox.alert({
+							size: "small",
+							title: "质押提示",
+							message: "质押开始时间为北京时间：2022.2.13 20:00:00",
+						    callback: function(){location.reload();}
+							})
+					}else{
+						test_dspool2.methods.pledge(resul2).send({from:result[0],gas:300000}).then(function(ree){
+							bootbox.alert({
+								size: "small",
+								title: "交易提示",
+								message: "质押成功",
+							})
+							},function(r){
+							bootbox.alert({
+								size: "small",
+								title: "交易提示",
+								message: "质押失败",
+							})
+						})
+					}
+				}
+
+				//撤回DSME
+				withdraw2.onclick = function (){
+					var value = $("#changeValue2").val();
+                    var resul2 = value*100000000 +"0000000000";
+                    test_dspool2.methods.withdraw_pledge(resul2).send({from:result[0],gas:300000}).then(function(ree){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message: "撤回成功",
+						})
+						},function(r){
+						bootbox.alert({
+							size: "small",
+							title: "交易提示",
+							message: "撤回失败",
+						})
+					})	
+				}
+			})	
+		</script>
+		
+	</div>
+	<!-- 生态简介 -->
+	<div class="container-fluid" style="margin-top:8px;">
+		<div class="container fontcolor5"style="text-align:center;border-radius:12px;">
+			<div class="row" style="text-align:center;margin-top:10px">
+				<h4 style="color:#86a0a9">DSME应用场景</h4>
+			</div>
+			<div class="row" style="margin-top:10px">
+			    <!--销毁回收-->
+				<div class="col-xs-4">
+					<img src="V2/images/xiaohui.png" style="width:25px"><br/>
+					<div class="row" style="height:7px">
+					    <!--上下空白间隙-->
+					</div>
+					<strong><span>回收销毁</span> </strong>
+					<p style="font-size:10px">用于回收并销毁DSME</p>
+				</div>
+				<!--奖励模块-->
+				<div class="col-xs-4">
+					<img src="V2/images/jiangli.png" style="width:25px"><br/>
+					<div class="row" style="height:5px">
+					    <!--上下空白间隙-->
+					</div>
+					<strong><span>奖励</span> </strong>
+					<p style="font-size:10px">质押DSME奖励</p>
+				</div>
+				<!--DAO模块-->
+				<div class="col-xs-4">
+					<img src="V2/images/dao.png" style="width:25px"><br/>
+					<div class="row" style="height:5px">
+					    <!--上下空白间隙-->
+					</div>
+					<strong><span>DAO</span> </strong>
+					<p style="font-size:10px">社区提案及提案</p>
+				</div>
+				<!--留白行-->
+				<div class="row" style="height:50px">
+				    <!--留白行-->
+				</div>
+			</div>
+		</div>
+		<!--留白行-->
+				<div class="row" style="height:50px">
+				    <!--留白行-->
+				</div>
+	</div>
+	</body>
+</html>

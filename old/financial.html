@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>DEFI</title>
+	
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+
+		<script src="js/web3.min.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/contractport.js"></script>
+		<script src="js/contractport1.js"></script>
+		<script src="js/contractport3.js"></script>
+        <script src="js/bootbox.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		
+	</head>
+
+   <!-- <script>
+
+		window.onload = function(){
+			bootbox.alert({
+				size: "small",
+				title: "温馨提示",
+				message: "您的账号还未授权开通金融板块哦~",
+				callback:function(){window.location = "index.html";}
+			})
+	}
+
+	</script> -->
+	<script>	
+
+		window.onload = function(){
+
+			function toDecimal2(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 100) / 100;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 2) {
+					s += '0';
+				}
+				return s;
+			}
+
+
+			function toDecimal4(x) {
+				var f = parseFloat(x);
+				if (isNaN(f)) {
+					return false;
+				}
+				var f = Math.round(x * 10000) / 10000;
+				var s = f.toString();
+				var rs = s.indexOf('.');
+				if (rs < 0) {
+					rs = s.length;
+					s += '.';
+				}
+				while (s.length <= rs + 4) {
+					s += '0';
+				}
+				return s;
+			}
+
+
+			button_dd.onclick = function(){
+
+				window.location = "dspool/pledge_dsme.html";
+			}
+
+			button_insure.onclick = function(){
+
+				bootbox.alert({
+					size: "small",
+					title: "结束提示",
+					message: "本期质押已结束喽~",
+				})
+			}
+
+			button_insure3.onclick = function(){
+				
+				bootbox.alert({
+					size: "small",
+					title: "结束提示",
+					message: "本期质押已结束喽~",
+				})
+				//window.location = "dspool/pledge_insure3.html";
+			}
+
+			button_insure2.onclick = function(){
+				
+				bootbox.alert({
+					size: "small",
+					title: "结束提示",
+					message: "本期质押已结束喽~",
+				})
+				//window.location = "dspool/pledge_insure2.html";
+			}
+
+			button_dbtc.onclick = function(){
+				
+				window.location = "dspool/pledge_dbtc.html";
+			}
+			/*
+			button_insure.onclick = function(){
+
+				bootbox.alert({
+						size: "small",
+						title: "未开放提示",
+						message: "项目暂未开放，敬请期待！",
+					})
+			}*/
+
+			//dspool_dsme
+			test_dspool.methods.pledge_all().call().then(function(res){
+				test_dspool.methods.reward_day().call().then(function(rr){
+					$("#dspool_all").html(toDecimal2(res/ 10**22) + "万/" + toDecimal2(rr/ 10**18));
+					$("#dspool_lilv").html(toDecimal2(rr/res*365*100) + "%" );
+				})
+				
+			})
+
+			//dspool_insure
+			$("#dspool_sure_all").html("1.01万/0.00");
+			$("#dspool_lilv_insure").html("0%" );
+
+
+			//dspool_insure2
+			test_dspoolin.methods.pledge_all().call().then(function(res){
+				test_dspoolin.methods.reward_day().call().then(function(rr){
+					$("#dspool_sure_all2").html(toDecimal2(res/ 10**22) + "万/" + toDecimal2(rr/ 10**18));
+					$("#dspool_lilv_insure2").html(toDecimal2((rr*1*365*1000)/(res*0.023)) + "%" );	
+				})
+			})
+
+			//dspool_insure3
+			dspoolin3.methods.pledge_all().call().then(function(res){
+				dspoolin3.methods.reward_day().call().then(function(rr){
+					$("#dspool_sure_all3").html(toDecimal2(res/ 10**22) + "万/" + toDecimal2(rr/ 10**18));
+					$("#dspool_lilv_insure3").html(toDecimal2((rr*1*365*1000)/(res*0.023)) + "%" );	
+				})
+			})
+
+			
+			//dspool_dbtc
+			dspool_dbtc.methods.pledge_all().call().then(function(res){
+				dspool_dbtc.methods.reward_day().call().then(function(rr){
+					$("#dspool_dbtc").html(toDecimal4(res/ 10**18) + "/" + toDecimal2(rr/ 10**18));
+					$("#dspool_lilv_dbtc").html(toDecimal2((rr*1*365)/(res*2500)) + "%" );	
+				})
+			})
+
+
+			test_dspool.methods.reward_day_have().call().then(function(res){
+				test_dspoolin.methods.reward_day_have().call().then(function(re){
+					$("#jiangli_all").html(toDecimal2(res/10**18 + re/10**18 +800) );
+					$("#jiangli_day").html("0.50");
+				});	
+			});
+		}
+	</script>
+	<body style="background-color: white;">
+		<div class="container-fluid">
+			<div class="row">
+				<ul class="nav nav-pills">
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3">
+						<li role="presentation" class="active"><a  href="#">DSPOOL</a></li>
+					</div>
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3" onclick='bootbox.alert({size: "small",title: "温馨提示",message: "暂未开放~"})'>
+						<li role="presentation"><a  href="#">SWAP</a></li>
+					</div>
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3" onclick='bootbox.alert({size: "small",title: "温馨提示",message: "暂未开放~"})'>
+						<li role="presentation"><a  href="#">LP POOL</a></li>
+					</div>
+					<div class="navbottom1" class="col-md-3 .col-lg-3 col-xs-3 col-sm-3">
+						<li role="presentation">
+						<li role="presentation"><a  href="financial_bx.html">INSURE</a></li>
+						</li>
+					</div>
+				</ul>	
+			</div>
+		</div>
+		
+		<!-- 产品总览 -->
+		<div class="box_z" >
+			<div id="" style="height: 30px;color: white;width: 20%;margin-left: 5%;font-size: 16px;margin-top: 5px;font-weight: bold;letter-spacing:2px">
+				Award
+			</div>
+			
+			<div id="" style="height: 20px;">
+				<div id="" style="float: left;margin-left: 5%;width: 45%;color: #360e0ed9;">
+					Awarded（DSME）
+				</div>
+				<div id=""style="width: 35%;float: right;margin-right: 10%;color: #360e0ed9;">
+					Award day
+				</div>
+			</div>
+			<div id="" style="height: 30px;">
+				<div id="jiangli_all" style="float: left;margin-left: 10%;width: 45%;color: #ffff00;font-size: 16px;font-weight: bold;">
+					loading
+				</div>
+				<div id="jiangli_day"style="width: 35%;float: right;margin-right: 10%;color: #ffff00;font-size: 16px;font-weight: bold;">
+					loading
+				</div>
+			</div>
+
+		</div>
+		
+		
+		<!-- dsme -->
+		<div class="box_left" id="button_dd">
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 24px;height: 24px;margin: 20px;" src="img/logo.png" >
+				</div>
+				<div id="">
+					<div style="margin-top:14px;color: #F8F8FF;font-weight: bold;font-size: 18px;" id="">
+						DSME
+					</div>
+					<div id="dspool_all" style="color: #51259d;font-size: 12px;">
+						load万/load
+					</div>
+				</div>
+			</div>
+			<!-- 中间 -->
+			<!--
+			<div id="zy_cont">
+				<div style="margin-top:14px;"  id="">
+					0.00 DSME
+				</div>
+				<div id="">
+					0.00 DSME	
+				</div>
+			</div>
+			-->
+			<!-- 右边 -->
+			<div id="zy_right">
+				<button id="dspool_lilv" type="button" class="btn btn-success">loading</button>
+			</div>
+		</div>
+
+
+		<!-- dbtc -->
+		<div class="box_left" id="button_dbtc">
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 24px;height: 24px;margin: 20px;" src="img/dbtclogo.png" >
+				</div>
+				<div id="">
+					<div style="margin-top:14px;color: #F8F8FF;font-weight: bold;font-size: 18px;" id="">
+						DBTC
+					</div>
+					<div id="dspool_dbtc" style="color: #51259d;font-size: 12px;">
+						load/load
+					</div>
+				</div>
+			</div>
+			<!-- 中间 -->
+			<!--
+			<div id="zy_cont">
+				<div style="margin-top:14px;"  id="">
+					0.00 DSME
+				</div>
+				<div id="">
+					0.00 DSME	
+				</div>
+			</div>
+			-->
+			<!-- 右边 -->
+			<div id="zy_right">
+				<button id="dspool_lilv_dbtc" type="button" class="btn btn-success">loading</button>
+			</div>
+		</div>
+
+
+
+		<!-- 保险三期 -->
+		<div class="box_left" id="button_insure3">
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 24px;height: 24px;margin: 20px;" src="img/insurelogo.jpg" >
+				</div>
+				<div id="">
+					<div style="margin-top:14px;color: #F8F8FF;font-weight: bold;font-size: 18px;" id="">
+						IN220410
+					</div>
+					<div id="dspool_sure_all3" style="color: #51259d;font-size: 12px;">
+						load万/load
+					</div>
+				</div>
+			</div>
+			<div id="zy_right">
+				<button id="dspool_lilv_insure3" type="button" class="btn btn-success">loading</button>
+			</div>
+		</div>
+
+
+
+		<!-- 保险二期 -->
+		<div class="box_left" id="button_insure2">
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 24px;height: 24px;margin: 20px;" src="img/insurelogo.jpg" >
+				</div>
+				<div id="">
+					<div style="margin-top:14px;color: #F8F8FF;font-weight: bold;font-size: 18px;" id="">
+						IN220202
+					</div>
+					<div id="dspool_sure_all2" style="color: #51259d;font-size: 12px;">
+						load万/load
+					</div>
+				</div>
+			</div>
+			<!-- 中间 -->
+			<!--
+			<div id="zy_cont">
+				<div style="margin-top:14px;"  id="">
+					0.00 DSME
+				</div>
+				<div id="">
+					0.00 DSME	
+				</div>
+			</div>
+			-->
+			<!-- 右边 -->
+			<div id="zy_right">
+				<button id="dspool_lilv_insure2" type="button" class="btn btn-success">loading</button>
+			</div>
+		</div>
+
+
+
+		<!-- 保险一期 -->
+		<div class="box_left" id="button_insure">
+			<!-- 左边 -->
+			<div id="zy_left">
+				<div id="logo">
+					<img style="width: 24px;height: 24px;margin: 20px;" src="img/insurelogo.jpg" >
+				</div>
+				<div id="">
+					<div style="margin-top:14px;color: #F8F8FF;font-weight: bold;font-size: 18px;" id="">
+						IN211130
+					</div>
+					<div id="dspool_sure_all" style="color: #51259d;font-size: 12px;">
+						load万/load
+					</div>
+				</div>
+			</div>
+			<!-- 中间 -->
+			<!--
+			<div id="zy_cont">
+				<div style="margin-top:14px;"  id="">
+					0.00 DSME
+				</div>
+				<div id="">
+					0.00 DSME	
+				</div>
+			</div>
+			-->
+			<!-- 右边 -->
+			<div id="zy_right">
+				<button id="dspool_lilv_insure" type="button" class="btn btn-success">loading</button>
+			</div>
+		</div>
+		
+
+		<!-- 底部 -->
+		<nav class="navbar-fixed-bottom">
+			<div class="container-fluid">
+				<div class="row">
+					
+				<a href="index.html">
+					<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class=" glyphicon glyphicon-home ">
+						</div>
+						<div style="height: 20px;font-size: 12px;color: white;">
+							HOME
+						</div>
+					</div>
+				</a>
+				<a href="financial.html">
+					<div class="navbottom navbottom2" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-piggy-bank">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							DEFI
+						</div>
+					</div>
+				</a>
+				<a href="me.html">
+					<div class="navbottom" class="col-md-4 .col-lg-4 col-xs-4 col-sm-4">
+						<div style="height: 20px;margin-top: 13px;" class="glyphicon glyphicon-user">
+						</div>
+						<div style="height: 20px;font-size: 12px;">
+							ME
+						</div>
+					</div>
+				</a>
+				</div>
+			</div>
+		</nav>
+
+	</body>
+
+	<style type="text/css">
+		
+
+		.navbottom {
+			background-color: #eca400;
+			color:white;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+		
+		}
+		.navbottom2 {
+			background-color: #eca400;
+			color:#D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+		
+		}
+
+
+		.navbottom1 {
+			background-color: #eca400;
+			color: black;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			width: 25%;
+			float: left;
+			font-size: 16px;
+		}
+
+		.box_z {
+			/* border-radius: 10px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+			 */
+			background-color: #f3b014;
+			width: 98%;
+			margin-left: 1%;
+			float: left;
+			height: 80px;
+			margin-bottom: 3px;
+			margin-top: 5px;
+		}
+
+		.box_left {
+			border-radius: 10px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+			background-color: #D5A021;
+			width: 98%;
+			margin-left: 1%;
+			float: left;
+			height: 65px;
+			margin-bottom: 3px;
+			margin-top: 5px;
+		}
+		
+		#zy_left {
+			float: left;
+			height: 65px;
+			width: 46%;
+		}
+		#logo {
+			width: 32%;
+			height: 65px;
+			float: left;
+		}
+		#zy_cont {
+			float: left;
+			height: 65px;
+			width: 25%;
+		}
+		#zy_right {
+			float: right;
+			height: 65px;
+			line-height: 32.5px;
+			width: 27%;
+		}
+		.btn-success {
+				height: 40px;
+				margin-top: 12.5px;
+				color: #fff;
+			    background-color: #5cb85c;
+			    border-color: #4cae4c;
+		}
+
+		.pro_sty {
+			margin-top: 10px;
+			font-size: 16px;
+			color: rgb(251, 255, 16);
+			text-align: center;
+			clear: both;
+			margin-bottom: 5px;
+		}
+
+		.jdt {
+			margin-top: 46px;
+			color: #ffffff;
+		}
+
+		.xm {
+			width: 30%;
+			float: left;
+			margin-left: -22px;
+			color: white;
+		}
+
+		.xs {
+			border: 1px solid;
+			width: 20%;
+			margin-left: 99px;
+			color: #470303;
+			font-size: 12px;
+		}
+
+		.sy {
+			font-size: 24px;
+			float: left;
+			margin-left: -10px;
+			margin-top: 3px;
+			width: 40%;
+		}
+
+		.syxs {
+			font-size: 16px;
+			color: whitesmoke;
+			margin-top: -25px;
+			width: 67%;
+			float: right;
+		}
+
+		.progress {
+			clear: both;
+			height: 13px;
+			line-height: 13px;
+			width: 90%;
+			margin-left: 5%;
+		}
+
+		.progress-bar {
+			font-size: 12px;
+		}
+
+		a,
+		a:visited,
+		a:hover,
+		a:active {
+			/*全部状态都一样的效果*/
+			text-decoration: none;
+			/*没有下划线*/
+			color: white;
+			/*一直都蓝色*/
+		}
+		.progress-bar-info {
+    background-color: #eca400;
+}
+	</style>
+</html>

@@ -1,0 +1,39 @@
+body{
+	background:black;
+}
+/* DSEM治理文字颜色 */
+.fontcolor1{
+	background: linear-gradient(to left,rgb(52, 148, 230), rgb(236, 110, 173));
+  	-webkit-background-clip: text;
+  	color: transparent;
+	}
+/* 公投规则颜色 */
+.fontcolor2{
+	background: linear-gradient(to left,rgb(232, 203, 192), rgb(99, 111, 164));
+  	-webkit-background-clip: text;
+  	color: transparent;
+}
+/* heco+菜单颜色 */
+.fontcolor3{
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background: linear-gradient(to left,rgb(232, 203, 192), rgb(99, 111, 164));
+}
+.fontcolor4{
+	color:skyblue;
+	-webkit-background-clip: text;
+	background:transparent;	/*按钮背景透明*/
+		border-width:0px;	/*边框透明*/
+		outline:none;	/*点击后没边框*/
+}
+/* div内容颜色 */
+.bgccolor{
+	color:rgb(56,96,160);
+	background: linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85));
+}
+/* div内按钮颜色 */
+.fontcolor5{
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background:rgb(86,130,187);
+}

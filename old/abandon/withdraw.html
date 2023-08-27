@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>星梦生态</title>
+	
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="js/web3.min.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/contractport.js"></script>
+		<script src="js/bootbox.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+	</head>
+<script>
+	window.onload =function(){
+		var loadCss = document.createElement("style");
+    	loadCss.type = "text/css";
+    	loadCss.innerHTML = "@keyframes loop { 0%{transform: rotate(0deg);} 100%{ transform: rotate(360deg);}";
+    	document.head.appendChild(loadCss);
+
+    	var p = document.createElement("p");
+    	p.id = "loading";
+    	var pic = document.createElement("picture");
+    	p.style.cssText = "display: none;width: 100px;height: 100px;background: rgba(255, 255, 255,0);position: fixed;top: 50%;left: 40%;z-index: 999999;";
+    	pic.style.cssText = "display: block;width: 50px;height: 50px;border-radius: 50%;box-shadow: 0 2px 0 #666; animation: loop 1s infinite;-webkit-animation: loop 1s infinite;";
+    	p.appendChild(pic);
+    	document.body.appendChild(p);
+
+		document.getElementById("loading").style.display = 'block';
+//window.onload = function(){
+		web3js.eth.getAccounts(function (error,result){
+			button_withdraw.onclick = function(){
+			document.getElementById("loading").style.display = 'block';
+			test.methods.playerMap(result[0]).call().then(function(resul) {
+				if(resul != 0){
+					var value = $("#value").val();
+					value1 = value * 10**18;
+					value2 = value1.toString();
+            		test.methods.withdrawal(value2).send({from:result[0],gas:200000}).then(function(result){
+                		if(result){
+                    		bootbox.alert({
+                    		size: "small",
+                    		title: "提币提示",
+                    		message: "提币成功!请检查自己钱包",
+                            callback: function(){location.reload();document.getElementById("loading").style.display = 'none';}
+                    		})
+                		}
+            	},function(){
+					bootbox.alert({
+                    		size: "small",
+                    		title: "提币提示",
+                    		message: "提币失败",
+                            callback: function(){location.reload();document.getElementById("loading").style.display = 'none';}
+                    		})
+				});
+				}else{
+					bootbox.alert({
+					size: "small",
+					title: "未注册提示",
+					message: "未注册,请先注册哦!",
+                    callback: function(){window.location = "regis.html";}
+					})
+				}
+			});
+        	};
+
+			web3js.eth.getBlockNumber(function(error, result1){
+			var _from = result1 - 890000;
+			var _to = _from + 5000;
+			for(let i = 0; i < 180; i++){
+				test.getPastEvents('assetsEvent', {filter: {senderAddress:result[0],types:2}, fromBlock: _from, toBlock: _to}).then((res) => {
+                	for(var m = 0;m <res.length;m++){
+						var tr = document.createElement("tr");
+						
+						var timetd = document.createElement("td");
+						var typetd = document.createElement("td");
+						var valuetd = document.createElement("td");
+
+						var timetext = document.createTextNode(getLocalTime(res[m].returnValues[4]));
+						//var typetext = document.createTextNode(res[m].returnValues[2]);
+						var typetext = document.createTextNode("sub");
+						var valuetext = document.createTextNode(res[m].returnValues[3]/10**18);
+
+						timetd.appendChild(timetext);
+						typetd.appendChild(typetext);
+						valuetd.appendChild(valuetext); 
+
+						tr.appendChild(timetd);
+						tr.appendChild(typetd);
+						tr.appendChild(valuetd);
+
+						var note_withdraw = document.getElementById("note_withdraw");
+						note_withdraw.appendChild(tr);
+					}
+						if(i >= 179){
+							document.getElementById("loading").style.display = 'none';
+						}
+            	});
+				_to += 5000;
+				_from += 5000;
+			}
+		});
+	});
+//	};
+}
+</script>
+	<body>
+		<div>
+			<div id="back">
+				<a href="me.html">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				</a>
+			</div>
+			<div id="back_text">
+				提币
+			</div>
+
+		</div>
+		<div id="hr">
+			<hr />
+		</div>
+		<div id="">
+				<div class="form-group">
+					<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+					<div class="input-group">
+						<input type="text" class="form-control" id="value" placeholder="请输入提币的数量">
+
+					</div>
+					<div id="isvi">
+						<button type="submit" class="btn btn-primary" id="button_withdraw">提币</button>
+					</div>
+				</div>
+			<hr />
+			<div id="">
+				<table class="table table-hover">
+					<caption>提币记录 (最近90W区块，约1个月记录 )</caption>
+					<thead>
+						<tr>
+							<th>时间</th>
+							<th>类型</th>
+							<th>数量</th>
+						</tr>
+					</thead>
+					<tbody id="note_withdraw">
+						<script>/*
+						<tr>
+							<td>2021-05-01 12:24:31</td>
+							<td>Bangalore</td>
+							<td>100.2301</td>
+						</tr>
+						<tr>
+							<td>2021-05-01 12:24:31</td>
+							<td>Mumbai</td>
+							<td>95.0000</td>
+						</tr>
+						<tr>
+							<td>2021-05-01 12:24:31</td>
+							<td>Pune</td>
+							<td>25.0123</td>
+						</tr>
+						*/</script>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+	</body>
+
+	<style type="text/css">
+		#back {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			margin-left: 10px;
+			font-size: 20px;
+			float: left;
+			width: 10%;
+		}
+
+		#back_text {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			font-size: 20px;
+			float: right;
+			width: 56%;
+		}
+
+		#hr {
+			clear: both;
+			margin-top: 2px;
+		}
+
+		.form-control {
+			margin-left: 30px;
+			height: 45px;
+		}
+
+		.input-group {
+			float: left;
+		}
+
+		.btn {
+			margin-left: 30px;
+			height: 45px;
+			width: 100px;
+			letter-spacing: 10px;
+			text-align: center;
+			padding-left: 10px;
+			font-size: 18px;
+			padding: 0px;
+		}
+		.modal-header {
+			background-color: #eca400;
+			color: white;
+			letter-spacing: 10px;
+		}
+		
+		.modal-body {
+			letter-spacing: 3px;
+			font-family: fantasy;
+		}
+		
+		.btn-primary {
+			width: 52px;
+			letter-spacing: 6px;
+		}
+	</style>
+</html>

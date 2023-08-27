@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		
+		<link rel="shortcut icon" href="img/logo_back.jpg" type="image/x-icon"> 
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>D-ecology(C)</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-conflux-sdk/dist/js-conflux-sdk.umd.min.js"></script>
+		<script src="js/hecorpc.js"></script>
+		<script src="js/confluxrpc.js"></script>
+		<script src="js/contract_cfx1.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<!-- <script src="js/bootbox.locales.min.js"></script> -->
+		<script src="js/bootbox.min.js"></script>
+	</head>
+	<script>
+		window.onload = function() {
+			
+			//申请生态白名单V1
+			button_apply.onclick = function(){
+				bootbox.alert({
+					size: "small",
+					title: "错误提示",
+					message: "当前暂未开放",
+				})
+			}
+			
+			//公共数据RPC节点获取
+			//初级空投heco领取人次
+			KC_heco.methods.random().call().then(function(res){
+				//初级空投conflux领取人次
+				kongtouR.random().then(function(response){
+                    $("#csign_all").html( response[0]/1 + res/1);
+                })
+                				
+			})
+			//中级空投领取人次
+			KZ_heco.methods.random().call().then(function(response){
+				$("#zsign_all").html( response/2 + 1845.5 );
+			})
+			
+			
+			
+			//获取账户地址
+			conflux.enable().then(function(accounts){
+				//alert(accounts[0]);
+				$("#node_www").html( "CONFLUX" );
+				
+				kongtouR.playmap(accounts[0]).call({from:accounts[0]}).then(function(resu) {
+					if( resu[0].length == 0 ){
+					$("#cacount").html(0);
+					}else{
+					$("#cacount").html(resu[1]);
+					}
+				})
+
+				var a = 1000;
+				var aherf = window.location.href;
+
+				//初级空投激活
+				for(var i =  0 ;i<100;i++){
+					if(aherf[i] == "i"){
+						if(aherf[i+1] == "d"){
+							a = aherf[i+3] + aherf[i+4] + aherf[i+5] + aherf[i+6];
+							system.playerMap(accounts[0]).call().then(function(resu) {
+								if(resu == 0){
+									bootbox.confirm({
+										size: "small",
+										title: "资格激活",
+										message: "您的好友赠送您初级空投资格，点击OK立刻激活",
+										callback: function(re){
+											if(re){
+												system.registerforplayer("Dplayer",a).sendTransaction({from:accounts[0]}).then(function(result){
+													if(result){
+														bootbox.alert({
+															size: "small",
+															title: "激活提示",
+															message: "激活成功，请立即加入群聊，开启空投领取",
+														})
+													}},function(){
+														bootbox.alert({
+															size: "small",
+															title: "激活提示",
+															message: "激活失败",
+														})
+													}	
+												)
+											}
+										}
+									})
+								}
+							})
+						}
+					}
+				}
+			
+
+				//初级空投领取
+				button_chuji.onclick = function(){
+					system.playerMap(accounts[0]).call().then(function(resul) {
+						if (resul > 0) {
+							kongtou.playmap(accounts[0]).call().then(function(resu) {
+								if (new Date().getTime() / 1000 - resu[0] >= 86400){											
+									kongtou.sign().sendTransaction({from:accounts[0]}).then(function(){
+										kongtou.playmapping(accounts[0]).call().then(function(response){
+											if(response[0].length == 0){
+												bootbox.alert({
+												size: "small",
+												title: "空投提示",
+												message:"恭喜您领取成功",
+												callback:function(){}
+											})
+											}else{
+											bootbox.alert({
+												size: "small",
+												title: "空投提示",
+												message:"恭喜您领取成功，本次空投公共基础系数Abs：" + response[0]/10 + ",空投随机系数N：" + response[3]/10 +
+												",等级加成Ls：" + response[4] + "%,共获得奖励 = Abs * N *(1+Ls) = " + response[2]/10**18 + " DSME" ,
+												callback:function(){}
+											})
+											}
+										})
+									},function(){
+										bootbox.alert({
+											size: "small",
+											title: "空投提示",
+											message: "领取失败,请先获得领取资格",
+										})
+										}
+									)																														
+								} else {
+									bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "<p>上次领取时间：" + getLocalTime(resu[
+												0]) +
+											",</p><p> 还未到领取时间哦</p>",
+									})
+								}
+							})
+						} else {
+							bootbox.alert({
+										size: "small",
+										title: "空投提示",
+										message: "请完成激活后领取空投",
+									})
+						}
+					})
+				}
+			
+				
+			})
+
+
+
+
+
+
+
+
+
+
+
+
+			/*chainId = conflux.request({
+				method: 'cfx_chainId'
+			});
+			//！链id不是马上拿到的，如果通过链id来判断是不是主网的方式，请注意异步
+			chainId.then(res => {
+				if (res == '0x80') {
+					$("#node_www").html("<span style='margin-top:14px'>HECO</span>");
+					node_www.style.color = "white";
+				} else if (res == '0x38') {
+					$("#node_www").html("<span style='margin-top:14px'>BSC</span>");
+					window.node_www.style.color = "white";
+				} else {
+					console.log("Not connect");
+				}
+			})
+            console.log(chainId)
+            */
+            //heco_main
+			button_heco1.onclick = function() {
+				params = [{
+					"chainId": "0x80", // 56 in decimal
+					"chainName": "HECO-1",
+					"rpcUrls": [
+						"https://http-mainnet.hecochain.com"
+					],
+					"nativeCurrency": {
+						"name": "Huobi Token",
+						"symbol": "HT",
+						"decimals": 18
+					},
+					"blockExplorerUrls": [
+						"https://hecoinfo.com/"
+					]
+				}]
+
+				ethereum.request({
+					method: 'wallet_addEthereumChain',
+					params,
+				}).then(res => {
+					$("#node_www").html("<span style='margin-top:14px'>HECO</span>");
+					bootbox.alert({
+						size: "small",
+						title: "网络提示",
+						message: "已连接<span style='color:#0007af;font-weight: bold;'>HECO2</span>网络",
+					})
+				});
+				
+			}
+
+			button_hecomain.onclick = function() {
+				params = [{
+					"chainId": "0x80", // 56 in decimal
+					"chainName": "HECO-main",
+					"rpcUrls": [
+						"https://http-mainnet-node.huobichain.com"
+					],
+					"nativeCurrency": {
+						"name": "Huobi Token",
+						"symbol": "HT",
+						"decimals": 18
+					},
+					"blockExplorerUrls": [
+						"https://hecoinfo.com/"
+					]
+				}]
+
+				ethereum.request({
+					method: 'wallet_addEthereumChain',
+					params
+				}).then(res => {
+					$("#node_www").html("<span style='margin-top:14px'>HECO</span>");
+					bootbox.alert({
+						size: "small",
+						title: "网络提示",
+						message: "已连接<span style='color:#0007af;font-weight: bold;'>HECO1</span>网络",
+					})
+				});
+			}
+
+
+
+
+
+
+
+
+
+			$('.swap').html($('.news_li').html());
+			x = $('.news_li');
+			y = $('.swap');
+			h = $('.news_li li').length * 38; //20为每个li的高度
+			var hh = $('.news_li li').length;
+			if (hh > 1)
+				//setTimeout(b,3000);//滚动间隔时间 现在是3秒
+				b();
+			b();
+			function b() {
+			t = parseInt(x.css('top'));
+			//alert(t)
+			y.css('top', '38px');
+			x.animate({
+				top: t - 38 + 'px'
+			}, 'slow'); //20为每个li的高度
+			if (Math.abs(t) == h - 38) { //20为每个li的高度
+				y.animate({
+					top: '0px'
+				}, 'slow');
+				z = x;
+				x = y;
+				y = z;
+			}
+			setTimeout(b, 6000); //滚动间隔时间 现在是3秒
+		}
+			var notice = document.getElementById("notice");
+			var noticeList = document.getElementById("noticeList");
+			// 获取ul下第一个li元素，好计算li的高度，因为后面滚动的时候每次要滚动一个高度，这里li都是一样高的，
+			// 所以获取第一个的高度就行了，不然要遍历获取每一个li的高度。
+			var noticeFirstItem = noticeList.querySelector("li");
+			// 获取li的高度，这里获取的是offsetHeight，关于js各种高度的定义可以注意以下
+			var scrollHeight = noticeFirstItem.offsetHeight;
+			// 是否可以进行动画
+			var opt = {
+				animated: true,
+				interval: 2000
+			};
+			noticeFirstItem.style.marginTop = 0;
+				if (opt.animated) {
+					opt.animated = true;
+					animate(noticeList, scrollHeight, opt);
+				}
+				//notice.onclick = function() {
+				// 动画之前首先重置
+				// noticeFirstItem.style.transition = "";
+				setInterval(function(){
+				noticeFirstItem.style.marginTop = 0;
+				if (opt.animated) {
+					opt.animated = true;
+					animate(noticeList, scrollHeight, opt);
+				}},6200);
+			//};
+			// 动画函数，obj——要产生动画的对象，sHeight——每次要滚动的距离，interval——多久滚动一次
+			function animate(obj, sHeight, option) {
+				// 当滚到最后一条公告的时候就不用动画了。
+				var stopHeight = sHeight - obj.scrollHeight;
+				var marginTopNum = 0;
+				var timer = setInterval(function() {
+					marginTopNum -= sHeight;
+					obj.style.marginTop = marginTopNum + "px";
+					obj.style.transition = "margin-top 1.5s ease";
+					//注意这里的比较符号，前面得到的高度都进行四舍五入了
+					if (marginTopNum <= stopHeight) {
+						clearInterval(timer);
+						option.animated = true;
+					}
+				}, option.interval);
+			}
+		}	
+</script>
+	
+
+	
+	<!-- 头部导航 -->
+	<nav class="navbar-fixed-top">
+		<div class="top_back" class="dropdown">
+			<!-- 设置 -->
+			<!-- <button style="height: 40px;line-height: 50px;float: right;background-color: red;text-align: center;border: 1px solid #eca400;color: #ffffff;" type="button" class="glyphicon glyphicon-cog"></button> -->
+			<!-- 网络选择 -->
+			<div id="top_wl">
+				DSME
+			</div>
+			<button id="node_www" style="margin-top: 3px;
+						font-size: 14px;
+						    width: 88px;
+						    height: 43px;
+						    float: right;
+						    background-color: #a49b8745;
+						    text-align: center;
+						    border: 0px;
+						    color: white;
+						    font-weight: bold;
+						    margin-top: 7px;" class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Not
+				connect
+			</button>
+			<ul style="background-color: white;" class="dropdown-menu dropdown-menu-right" role="menu"
+				aria-labelledby="menu1">
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="button_hecomain">CONFLUX1</a>
+				</li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="button_heco1">CONFLUX2</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div id="back_zs">
+		
+		
+	</div>
+	<div  id="notice1" class="notice">
+		<ul id="noticeList">
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				DSME保委会成立
+			</li>
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				D生态升级至0.4.0
+			</li>
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				保险二号及质押上线
+			</li>
+			<li><span style="color: white;padding-right: 15px;"  class="glyphicon glyphicon-bullhorn"></span>
+				保险一号项目上线
+			</li>
+		</ul>
+	</div>
+	<div style="clear: both;margin-top: -10px;" class="card">
+	
+	<div id="" style="height: 150px;text-align: center;margin-top: 40px;letter-spacing:2px">
+		
+		<div id="" style="letter-spacing:3px;color: white;">
+			持币地址(heco&conflux)
+		</div>
+		<div id=""style="margin-top: 2%;letter-spacing:1px;font-size: 20px;color: #eea6b7;">
+			<b>214</b> 个
+		</div>
+		
+		<div id="" style="letter-spacing:3px;color: white;margin-top: 3%;">
+			DSME流通量(heco&conflux)
+		</div>
+		<div id=""style="margin-top: 2%;letter-spacing:1px;font-size: 20px;color: #eea6b7;">
+			<b>42,840.16</b> DSME
+		</div>
+	</div>
+	
+	<!-- 签到 -->
+	<div id="qd">
+		<div id="" style="color: #747171;font-size: 16px;margin-left: 2%;margin-top: 5%;margin-bottom: -6%;height: 25px;line-height: 25px;">
+			<div id="" style="float: left;">
+				<b>中级空投</b>
+			</div>
+			<div id="" style="float: right;margin-right: 9%;">
+				三
+			</div>
+		</div>
+		<hr  style="clear: both;width: 95%;border-top: 1px solid #c6c6c6;"/>
+		<div id="" style="color: #747171;font-size: 16px;margin-left: 3%;margin-top: 1%;">
+			领取次数：<span style="color: #646464;"><b id = "sign_acount">0</b></span> 次
+		</div>
+		<div id="" style="color: #747171 ;font-size: 16px;margin-left: 3%;margin-top: 1%;">
+			参与人次：<span style="color: #646464;"><b id = "zsign_all">0</b> </span> 次
+		</div>
+		<div id="" style="">
+			<button id="button_sign" style="color: white  ;background-color: #b4a992 ;
+							border-radius: 16px;margin-top: 10px;
+							width: 58%;height: 35px;margin-left: 22%;
+							border: 0px;letter-spacing: 10px;
+    padding-left: 12%;
+							">领取</button>
+		</div>
+	</div>
+	
+	<!-- 产品推荐 -->
+	<div id="qd" style="margin-left: 3%;">
+		<div id="" style="color: #747171;font-size: 16px;margin-left: 2%;margin-top: 5%;margin-bottom: -6%;height: 25px;line-height: 25px;">
+			<div id="" style="float: left;">
+				<b>初级空投</b>
+			</div>
+			<div id="" style="float: right;margin-right: 9%;">
+				三
+			</div>
+		</div>
+		<hr  style="clear: both;width: 95%;border-top: 1px solid #c6c6c6;"/>
+		<div id="" style="color: #747171 ;font-size: 16px;margin-left: 3%;margin-top: 1%;">
+			领取次数：<span style="color: #646464;"><b id = "cacount">0</b></span> 次
+		</div>
+		<div id="" style="color: #747171 ;font-size: 16px;margin-left: 3%;margin-top: 1%;">
+			参与人次：<span style="color: #646464;"><b id = "csign_all">0</b> </span> 次
+		</div>
+		<div id="" style="">
+			<button id = "button_chuji" style="color: white ;background-color: #b4a992 ;
+								border-radius: 16px;margin-top: 10px;
+								width: 58%;height: 35px;margin-left: 22%;letter-spacing: 10px;
+								padding-left: 12%;
+								border: 0px;">领取</button>
+		</div>
+	</div>
+	
+	<!-- 招募 -->
+	<div style="clear: both;">
+		<div id="zm">
+			<div id="" style="color: black;font-size: 16px;margin-left: 2%;margin-top: 20px;margin-bottom: -6%;height: 25px;line-height: 25px;">
+				<div id="" style="text-align: center;letter-spacing: 17px;color: whitesmoke;">
+					<b>生态V1</b>
+				</div>
+			</div>
+			<hr  style="clear: both;margin-top: 45px;width: 95%;"/>
+			<div id="" style="color: #f1f0ed;font-size: 16px;margin-left: 3%;margin-top: 1%;text-align: center;">
+				须通过共识检验
+			</div>
+			<div id="" style="color: #f1f0ed;font-size: 16px;margin-left: 3%;margin-top: 1%;text-align: center;margin-top: 8px;">
+				可获得生态加成权限
+			</div>
+			<div id="" style="">
+				<button id = "button_apply"style="color: #f1f0ed;background-color: #a49b87;
+				border-radius: 16px;margin-top: 8%;width: 58%;height: 35px;
+				margin-left: 22%;letter-spacing: 17px;
+				padding-left: 12%;border: 0px;
+				
+				
+				">立即申请</button>
+			</div>
+		</div>
+	</div>
+	
+
+
+		<!-- 内容 -->
+		
+		<!-- 招募令 -->
+
+		<!-- 底部留白 -->
+		<div style="height: 100px;" id="">
+
+		</div>
+
+
+		<a href="regis.html"></a>
+
+	<style type="text/css">
+		#zm{
+			width: 88%;
+			height: 230px;
+			margin-left: 6%;
+			background-color: #b4a992;
+			float: left;
+			border-radius: 16px;
+			box-shadow: 2px 2px 10px #ffffff12;
+			margin-top: 3%;
+		}
+		
+		#qd {
+			margin-top: 15px;
+			width:42%;
+			height: 168px;
+			margin-left:6%;
+			background-color: #e0e0e0;
+			float: left;
+			border-radius: 16px;
+			box-shadow: 2px 2px 10px #ffffff4f;
+			/* background: linear-gradient(to bottom, #36282b 0%,#695e45 100%);
+ */		}
+		#back_zs{
+			width: 100%;
+			height: 403px;
+			background-color: #36282b;
+			background: linear-gradient(to bottom, #36282b 0%, #b4a992 100%);
+		}
+		#top_wl {
+			width: 30%;
+			float: left;
+			padding-left: 4%;
+			font-size: 20px;
+			color: white;
+			font-weight: bolder;
+			letter-spacing: 1px;
+			font-family: rockwell extra bold;
+		}
+		
+		.top_back {
+			margin-left: 2px;
+			padding-right: 6%;
+			width: 100%;
+			float: right;
+			height: 60px;
+			line-height: 60px;
+			background-color: #5c2223;
+			border-bottom: 1px solid #5c2223;
+		}
+		.thumbnail {
+			display: block;
+			padding: 4px;
+			margin-bottom: 10px;
+			line-height: 1.42857143;
+			border-radius: 16px;
+			-webkit-transition: border .2s ease-in-out;
+			-o-transition: border .2s ease-in-out;
+			transition: border .2s ease-in-out;
+		}
+
+		.navbottom {
+			background-color: #5c2223;
+			color: white;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+
+		}
+
+		.navbottom2 {
+			background-color: #5c2223;
+			color: #D72638;
+			height: 55px;
+			text-align: center;
+			width: 33.3%;
+			float: left;
+			font-size: 16px;
+
+		}
+
+
+
+		.carousel-inner {
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+			height: 300px;
+		}
+
+		.btn-lg {
+
+			font-size: 23px;
+			height: 80px;
+			border-radius: 6px;
+			letter-spacing: 7px;
+			width: 70%;
+			margin-left: 15%;
+		}
+
+		.accordion-group {
+			margin-top: 20px;
+		}
+
+		.alert {
+			padding: 4px;
+		}
+
+		a,
+		a:visited,
+		a:hover,
+		a:active {
+			/*全部状态都一样的效果*/
+			text-decoration: none;
+			/*没有下划线*/
+			color: white;
+			/*一直都蓝色*/
+		}
+
+		#button_sign {
+			font-family: "黑体";
+			font-weight: bold;
+			display: block;
+			margin: 0 auto;
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
+			background-color: red;
+			border: 1px solid #5c2223;
+			background: #5c2223;
+			letter-spacing: 7px;
+			text-align: center;
+			color: white;
+			font-size: 18px;
+			box-shadow: 1px 1px 10px #fcfc624d;
+		}
+
+		.dropdown-menu {
+			min-width: 23%;
+			margin-right: 1%;
+			color: white;
+		}
+
+		.dropdown-menu>li>a {
+			color: #5c2223;
+		}
+
+		.btn {
+			padding: 6px 0px;
+		}
+
+		.modal-header {
+			background-color: #5c2223;
+			color: white;
+			letter-spacing: 10px;
+		}
+
+		.modal-body {
+			letter-spacing: 3px;
+			font-family: fantasy;
+		}
+
+		.btn-primary {
+			width: 52px;
+			letter-spacing: 6px;
+		}
+
+		.shenqing {
+			border-radius: 50px;
+			float: left;
+			margin-left: 3%;
+			margin-right: 2%;
+			width: 45%;
+			height: 59px;
+			font-size: 20px;
+			background-color: #D72638;
+			border: 1px solid #D72638;
+			box-shadow: 1px 1px 10px #fcfc624d;
+			font-family: "黑体";
+		}
+
+		.shenqing2 {
+			border-radius: 50px;
+			margin-right: 3%;
+			margin-left: 2%;
+			width: 45%;
+			height: 59px;
+			font-size: 20px;
+			font-family: "黑体";
+			background-color: #D72638;
+			border: 1px solid #D72638;
+			box-shadow: 1px 1px 10px #fcfc624d;
+		}
+
+		#ziti {
+			float: left;
+			width: 33%;
+			text-align: center;
+			line-height: 96px;
+			font-size: 16px;
+			color: ghostwhite;
+		}
+
+		.ziti1 {
+			background-color: #5b99c678;
+			border-radius: 50px 50px 50px 50px;
+		}
+
+		.ziti2 {
+			background-color: #3f80b0b3;
+			border-radius: 50px 50px 50px 50px;
+		}
+
+		.ziti3 {
+			background-color: #80b1d4b8;
+			border-radius: 50px 50px 50px 50px;
+		}
+
+		ul,
+		li {
+			list-style: none;
+			color: white;
+		}
+
+		.notice {
+			margin-left: 4%;
+			width: 92%;
+			height: 38px;
+			background-color: #15231b54;
+			text-align: left;
+			overflow: hidden;
+			padding-top: 7px;
+			margin-top: -322px;
+			border-radius: 16px;
+		}
+
+		li {
+			padding: 3px;
+		}
+	</style>
+</html>

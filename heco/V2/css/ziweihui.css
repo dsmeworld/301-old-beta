@@ -1,0 +1,67 @@
+body{
+	background:black;
+}
+/* DSEM治理文字颜色 */
+.fontcolor1{
+	background: linear-gradient(to left,rgb(52, 148, 230), rgb(236, 110, 173));
+  	-webkit-background-clip: text;
+  	color: transparent;
+	}
+/* DSME候选董事+董事投票文字颜色 */
+.fontcolor1-1{
+	background: linear-gradient(to top,rgb(52, 148, 230), rgb(236, 110, 173));
+  	-webkit-background-clip: text;
+  	color: transparent;
+	}
+/* 公投规则颜色 */
+.fontcolor2{
+	background: linear-gradient(to left,rgb(232, 203, 192), rgb(99, 111, 164));
+  	-webkit-background-clip: text;
+  	color: transparent;
+}
+/* heco+菜单颜色 */
+.fontcolor3{
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background: linear-gradient(to left,rgb(232, 203, 192), rgb(99, 111, 164));
+}
+/* heco+菜单颜色 */
+.fontcolor3-3{
+    color:#360033;
+	border-width:0px;	/*边框透明*/
+	outline:none;
+    background: linear-gradient(to left, rgb(95, 44, 130), rgb(73, 160, 157));
+    
+}
+/* 竞选规则按钮颜色 */
+.fontcolor6{
+    border-width:0px;	/*边框透明*/
+	outline:none;
+    color:#0b8793;
+	background: linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85));
+}
+.fontcolor4{
+	color:skyblue;
+	-webkit-background-clip: text;
+	background:transparent;	/*按钮背景透明*/
+		border-width:0px;	/*边框透明*/
+		outline:none;	/*点击后没边框*/
+}
+.fontcolor4-4{
+	color:rgb(37,64,77);
+   -webkit-background-clip: text;
+	background:transparent;	/*按钮背景透明*/
+		border-width:0px;	/*边框透明*/
+		outline:none;	/*点击后没边框*/
+}
+/* div内容颜色 */
+.bgccolor{
+	color:#0b8793;
+	background: linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85));
+}
+/* div内按钮颜色 */
+.fontcolor5{
+	border-width:0px;	/*边框透明*/
+	outline:none;
+	background: linear-gradient(to bottom, rgb(55, 62, 67), rgb(11, 135, 147));
+}
